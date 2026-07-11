@@ -17,7 +17,7 @@ const LAYOUT: NodePos[] = [
   { key: "result", x: 70, y: 82 },
 ];
 
-export function ConceptGraph({ paper }: { paper: Paper }) {
+export default function ConceptGraph({ paper }: { paper: Paper }) {
   const [hoverNode, setHoverNode] = useState<ConceptKey | null>(null);
   const [hoverEdge, setHoverEdge] = useState<number | null>(null);
 

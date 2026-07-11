@@ -2,7 +2,7 @@ import {
   CONCEPT_LABELS,
   type Paper,
   type ConceptKey,
-} from "../backend/mockData";
+} from "@/backend/mockData";
 
 const ORDER: ConceptKey[] = [
   "problem",
@@ -12,7 +12,7 @@ const ORDER: ConceptKey[] = [
   "result",
 ];
 
-export function BreakdownView({ paper }: { paper: Paper }) {
+export default function BreakdownView({ paper }: { paper: Paper }) {
   return (
     <section className="grid gap-3 md:grid-cols-2">
       {ORDER.map((k) => (

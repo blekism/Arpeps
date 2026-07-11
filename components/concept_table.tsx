@@ -1,7 +1,7 @@
 import { CONCEPT_LABELS, type Paper } from "@/backend/mockData";
 
 // Supabase-like table view of concept connections.
-export function ConceptTable({ paper }: { paper: Paper }) {
+export default function ConceptTable({ paper }: { paper: Paper }) {
   return (
     <div className="overflow-hidden rounded-lg border border-border">
       <div className="flex items-center justify-between border-b border-border bg-panel-2 px-3 py-2">

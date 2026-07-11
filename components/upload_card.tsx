@@ -3,12 +3,12 @@
 import { useRef, useState } from "react";
 import { Upload, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { uploadAndAnalyze } from "../backend/api";
+import { uploadAndAnalyze } from "@/backend/api";
 import { getSession } from "@/services/auth";
-import { rateLimit } from "../services/rate_limit";
+import { rateLimit } from "@/services/rate_limit";
 import { toast } from "sonner";
 
-export function UploadCard({ onUploaded }: { onUploaded: () => void }) {
+export default function UploadCard({ onUploaded }: { onUploaded: () => void }) {
   const [dragging, setDragging] = useState(false);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
