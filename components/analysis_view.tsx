@@ -1,5 +1,5 @@
 import { CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
-import { CONCEPT_LABELS, type Paper } from "../backend/mockData";
+import { CONCEPT_LABELS, type Paper } from "@/backend/mockData";
 
 const ICON = {
   cohesive: <CheckCircle2 className="size-4 text-emerald-400" />,
@@ -7,7 +7,7 @@ const ICON = {
   gap: <XCircle className="size-4 text-destructive" />,
 };
 
-export function AnalysisView({ paper }: { paper: Paper }) {
+export default function AnalysisView({ paper }: { paper: Paper }) {
   const score = Math.round(
     (paper.analysis.filter((a) => a.verdict === "cohesive").length /
       paper.analysis.length) *

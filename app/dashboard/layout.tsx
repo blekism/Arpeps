@@ -1,4 +1,4 @@
-import Sidebar from "./sidebar";
+import Header from "@/components/header";
 
 export default function HomepageLayout({
   children,
@@ -7,7 +7,7 @@ export default function HomepageLayout({
 }) {
   return (
     <div className="flex">
-      <Sidebar />
+      <Header />
       <main className="flex-1">{children}</main>
     </div>
   );

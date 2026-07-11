@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 import { getPaper, type Paper } from "@/backend/mockData";
-import { ConceptGraph } from "@/components/concept_graph";
+import ConceptGraph  from "@/components/concept_graph";
 import { ArrowLeft } from "lucide-react";
 
 export default function VisualizerPage() {

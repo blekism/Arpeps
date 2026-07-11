@@ -3,7 +3,7 @@ import { LogOut, FileText } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { getSession, logout } from "@/services/auth";
 
-export function AppHeader() {
+export default function Header() {
   const user = getSession();
   const pathname = usePathname();
 

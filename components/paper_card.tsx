@@ -15,7 +15,7 @@ function verdictOverall(p: Paper): { label: string; tone: string } {
   return { label: "Cohesive", tone: "text-emerald-400" };
 }
 
-export function PaperCard({ paper }: { paper: Paper }) {
+export default function PaperCard({ paper }: { paper: Paper }) {
   const v = verdictOverall(paper);
   return (
     <Link
