@@ -1,61 +1,106 @@
-// Mock auth service backed by localStorage.
-// Not real security — placeholder for a future backend.
+import { createClient } from "@/backend/server";
+import { AuthError, Session, User } from "@supabase/auth-js";
 
-export type User = { id: string; email: string; name: string };
+const supabase = await createClient();
 
-const USERS_KEY = "pc.users";
-const SESSION_KEY = "pc.session";
-
-type StoredUser = User & { password: string };
-
-function readUsers(): StoredUser[] {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(localStorage.getItem(USERS_KEY) ?? "[]");
-  } catch {
-    return [];
-  }
-}
-
-function writeUsers(users: StoredUser[]) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
-
-export function getSession(): User | null {
-  if (typeof window === "undefined") return null;
-  try {
-    return JSON.parse(localStorage.getItem(SESSION_KEY) ?? "null");
-  } catch {
-    return null;
-  }
-}
-
-export function register(email: string, password: string, name: string): User {
-  const users = readUsers();
-  if (users.some((u) => u.email === email))
-    throw new Error("Email already registered");
-  const user: StoredUser = {
-    id: crypto.randomUUID(),
-    email,
-    name,
-    password,
+// export type User = { id: string; email: string; name: string };
+type Server_Res = {
+  code: number;
+  data?: {
+    user: User | null;
+    session: Session | null;
   };
-  users.push(user);
-  writeUsers(users);
-  const session: User = { id: user.id, email: user.email, name: user.name };
-  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-  return session;
+  error?: AuthError | null;
+};
+
+type Session_Response = {
+  code: number;
+  message: string;
+  session?: Session | null;
+};
+
+export async function register(
+  email: string,
+  password: string,
+  name: string,
+): Promise<Server_Res> {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        display_name: name,
+      },
+    },
+  });
+  if (error)
+    return {
+      code: 0,
+      error,
+    };
+  return {
+    code: 1,
+    data,
+  };
 }
 
-export function login(email: string, password: string): User {
-  const users = readUsers();
-  const user = users.find((u) => u.email === email && u.password === password);
-  if (!user) throw new Error("Invalid email or password");
-  const session: User = { id: user.id, email: user.email, name: user.name };
-  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-  return session;
+export async function writeUser(user: Server_Res) {
+  await supabase.from("users_tbl").insert({
+    uid: user.data?.user?.id,
+    username: user.data?.user?.user_metadata.display_name,
+    email: user.data?.user?.email,
+    status: "active",
+    is_notif: true,
+    photoUrl:
+      "https://firebasestorage.googleapis.com/v0/b/nu-publication-system.firebasestorage.app/o/logo.jpg?alt=media&token=fed28218-248d-4ad9-a639-14f072f7e9b9",
+  });
 }
 
-export function logout() {
-  localStorage.removeItem(SESSION_KEY);
+export async function userSession(): Promise<Session_Response> {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return {
+      code: 0,
+      message: "Must be logged in to continue",
+      session: null,
+    };
+  }
+
+  return {
+    code: 1,
+    message: "Session Validated!",
+    session: session,
+  };
+}
+
+export async function login(
+  email: string,
+  password: string,
+): Promise<Server_Res> {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    return {
+      code: 0,
+      error: error,
+    };
+  }
+
+  return {
+    code: 1,
+    data: data,
+  };
+}
+
+export async function logout() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) throw error;
+  return;
 }
