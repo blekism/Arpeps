@@ -4,18 +4,18 @@ import { useEffect, useState } from "react";
 import  UploadCard  from "@/components/upload_card";
 import  PaperCard from "@/components/paper_card";
 import { listPapers, type Paper } from "@/backend/mockData";
-import { getSession } from "@/services/auth";
+// import { getSession } from "@/services/auth";
 
 export default function Dashboard() {
 
 const [papers, setPapers] = useState<Paper[]>([]);
-  function refresh() {
-    const u = getSession();
-    if (u) setPapers(listPapers(u.id));
-  }
-  useEffect(() => {
-    refresh();
-  }, []);
+  // function refresh() {
+  //   const u = getSession();
+  //   if (u) setPapers(listPapers(u.id));
+  // }
+  // useEffect(() => {
+  //   refresh();
+  // }, []);
 
   return (
     <>
@@ -27,7 +27,7 @@ const [papers, setPapers] = useState<Paper[]>([]);
         </p>
       </div>
 
-      <UploadCard onUploaded={refresh} />
+      {/* <UploadCard onUploaded={refresh} /> */}
 
       <section className="mt-12">
         <div className="mb-3 flex items-baseline justify-between">

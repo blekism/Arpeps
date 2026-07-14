@@ -69,7 +69,8 @@ export async function Login(_previousState: any, formdata: FormData){
       }
     }
 
-    redirect("/dashboard");
+    // redirect("/dashboard");
+    console.log("redirected to dashboard...");
 
   } catch (error) {
     return {
