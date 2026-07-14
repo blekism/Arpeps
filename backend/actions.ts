@@ -1,5 +1,5 @@
 "use server";
-import { register } from "@/services/auth";
+import { register, login } from "@/services/auth";
 import { redirect } from "next/navigation";
 
 export async function Register(_previousState: any, formdata: FormData) {
@@ -44,5 +44,37 @@ export async function Register(_previousState: any, formdata: FormData) {
       success: false,
       message: "An error has occurred, please try again later.",
     };
+  }
+}
+
+export async function Login(_previousState: any, formdata: FormData){
+  const email = formdata.get("email") as string;
+  const password = formdata.get("password") as string;
+
+  if (!email.trim() || !password.trim()) {
+    return{
+      success: false,
+      message: "Email and Password are required.",
+    };
+  }
+
+  try {
+
+    const data = await login(email, password);
+
+    if(data.code ===1){
+      return {
+        success: true,
+        message: "Login successfully!",
+      }
+    }
+
+    redirect("/dashboard");
+
+  } catch (error) {
+    return {
+      success: false,
+      message: "An error has occured, please try again later.",
+    }
   }
 }

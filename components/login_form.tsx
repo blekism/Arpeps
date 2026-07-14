@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useActionState } from "react";
 import { FileText, Loader2 } from "lucide-react";
-import { Register } from "@/backend/actions";
+import { Login } from "@/backend/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -14,7 +14,7 @@ const initialState = {
 export default function LoginHandlerForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [state, formAction, pending] = useActionState(Register, initialState);
+  const [state, formAction, pending] = useActionState(Login, initialState);
   const router = useRouter();
 
   useEffect(() => {
