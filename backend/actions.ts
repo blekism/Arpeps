@@ -32,13 +32,13 @@ export async function Register(_previousState: any, formdata: FormData) {
     const data = await register(email, password, name);
 
     if (data.code === 1) {
-      return {
-        success: true,
-        message: "Account successfully created!",
-      };
+      redirect("/dashboard");
     }
 
-    redirect("/dashboard");
+    return {
+        success: false,
+        message: "An error has occurred, please try again.",
+      }
   } catch (error) {
     return {
       success: false,
@@ -63,19 +63,20 @@ export async function Login(_previousState: any, formdata: FormData){
     const data = await login(email, password);
 
     if(data.code ===1){
-      return {
-        success: true,
-        message: "Login successfully!",
-      }
+      console.log("data code is ", data);
+      console.log("redirected to dashboard...");
+      // redirect("/dashboard");
     }
 
-    // redirect("/dashboard");
-    console.log("redirected to dashboard...");
+     return {
+        success: false,
+        message: "Invalid Credentials!",
+      }
 
   } catch (error) {
     return {
       success: false,
       message: "An error has occured, please try again later.",
-    }
+    };
   }
 }
