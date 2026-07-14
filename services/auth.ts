@@ -1,23 +1,9 @@
 import { createClient } from "@/backend/server";
-import { AuthError, Session, User } from "@supabase/auth-js";
+import { Server_Res, Session_Response } from "@/lib/types";
 
 const supabase = await createClient();
 
 // export type User = { id: string; email: string; name: string };
-type Server_Res = {
-  code: number;
-  data?: {
-    user: User | null;
-    session: Session | null;
-  };
-  error?: AuthError | null;
-};
-
-type Session_Response = {
-  code: number;
-  message: string;
-  session?: Session | null;
-};
 
 export async function register(
   email: string,

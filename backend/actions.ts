@@ -1,0 +1,48 @@
+"use server";
+import { register } from "@/services/auth";
+import { redirect } from "next/navigation";
+
+export async function Register(_previousState: any, formdata: FormData) {
+  const email = formdata.get("email") as string;
+  const password = formdata.get("password") as string;
+  const name = formdata.get("name") as string;
+
+  if (!email.trim() || !password.trim() || !name.trim()) {
+    return {
+      success: false,
+      message: "Email, Password, and Username are required.",
+    };
+  }
+
+  if (name.trim().length < 2) {
+    return {
+      success: false,
+      message: "Username cannot be shorter than 2 characters.",
+    };
+  }
+
+  if (password.length < 8) {
+    return {
+      success: false,
+      message: "Password must at least be 8 characters.",
+    };
+  }
+
+  try {
+    const data = await register(email, password, name);
+
+    if (data.code === 1) {
+      return {
+        success: true,
+        message: "Account successfully created!",
+      };
+    }
+
+    redirect("/dashboard");
+  } catch (error) {
+    return {
+      success: false,
+      message: "An error has occurred, please try again later.",
+    };
+  }
+}
