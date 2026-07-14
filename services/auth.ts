@@ -1,8 +1,6 @@
 import { createClient } from "@/backend/server";
 import { Server_Res, Session_Response } from "@/lib/types";
 
-const supabase = await createClient();
-
 // export type User = { id: string; email: string; name: string };
 
 export async function register(
@@ -10,6 +8,7 @@ export async function register(
   password: string,
   name: string,
 ): Promise<Server_Res> {
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -31,6 +30,7 @@ export async function register(
 }
 
 export async function writeUser(user: Server_Res) {
+  const supabase = await createClient();
   await supabase.from("users_tbl").insert({
     uid: user.data?.user?.id,
     username: user.data?.user?.user_metadata.display_name,
@@ -43,6 +43,7 @@ export async function writeUser(user: Server_Res) {
 }
 
 export async function userSession(): Promise<Session_Response> {
+  const supabase = await createClient();
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -66,6 +67,7 @@ export async function login(
   email: string,
   password: string,
 ): Promise<Server_Res> {
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -85,6 +87,7 @@ export async function login(
 }
 
 export async function logout() {
+  const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
 
   if (error) throw error;
