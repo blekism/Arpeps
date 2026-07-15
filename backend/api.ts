@@ -6,7 +6,7 @@ import {
   type ConceptKey,
   type Paper,
   savePaper,
-} from "./mockData";
+} from "./read";
 
 function pick<T>(arr: T[], i: number): T {
   return arr[i % arr.length];

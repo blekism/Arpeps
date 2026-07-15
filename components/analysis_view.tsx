@@ -1,5 +1,5 @@
 import { CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
-import { CONCEPT_LABELS, type Paper } from "@/backend/mockData";
+import { CONCEPT_LABELS, type Paper } from "@/backend/read";
 
 const ICON = {
   cohesive: <CheckCircle2 className="size-4 text-emerald-400" />,

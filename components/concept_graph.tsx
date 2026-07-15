@@ -1,11 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  CONCEPT_LABELS,
-  type ConceptKey,
-  type Paper,
-} from "@/backend/mockData";
+import { CONCEPT_LABELS, type ConceptKey, type Paper } from "@/backend/read";
 
 type NodePos = { key: ConceptKey; x: number; y: number };
 

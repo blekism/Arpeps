@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { getPaper, type Paper } from "@/backend/mockData";
+import { getPaper, type Paper } from "@/backend/read";
 import { ArrowLeft } from "lucide-react";
 
 export default function ViewerPage() {

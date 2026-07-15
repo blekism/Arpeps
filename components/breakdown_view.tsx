@@ -1,8 +1,4 @@
-import {
-  CONCEPT_LABELS,
-  type Paper,
-  type ConceptKey,
-} from "@/backend/mockData";
+import { CONCEPT_LABELS, type Paper, type ConceptKey } from "@/backend/read";
 
 const ORDER: ConceptKey[] = [
   "problem",

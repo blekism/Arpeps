@@ -1,4 +1,4 @@
-import { CONCEPT_LABELS, type Paper } from "@/backend/mockData";
+import { CONCEPT_LABELS, type Paper } from "@/backend/read";
 
 // Supabase-like table view of concept connections.
 export default function ConceptTable({ paper }: { paper: Paper }) {

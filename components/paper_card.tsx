@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FileText, FileCode, ChevronRight } from "lucide-react";
-import type { Paper } from "@/backend/mockData";
+import type { Paper } from "@/backend/read";
 
 function verdictOverall(p: Paper): { label: string; tone: string } {
   const gaps = p.analysis.filter((a) => a.verdict === "gap").length;

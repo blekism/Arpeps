@@ -1,27 +1,22 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { getPaper, type Paper } from "@/backend/mockData";
+import { getMarkdown, getAnalysis } from "@/backend/read";
+import { Paper } from "@/lib/types";
 import { ArrowLeft, Eye, Network } from "lucide-react";
 import BreakdownView from "@/components/breakdown_view";
 import ConceptTable from "@/components/concept_table";
 import AnalysisView from "@/components/concept_graph";
 import { PageProps } from "@/lib/types";
+import { redirect, notFound } from "next/navigation";
 
-export default function Checker() {
-  const { id } = useParams<{ id: string }>();
-  const router = useRouter();
-  const [paper, setPaper] = useState<Paper | null>(null);
+export default async function Checker({ params }: PageProps) {
+  const { id } = await params;
+  const paper = await getAnalysis(id);
 
-  useEffect(() => {
-    const p = getPaper(id);
-    if (!p) router.push("/");
-    else setPaper(p);
-  }, [id]);
+  if (!paper) {
+    notFound();
+  }
 
-  if (!paper) return null;
+  const md = await getMarkdown(paper.mdId);
 
   return (
     <>

@@ -1,6 +1,7 @@
 "use server";
 import { register, login } from "@/services/auth";
 import { redirect } from "next/navigation";
+import { Paper } from "@/lib/types";
 
 export async function Register(_previousState: any, formdata: FormData) {
   const email = formdata.get("email") as string;
@@ -36,9 +37,9 @@ export async function Register(_previousState: any, formdata: FormData) {
     }
 
     return {
-        success: false,
-        message: "An error has occurred, please try again.",
-      }
+      success: false,
+      message: "An error has occurred, please try again.",
+    };
   } catch (error) {
     return {
       success: false,
@@ -47,32 +48,30 @@ export async function Register(_previousState: any, formdata: FormData) {
   }
 }
 
-export async function Login(_previousState: any, formdata: FormData){
+export async function Login(_previousState: any, formdata: FormData) {
   const email = formdata.get("email") as string;
   const password = formdata.get("password") as string;
 
   if (!email.trim() || !password.trim()) {
-    return{
+    return {
       success: false,
       message: "Email and Password are required.",
     };
   }
 
   try {
-
     const data = await login(email, password);
 
-    if(data.code ===1){
+    if (data.code === 1) {
       console.log("The data of the code is ", data);
       console.log("redirected to dashboard goshhh...");
       // redirect("/dashboard");
     }
 
-     return {
-        success: false,
-        message: "Credentials Invalidated!",
-      }
-
+    return {
+      success: false,
+      message: "Credentials Invalidated!",
+    };
   } catch (error) {
     return {
       success: false,
@@ -80,3 +79,39 @@ export async function Login(_previousState: any, formdata: FormData){
     };
   }
 }
+
+export async function PaperProcessWrapper() {
+  // call bnoth generate analysis here and savepaper_st in a promise so that they run in parallel.
+  // both function does not depend on each other
+}
+
+export async function generateAnalysis() {
+  //this calls gemini api and generates the analysis
+  // after analysis, call saveAnalysis to save analysis to db
+}
+
+export async function saveAnalysis_DB() {
+  //gets called after analysis is complete
+}
+
+export async function savePaper_ST(paper: Paper) {
+  //this is called at the same time as generate analysis to save paper in storage so its nonblocking
+}
+
+export async function savePaper_DB(paper: Paper) {
+  //this is called to save paper info to db after saving to storage
+}
+
+export async function deletePaper(id: string) {
+  //check ownership of paper first
+  // wala delete lang talaga
+}
+
+// flow of the main process is:
+// 1. save .md to storage
+// 2. save record to db and status processing
+// 3. call gemini api and process the data
+// 4. save analysis to db
+// 5. update status to finished
+
+// note: wrap 4 and 5 in single db operation
