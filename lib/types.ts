@@ -15,4 +15,8 @@ export type Session_Response = {
   session?: Session | null;
 };
 
-
+export interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
