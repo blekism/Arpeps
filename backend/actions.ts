@@ -63,14 +63,14 @@ export async function Login(_previousState: any, formdata: FormData){
     const data = await login(email, password);
 
     if(data.code ===1){
-      console.log("data code is ", data);
-      console.log("redirected to dashboard...");
+      console.log("The data of the code is ", data);
+      console.log("redirected to dashboard goshhh...");
       // redirect("/dashboard");
     }
 
      return {
         success: false,
-        message: "Invalid Credentials!",
+        message: "Credentials Invalidated!",
       }
 
   } catch (error) {

@@ -80,7 +80,7 @@ export default function LoginHandlerForm() {
 
       <div className="mt-4 text-center text-xs text-muted-foreground">
         <>
-          No account?{" "}
+          No account yet?{" "}
           <button
             className="text-brand hover:underline"
             onClick={() => router.push("/register")}
