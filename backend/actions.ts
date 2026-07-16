@@ -2,6 +2,7 @@
 import { register, login } from "@/services/auth";
 import { redirect } from "next/navigation";
 import { Paper } from "@/lib/types";
+import { createClient } from "./server";
 
 export async function Register(_previousState: any, formdata: FormData) {
   const email = formdata.get("email") as string;
@@ -91,6 +92,11 @@ export async function generateAnalysis() {
 }
 
 export async function saveAnalysis_DB() {
+  const supabase = await createClient();
+
+  await supabase.from("analysis_tbl").insert({
+    //data from ai insert here
+  });
   //gets called after analysis is complete
 }
 

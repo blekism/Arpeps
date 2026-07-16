@@ -21,6 +21,14 @@ export interface PageProps {
   }>;
 }
 
+export interface Analysis_Response {
+  id: string;
+}
+
+export interface PaperMetadata {
+  id: string;
+}
+
 export type ConceptKey =
   | "problem"
   | "methodology"
