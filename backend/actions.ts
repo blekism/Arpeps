@@ -104,8 +104,14 @@ export async function savePaper_ST(paper: Paper) {
   //this is called at the same time as generate analysis to save paper in storage so its nonblocking
 }
 
-export async function savePaper_DB(paper: Paper) {
-  //this is called to save paper info to db after saving to storage
+export async function savePaper_DB(paper: Paper, url: string) {
+  const supabase = await createClient();
+
+  await supabase.from("research_papers_tbl").insert({
+    user_id: paper.userId,
+    file_ur: url,
+    cohesion_score: 0,
+  });
 }
 
 export async function deletePaper(id: string) {
