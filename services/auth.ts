@@ -1,4 +1,4 @@
-import { createClient } from "@/backend/server";
+import { createClient } from "@/lib/server";
 import { Server_Res, Session_Response } from "@/lib/types";
 
 // export type User = { id: string; email: string; name: string };

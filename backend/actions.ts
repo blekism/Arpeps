@@ -2,7 +2,7 @@
 import { register, login } from "@/services/auth";
 import { redirect } from "next/navigation";
 import { Paper } from "@/lib/types";
-import { createClient } from "./server";
+import { createClient } from "../lib/server";
 
 export async function Register(_previousState: any, formdata: FormData) {
   const email = formdata.get("email") as string;

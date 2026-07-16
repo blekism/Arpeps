@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FileText, Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import LoginHandlerForm from "@/components/login_form";
-import { createClient } from "@/backend/server";
+import { createClient } from "@/lib/server";
 
 export default async function LoginPage() {
   const supabase = await createClient();

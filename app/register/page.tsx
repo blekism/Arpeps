@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FileText, Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import RegisterHandlerForm from "@/components/register_form";
-import { createClient } from "@/backend/server";
+import { createClient } from "@/lib/server";
 
 export default async function RegisterPage() {
   const supabase = await createClient();

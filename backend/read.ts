@@ -1,4 +1,4 @@
-import { createClient } from "./server";
+import { createClient } from "../lib/server";
 import { Paper, GetAllPaperResult, GetPaperResult } from "@/lib/types";
 
 export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
