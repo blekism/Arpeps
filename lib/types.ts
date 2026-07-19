@@ -60,20 +60,21 @@ export type Analysis = {
   note: string;
 };
 
-export type Paper = {
+export interface Paper {
   id: string;
   userId: string;
   title: string;
   filename: string;
   fileType: "md";
   uploadedAt: string;
+  path: string;
   pages: number;
   concepts: Record<ConceptKey, string>;
   connections: Connection[];
   analysis: Analysis[];
   /** mock rendered pages for the viewer */
   preview: string;
-};
+}
 
 export type GetAllPaperResult = {
   data: Paper[];
