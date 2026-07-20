@@ -1,4 +1,5 @@
 "use server";
+
 import { register, login } from "@/services/auth";
 import { redirect } from "next/navigation";
 import { Paper } from "@/lib/types";
@@ -81,27 +82,56 @@ export async function Login(_previousState: any, formdata: FormData) {
   }
 }
 
-export async function PaperProcessWrapper(file: File, uploader: string) {
+export async function PaperProcessWrapper(content: string, uploader: string) {
   let paper: Paper | null = null;
 
   try {
-    paper = await createPaper(uploader, file);
-    const analysis = await generateAnalysis(file);
+    paper = await createPaper(uploader, content);
+    const analysis = await generateAnalysis(content);
     const saveAnalysis = await saveAnalysis_DB();
+
+    if (saveAnalysis) {
+    }
   } catch (error) {
     if (paper) {
       await deletePaperInDB(paper.id);
-      await deletePaperInStorage(paper.id);
     }
 
     throw error;
   }
 }
 
-export async function generateAnalysis(file: File) {
-  //this calls gemini api and generates the analysis
-  // after analysis, call saveAnalysis to save analysis to db
-  // parse ai response here and return that parsed data
+export async function generateAnalysis(markdown: string) {
+  const response = await fetch(
+    "https://openrouter.ai/api/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPEN_ROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemma-4-26b-a4b-it:free",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are an expert research paper reviewer. Return only valid JSON.",
+          },
+          {
+            role: "user",
+            content: markdown,
+          },
+        ],
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("OpenRouter request failed");
+  }
+
+  return await response.json();
 }
 
 export async function saveAnalysis_DB() {
@@ -117,33 +147,14 @@ export async function saveAnalysis_DB() {
   //gets called after analysis is complete
 }
 
-export async function uploadMarkdown(file: File) {
-  const supabase = await createClient();
-  //this is called at the same time as generate analysis to save paper in storage so its nonblocking
-  const fileExt = file.name.split(".").pop();
-  const fileName = `${crypto.randomUUID()}.${fileExt}`;
-  const filePath = `papers/${fileName}`;
-
-  const { data, error } = await supabase.storage
-    .from("paper-md-storage")
-    .upload(filePath, file);
-
-  if (error) {
-    console.error("Upload failed:", error);
-    throw error;
-  }
-
-  return data;
-}
-
-export async function createPaperRecord(userId: string, url: string) {
+export async function createPaperRecord(userId: string, content: string) {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("research_papers_tbl")
     .insert({
       user_id: userId,
-      file_ur: url,
+      content: content,
       cohesion_score: 0,
     })
     .select()
@@ -156,28 +167,32 @@ export async function createPaperRecord(userId: string, url: string) {
   return data as Paper;
 }
 
-export async function createPaper(userId: string, file: File) {
+export async function createPaper(userId: string, content: string) {
   // save to storage
-  const upload = await uploadMarkdown(file);
 
   try {
-    return await createPaperRecord(userId, upload.fullPath);
+    return await createPaperRecord(userId, content);
   } catch (error) {
-    await deletePaperInStorage(upload.fullPath);
     throw error;
   }
 
   // await then save to db
 }
 
-export async function deletePaperInStorage(path: string) {
+export async function deletePaperInDB(id: string) {
   //check ownership of paper first
   // wala delete lang talaga
 }
 
-export async function deletePaperInDB(id: string) {
-  //check ownership of paper first
-  // wala delete lang talaga
+export async function uploadHandler(formatData: FormData) {
+  const file = formatData.get("paper") as File;
+  const uploader = formatData.get("uploader") as string;
+
+  const markdown = await file.text();
+
+  await PaperProcessWrapper(markdown, uploader);
+
+  return markdown;
 }
 
 // flow of the main process is:
