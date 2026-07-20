@@ -24,7 +24,7 @@ export default async function RegisterPage() {
             <FileText className="size-4" />
           </div>
           <span className="text-sm font-semibold tracking-tight">
-            PaperCheck
+            Paper Check
           </span>
         </div>
 

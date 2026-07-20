@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import UploadCard from "@/components/upload_card";
 import PaperCard from "@/components/paper_card";
-import { listPapers, type Paper } from "@/backend/read";
+import { getAllPapers } from "@/backend/read";
+import { Paper } from "@/lib/types";
+// import { listPapers, type Paper } from "@/backend/read";
 // import { getSession } from "@/services/auth";
 
 export default function Dashboard() {
