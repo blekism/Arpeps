@@ -4,34 +4,38 @@ import { useRef, useState } from "react";
 import { Upload, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { uploadAndAnalyze } from "@/backend/api";
-import { getSession } from "@/services/auth";
+import { userSession } from "@/services/auth";
 import { rateLimit } from "@/services/rate_limit";
 import { toast } from "sonner";
+import { uploadHandler } from "@/backend/actions";
 
-export default function UploadCard({ onUploaded }: { onUploaded: () => void }) {
+export default function UploadCard() {
   const [dragging, setDragging] = useState(false);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useRouter();
+  // const navigate = useRouter();
 
   async function handleFile(file: File) {
-    const user = getSession();
-    if (!user) return;
-    const ok = /\.(pdf|md|markdown)$/i.test(file.name);
+    const user = await userSession();
+    const userId = user.session?.user.id;
+
+    if (!userId) return;
+    const ok = /\.(md|markdown)$/i.test(file.name);
     if (!ok) {
-      toast.error("Only .pdf and .md files are supported");
+      toast.error("Only .md files are supported");
       return;
     }
-    if (!rateLimit(`upload:${user.id}`, 5, 0.2)) {
+    if (!rateLimit(`upload:${userId}`, 5, 0.2)) {
       toast.error("Too many uploads. Try again in a moment.");
       return;
     }
     setLoading(true);
     try {
-      const paper = await uploadAndAnalyze(user.id, file);
-      toast.success("Analysis ready");
-      onUploaded();
-      navigate.push(`papers/${paper.id}`);
+      const markdown = await file.text();
+
+      const paper = await uploadHandler(markdown, userId);
+      toast.success("Analysis ready. You can now view your analysis");
+      // navigate.push(`papers/${paper.id}`);
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -83,12 +87,12 @@ export default function UploadCard({ onUploaded }: { onUploaded: () => void }) {
           Select file
         </button>
         <p className="text-xs text-muted-foreground">
-          Accepted: .pdf, .md · max 25MB
+          Accepted: .md · max 25MB
         </p>
         <input
           ref={inputRef}
-          type="file"
-          accept=".pdf,.md,.markdown"
+          type="paper"
+          accept=".md,.markdown"
           hidden
           onChange={(e) => {
             const f = e.target.files?.[0];
