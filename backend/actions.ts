@@ -91,6 +91,7 @@ export async function PaperProcessWrapper(content: string, uploader: string) {
     const saveAnalysis = await saveAnalysis_DB();
 
     if (saveAnalysis) {
+      redirect("/checker");
     }
   } catch (error) {
     if (paper) {
@@ -137,14 +138,19 @@ export async function generateAnalysis(markdown: string) {
 export async function saveAnalysis_DB() {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("analysis_tbl").insert({
-    //data from ai insert here
-  });
+  const { data, error } = await supabase
+    .from("analysis_tbl")
+    .insert({
+      //data from ai insert here
+    })
+    .select()
+    .single();
 
   if (error) {
     throw error;
   }
-  //gets called after analysis is complete
+
+  return data;
 }
 
 export async function createPaperRecord(userId: string, content: string) {
