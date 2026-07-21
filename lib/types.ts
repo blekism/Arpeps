@@ -60,7 +60,7 @@ export type Analysis = {
   note: string;
 };
 
-export interface Paper {
+export type Paper = {
   id: string;
   userId: string;
   title: string;
@@ -74,7 +74,7 @@ export interface Paper {
   analysis: Analysis[];
   /** mock rendered pages for the viewer */
   preview: string;
-}
+};
 
 export type GetAllPaperResult = {
   data: Paper[];
