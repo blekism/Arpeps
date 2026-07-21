@@ -2,44 +2,16 @@ import UploadCard from "@/components/upload_card";
 import PaperCard from "@/components/paper_card";
 import { getAllPapers } from "@/backend/read";
 import type { Paper } from "@/lib/types";
-// import { listPapers, type Paper } from "@/backend/read";
-import { userSession } from "@/services/auth";
 import { createClient } from "@/lib/server";
 
 export default async function Dashboard() {
-  // const [papers, setPapers] = useState<Paper[]>([]);
-  // function refresh() {
-  //   const u = getSession();
-  //   if (u) setPapers(listPapers(u.id));
-  // }
-  // useEffect(() => {
-  //   refresh();
-  // }, []);
-
   const supabase = await createClient();
 
-  // useEffect(() => {
-  //   async function getPapers() {
-  //     try {
-  //       const sessionData = await userSession();
-  //       if (sessionData.code !== 1 || !sessionData.session) return;
-  //       const userId = sessionData.session.user.id;
-  //       if (!userId) return;
-  //       const data = await getAllPapers(userId);
-  //       setPapers(data.data ?? []);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   getPapers();
-  // },[]);
+  const sessionData = await supabase.auth.getUser();
 
+  if (!sessionData.data.user) return;
 
-  const sessionData = await userSession();
-  
-  if (sessionData.code !== 1 || !sessionData.session) return;
-  
-  const userId = sessionData.session.user.id;
+  const userId = sessionData.data.user.id;
   const papers = await getAllPapers(userId);
 
   return (
@@ -81,3 +53,19 @@ export default async function Dashboard() {
     </>
   );
 }
+
+// useEffect(() => {
+//   async function getPapers() {
+//     try {
+//       const sessionData = await userSession();
+//       if (sessionData.code !== 1 || !sessionData.session) return;
+//       const userId = sessionData.session.user.id;
+//       if (!userId) return;
+//       const data = await getAllPapers(userId);
+//       setPapers(data.data ?? []);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+//   getPapers();
+// },[]);

@@ -1,6 +1,6 @@
 "use server";
 
-import { register, login } from "@/services/auth";
+import { register, login } from "@/services/auth_server";
 import { redirect } from "next/navigation";
 import { Paper } from "@/lib/types";
 import { createClient } from "../lib/server";
@@ -42,7 +42,6 @@ export async function Register(_previousState: any, formdata: FormData) {
     }
 
     redirect("/dashboard");
-
   } catch (error) {
     return {
       success: false,

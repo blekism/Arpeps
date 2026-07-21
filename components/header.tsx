@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { FileText } from "lucide-react";
-import { usePathname} from "next/navigation";
-import { userSession} from "@/services/auth";
-import  Logout_Button  from "@/components/logout_button";
+// import { usePathname} from "next/navigation";
+// import { userSession } from "@/services/auth_server";
+import Logout_Button from "@/components/logout_button";
+import { createClient } from "@/lib/server";
 
 export default async function Header() {
-  const userData = await userSession();
+  const supabase = await createClient();
+  const userData = await supabase.auth.getUser();
 
-  if (userData.code !==1 || !userData.session) return;
-
-  const pathname = usePathname();
+  if (!userData.data.user) return;
 
   return (
     <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
@@ -30,7 +30,7 @@ export default async function Header() {
           <Link
             href="/"
             className={`rounded px-2.5 py-1.5 transition ${
-              pathname === "/"
+              window.location.href === "/"
                 ? "bg-panel-2 text-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
@@ -40,7 +40,7 @@ export default async function Header() {
           {userData && (
             <>
               <span className="mx-2 hidden text-xs text-muted-foreground sm:inline">
-                {userData.session.user.email}
+                {userData.data.user.email}
               </span>
               <Logout_Button />
             </>

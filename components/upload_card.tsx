@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { Upload, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { uploadAndAnalyze } from "@/backend/api";
-import { userSession } from "@/services/auth";
+import { userSession } from "@/services/auth_server";
 import { rateLimit } from "@/services/rate_limit";
 import { toast } from "sonner";
 import { uploadHandler } from "@/backend/actions";
