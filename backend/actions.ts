@@ -31,23 +31,25 @@ export async function Register(_previousState: any, formdata: FormData) {
     };
   }
 
+  let data;
+
   try {
-    const data = await register(email, password, name);
-
-    if (data.code !== 1) {
-      return {
-        success: false,
-        message: "An error has occurred, please try again.",
-      };
-    }
-
-    redirect("/dashboard");
+    data = await register(email, password, name);
   } catch (error) {
     return {
       success: false,
       message: "An error has occurred, please try again later.",
     };
   }
+
+  if (data.code !== 1) {
+    return {
+      success: false,
+      message: "An error has occurred, please try again.",
+    };
+  }
+
+  redirect("/dashboard");
 }
 
 export async function Login(_previousState: any, formdata: FormData) {

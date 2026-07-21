@@ -4,6 +4,7 @@ import { FileText } from "lucide-react";
 // import { userSession } from "@/services/auth_server";
 import Logout_Button from "@/components/logout_button";
 import { createClient } from "@/lib/server";
+import HeaderNav from "./header_nav";
 
 export default async function Header() {
   const supabase = await createClient();
@@ -27,16 +28,7 @@ export default async function Header() {
         </Link>
 
         <nav className="flex items-center gap-1 text-sm">
-          <Link
-            href="/"
-            className={`rounded px-2.5 py-1.5 transition ${
-              window.location.href === "/"
-                ? "bg-panel-2 text-foreground"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Dashboard
-          </Link>
+          <HeaderNav />
           {userData && (
             <>
               <span className="mx-2 hidden text-xs text-muted-foreground sm:inline">
