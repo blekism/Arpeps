@@ -34,14 +34,15 @@ export async function Register(_previousState: any, formdata: FormData) {
   try {
     const data = await register(email, password, name);
 
-    if (data.code === 1) {
-      redirect("/dashboard");
+    if (data.code !== 1) {
+      return {
+        success: false,
+        message: "An error has occurred, please try again.",
+      };
     }
 
-    return {
-      success: false,
-      message: "An error has occurred, please try again.",
-    };
+    redirect("/dashboard");
+    
   } catch (error) {
     return {
       success: false,

@@ -1,10 +1,14 @@
 import Link from "next/link";
-import { LogOut, FileText } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { getSession, logout } from "@/services/auth";
+import { FileText } from "lucide-react";
+import { usePathname} from "next/navigation";
+import { userSession} from "@/services/auth";
+import  Logout_Button  from "@/components/logout_button";
 
-export default function Header() {
-  const user = getSession();
+export default async function Header() {
+  const userData = await userSession();
+
+  if (userData.code !==1 || !userData.session) return;
+
   const pathname = usePathname();
 
   return (
@@ -33,21 +37,12 @@ export default function Header() {
           >
             Dashboard
           </Link>
-          {user && (
+          {userData && (
             <>
               <span className="mx-2 hidden text-xs text-muted-foreground sm:inline">
-                {user.email}
+                {userData.session.user.email}
               </span>
-              <button
-                onClick={() => {
-                  //   logout();
-                  //   navigate({ to: "/auth" });
-                }}
-                className="flex items-center gap-1.5 rounded px-2.5 py-1.5 text-muted-foreground transition hover:bg-panel-2 hover:text-foreground"
-              >
-                <LogOut className="size-3.5" />
-                Sign out
-              </button>
+              <Logout_Button />
             </>
           )}
         </nav>
