@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import UploadCard from "@/components/upload_card";
 import PaperCard from "@/components/paper_card";
 import { getAllPapers } from "@/backend/read";
-import { Paper } from "@/lib/types";
+import type { Paper } from "@/lib/types";
 // import { listPapers, type Paper } from "@/backend/read";
-// import { getSession } from "@/services/auth";
+import { userSession } from "@/services/auth";
 
 export default function Dashboard() {
   const [papers, setPapers] = useState<Paper[]>([]);
@@ -17,6 +17,22 @@ export default function Dashboard() {
   // useEffect(() => {
   //   refresh();
   // }, []);
+
+  useEffect(() => {
+    async function getPapers() {
+      try {
+        const sessionData = await userSession();
+        if (sessionData.code !== 1 || !sessionData.session) return;
+        const userId = sessionData.session.user.id;
+        if (!userId) return;
+        const data = await getAllPapers(userId);
+        setPapers(data.data ?? []);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getPapers();
+  },[]);
 
   return (
     <>
