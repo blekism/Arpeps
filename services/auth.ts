@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/server";
 import { Server_Res, Session_Response } from "@/lib/types";
+import { User } from "@supabase/supabase-js";
 
 // export type User = { id: string; email: string; name: string };
 
@@ -23,18 +24,27 @@ export async function register(
       code: 0,
       error,
     };
+
+  if (!data.user) {
+    return {
+      code: 0,
+      error,
+    };
+  }
+
+  await writeUser(data.user);
   return {
     code: 1,
     data,
   };
 }
 
-export async function writeUser(user: Server_Res) {
+export async function writeUser(user: User) {
   const supabase = await createClient();
   await supabase.from("users_tbl").insert({
-    uid: user.data?.user?.id,
-    username: user.data?.user?.user_metadata.display_name,
-    email: user.data?.user?.email,
+    uid: user.id,
+    username: user.user_metadata.display_name,
+    email: user.email,
     status: "active",
     is_notif: true,
     photoUrl:

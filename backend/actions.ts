@@ -42,7 +42,7 @@ export async function Register(_previousState: any, formdata: FormData) {
     }
 
     redirect("/dashboard");
-    
+
   } catch (error) {
     return {
       success: false,
@@ -80,26 +80,6 @@ export async function Login(_previousState: any, formdata: FormData) {
       success: false,
       message: "An error has occured, please try again later.",
     };
-  }
-}
-
-export async function PaperProcessWrapper(content: string, uploader: string) {
-  let paper: Paper | null = null;
-
-  try {
-    paper = await createPaper(uploader, content);
-    const analysis = await generateAnalysis(content);
-    const saveAnalysis = await saveAnalysis_DB();
-
-    if (saveAnalysis) {
-      redirect("/checker");
-    }
-  } catch (error) {
-    if (paper) {
-      await deletePaperInDB(paper.id);
-    }
-
-    throw error;
   }
 }
 
@@ -191,15 +171,31 @@ export async function deletePaperInDB(id: string) {
   // wala delete lang talaga
 }
 
-export async function uploadHandler(formatData: FormData) {
-  const file = formatData.get("paper") as File;
-  const uploader = formatData.get("uploader") as string;
+export async function PaperProcessWrapper(content: string, uploader: string) {
+  let paper: Paper | null = null;
 
-  const markdown = await file.text();
+  try {
+    paper = await createPaper(uploader, content);
+    const analysis = await generateAnalysis(content);
+    const saveAnalysis = await saveAnalysis_DB();
 
-  await PaperProcessWrapper(markdown, uploader);
+    if (saveAnalysis) return saveAnalysis;
+  } catch (error) {
+    if (paper) {
+      await deletePaperInDB(paper.id);
+    }
 
-  return markdown;
+    throw error;
+  }
+}
+
+export async function uploadHandler(paper: string, uploader: string) {
+  // const file = formatData.get("paper") as File;
+  // const markdown = await file.text();
+
+  const process = await PaperProcessWrapper(paper, uploader);
+
+  return process;
 }
 
 // flow of the main process is:
