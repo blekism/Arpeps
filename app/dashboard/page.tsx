@@ -1,15 +1,13 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import UploadCard from "@/components/upload_card";
 import PaperCard from "@/components/paper_card";
 import { getAllPapers } from "@/backend/read";
 import type { Paper } from "@/lib/types";
 // import { listPapers, type Paper } from "@/backend/read";
 import { userSession } from "@/services/auth";
+import { createClient } from "@/lib/server";
 
-export default function Dashboard() {
-  const [papers, setPapers] = useState<Paper[]>([]);
+export default async function Dashboard() {
+  // const [papers, setPapers] = useState<Paper[]>([]);
   // function refresh() {
   //   const u = getSession();
   //   if (u) setPapers(listPapers(u.id));
@@ -18,21 +16,31 @@ export default function Dashboard() {
   //   refresh();
   // }, []);
 
-  useEffect(() => {
-    async function getPapers() {
-      try {
-        const sessionData = await userSession();
-        if (sessionData.code !== 1 || !sessionData.session) return;
-        const userId = sessionData.session.user.id;
-        if (!userId) return;
-        const data = await getAllPapers(userId);
-        setPapers(data.data ?? []);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getPapers();
-  },[]);
+  const supabase = await createClient();
+
+  // useEffect(() => {
+  //   async function getPapers() {
+  //     try {
+  //       const sessionData = await userSession();
+  //       if (sessionData.code !== 1 || !sessionData.session) return;
+  //       const userId = sessionData.session.user.id;
+  //       if (!userId) return;
+  //       const data = await getAllPapers(userId);
+  //       setPapers(data.data ?? []);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   getPapers();
+  // },[]);
+
+
+  const sessionData = await userSession();
+  
+  if (sessionData.code !== 1 || !sessionData.session) return;
+  
+  const userId = sessionData.session.user.id;
+  const papers = await getAllPapers(userId);
 
   return (
     <>
@@ -54,16 +62,16 @@ export default function Dashboard() {
               Previously submitted
             </h2>
             <span className="text-xs text-muted-foreground">
-              {papers.length} total
+              {papers.data.length} total
             </span>
           </div>
-          {papers.length === 0 ? (
+          {papers.data.length === 0 ? (
             <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
               Nothing here yet. Upload a paper to get started.
             </div>
           ) : (
             <div className="space-y-2">
-              {papers.map((p) => (
+              {papers.data.map((p) => (
                 <PaperCard key={p.id} paper={p} />
               ))}
             </div>

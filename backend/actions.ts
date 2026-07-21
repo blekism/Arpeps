@@ -42,6 +42,7 @@ export async function Register(_previousState: any, formdata: FormData) {
     }
 
     redirect("/dashboard");
+
   } catch (error) {
     return {
       success: false,
