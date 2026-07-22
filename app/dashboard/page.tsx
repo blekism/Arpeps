@@ -11,8 +11,8 @@ export default async function Dashboard() {
 
   if (!sessionData.data.user) return;
 
-  const userId = sessionData.data.user.id;
-  const papers = await getAllPapers(userId);
+  const user_id = sessionData.data.user.id;
+  const papers = await getAllPapers(user_id);
 
   return (
     <>
@@ -31,7 +31,7 @@ export default async function Dashboard() {
         <section className="mt-12">
           <div className="mb-3 flex items-baseline justify-between">
             <h2 className="text-sm font-semibold tracking-tight">
-              Previously submitted
+              Submitted Previously
             </h2>
             <span className="text-xs text-muted-foreground">
               {papers.data.length} total
