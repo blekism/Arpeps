@@ -22,7 +22,7 @@ export default async function Dashboard() {
             Analyze a new paper
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            A first-layer cohesion check before you print or submit.
+            A first-layer cohesion check before you print or submit your paper.
           </p>
         </div>
 
