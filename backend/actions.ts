@@ -113,6 +113,8 @@ export async function generateAnalysis(markdown: string) {
               The Literature in found Chapter 2 which supports the validity of the problem stated in chapter 1.
               The Results are found in Chapter 4 of the paper.
 
+              - CONNECTIONS OF THE CONCEPTS -
+
               After extracting the contents, analyze the paper to assess the connections of the following concepts. 
               First, check if the concept connection is acutally present in the paper, if yes, mark it with 1, if no, 0. 
               Second, give the connection a score of 1-10 on how strong is the connection, about how well does concept x explain or support concept y.
@@ -127,9 +129,24 @@ export async function generateAnalysis(markdown: string) {
               - Concept 1 is connected to Concept 5
               - Concept 4 is connected to Concept 3
 
-              Now that you have each concepts and the connections of the concepts from the paper, return only valid JSON and use these JSON format. 
+              - COHESION ANALYSIS -
 
-              (Example Format)
+              After getting the connections of each concepts, analyze the extracted concepts from earlier for the cohesion analysis.
+              First, analyze the cohesion of each connection and give a cohesion score from (Cohesive, Partial, Gap) to measure strength of each concepts and on how well each concept is answered by the other concept. 
+              Second, give the reason for the cohesion score given for each concepts.
+              Finally, give the overall cohesion percent score, from 0% to 100% of the concepts of the paper.   
+
+              - Cohesion score and reason for Concept 1 
+              - Cohesion score and reason for Concept 2 
+              - Cohesion score and reason for Concept 3 
+              - Cohesion score and reason for Concept 4 
+              - Cohesion score and reason for Concept 5 
+
+              - Overall cohesion score of the paper 
+
+              Now that you have each concepts, connections of the concepts, and the cohesion analysis of the concepts of the paper, return only valid JSON and use these JSON format. 
+
+              (Example Format: )
               {
                 "each_concepts": {
                   "problem": "",
@@ -152,12 +169,24 @@ export async function generateAnalysis(markdown: string) {
                       "type": "",
                       "strength": 0.3,
                       "reason": ""
-                  }
-                } 
-              }
+                  },
+                }, 
+                "cohesion_analysis": {
+                  "cohesion_analysis1": {
+                      "problem": "",
+                      "cohesion_score": "",
+                      "reason": "",
+                  },
+                  "cohesion_analysis2": {
+                      "problem": "",
+                      "cohesion_score": "",
+                      "reason": "",
+                  },
+              
+                  "overall_cohesion_score": "40%" 
 
-              (cohesion analysis)
-              After getting the connections of each concepts, analyze the cohesion of each concept to measure how well each concept is answered by the other concept.  
+                }
+              } 
               `,
           },
           {
