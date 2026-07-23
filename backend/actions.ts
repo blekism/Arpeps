@@ -99,7 +99,7 @@ export async function generateAnalysis(markdown: string) {
           {
             role: "system",
             content:
-              "You are an expert research paper reviewer. Return only valid JSON.",
+              " nud assess this paper You are an expert research paper reviewer. Return only valid JSON.",
           },
           {
             role: "user",

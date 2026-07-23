@@ -13,9 +13,14 @@ export async function createClient() {
           return cookiesore.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookiesore.set(name, value, options),
-          );
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookiesore.set(name, value, options),
+            );
+          } catch {
+            // Called from a Server Component.
+            // Middleware is responsible for refreshing cookies.
+          }
         },
       },
     },

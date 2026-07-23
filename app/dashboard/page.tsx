@@ -26,7 +26,7 @@ export default async function Dashboard() {
           </p>
         </div>
 
-        {/* <UploadCard onUploaded={refresh} /> */}
+        <UploadCard />
 
         <section className="mt-12">
           <div className="mb-3 flex items-baseline justify-between">

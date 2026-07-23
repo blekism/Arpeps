@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { Upload, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { uploadAndAnalyze } from "@/backend/api";
-import { userSession } from "@/services/auth_server";
+import { userSession } from "@/services/auth_client";
 import { rateLimit } from "@/services/rate_limit";
 import { toast } from "sonner";
 import { uploadHandler } from "@/backend/actions";
@@ -73,8 +73,8 @@ export default function UploadCard() {
             {loading ? "Analyzing paper…" : "Upload a research paper"}
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Drop a PDF or Markdown file, or click to browse. We&apos;ll extract
-            the problem, method, solution, related work, and results.
+            Drop a Markdown file, or click to browse. We&apos;ll extract the
+            problem, method, solution, related work, and results.
           </p>
         </div>
         <button
@@ -91,7 +91,8 @@ export default function UploadCard() {
         </p>
         <input
           ref={inputRef}
-          type="paper"
+          type="file"
+          name="paper"
           accept=".md,.markdown"
           hidden
           onChange={(e) => {
