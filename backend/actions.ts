@@ -99,7 +99,33 @@ export async function generateAnalysis(markdown: string) {
           {
             role: "system",
             content:
-              " nud assess this paper You are an expert research paper reviewer. Return only valid JSON.",
+               `Analyze this paper and extract the contents from the paper best aligned with these following concepts:
+
+              1. Problem 
+              2. Methodology
+              3. Solution
+              4. Literature
+              5. Result
+
+              After extracting the contents, analyze the paper to assess the connections of the following concepts. 
+
+              Concept 1 to Concept 2
+              Concept 2 to Concept 3
+              Concept 4 to Concept 2
+              Concept 3 to Concept 5
+              Concept 1 to Concept 5
+              Concept 4 to Concept 3
+
+              The Problem is usually found in chapter 1 of the paper. 
+              It is followed by the Literature in chapter 2 which supports the validity of the problem stated in chapter 1. 
+              Methodology is found in Chapter 3 which is connected to the problem and literature. 
+              The solution is found in chapter and is derived from the problem and described method. 
+              For the results are found in chapter 4. It is the findings of the solution and its outcome. These concepts are connected to each other 
+
+              Now that you have each concepts and the connections of the concepts from the paper, return only valid JSON and use these JSON format. 
+
+              (format)
+              `,
           },
           {
             role: "user",
