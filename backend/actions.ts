@@ -99,7 +99,7 @@ export async function generateAnalysis(markdown: string) {
           {
             role: "system",
             content:
-               `Analyze this paper and extract the contents from the paper best aligned with these following concepts:
+              `Analyze this paper and extract the contents from the paper best aligned with these following concepts:
 
               1. Problem 
               2. Methodology
@@ -107,24 +107,57 @@ export async function generateAnalysis(markdown: string) {
               4. Literature
               5. Result
 
+              The Problem is usually found in chapter 1 of the paper.
+              The Methodology is found in Chapter 3 of the paper.
+              The proposed Solution and Solution is briefly explained in Chapter 1 and more explained in Chapter 3 of the paper.
+              The Literature in found Chapter 2 which supports the validity of the problem stated in chapter 1.
+              The Results are found in Chapter 4 of the paper.
+
               After extracting the contents, analyze the paper to assess the connections of the following concepts. 
+              First, check if the concept connection is acutally present in the paper, if yes, mark it with 1, if no, 0. 
+              Second, give the connection a score of 1-10 on how strong is the connection, about how well does concept x explain or support concept y.
+              Third, provide the reasoning why concept x and concept y has a strong connection. 
 
-              Concept 1 to Concept 2
-              Concept 2 to Concept 3
-              Concept 4 to Concept 2
-              Concept 3 to Concept 5
-              Concept 1 to Concept 5
-              Concept 4 to Concept 3
+              All information used to assess this research paper should only come from what is in this paper 
 
-              The Problem is usually found in chapter 1 of the paper. 
-              It is followed by the Literature in chapter 2 which supports the validity of the problem stated in chapter 1. 
-              Methodology is found in Chapter 3 which is connected to the problem and literature. 
-              The solution is found in chapter and is derived from the problem and described method. 
-              For the results are found in chapter 4. It is the findings of the solution and its outcome. These concepts are connected to each other 
+              - Concept 1 is connected to Concept 2
+              - Concept 2 is connected to Concept 3
+              - Concept 4 is connected to Concept 2
+              - Concept 3 is connected to Concept 5
+              - Concept 1 is connected to Concept 5
+              - Concept 4 is connected to Concept 3
 
               Now that you have each concepts and the connections of the concepts from the paper, return only valid JSON and use these JSON format. 
 
-              (format)
+              (Example Format)
+              {
+                "each_concepts": {
+                  "problem": "",
+                  "methodology": "",
+                  "Solution": "",
+                  "Literature": "",
+                  "Result": ""
+                },
+                "concept_connections": {
+                  "connection1": {
+                      "from": 1,
+                      "to": 3,
+                      "type": "",
+                      "strength": 9.8,
+                      "reason": ""
+                  },
+                  "connection2": {
+                      "from": 1,
+                      "to": 5
+                      "type": "",
+                      "strength": 0.3,
+                      "reason": ""
+                  }
+                } 
+              }
+
+              (cohesion analysis)
+              After getting the connections of each concepts, analyze the cohesion of each concept to measure how well each concept is answered by the other concept.  
               `,
           },
           {
