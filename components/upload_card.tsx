@@ -8,6 +8,7 @@ import { userSession } from "@/services/auth_client";
 import { rateLimit } from "@/services/rate_limit";
 import { toast } from "sonner";
 import { uploadHandler } from "@/backend/actions";
+import { ValidateContent } from "@/backend/actions";
 
 export default function UploadCard() {
   const [dragging, setDragging] = useState(false);
@@ -33,8 +34,16 @@ export default function UploadCard() {
     try {
       const markdown = await file.text();
 
+      const validate = ValidateContent(markdown);
+
+      if (validate.code === 0) {
+        toast.error(validate.message);
+        return;
+      }
+
       const paper = await uploadHandler(markdown, userId);
       toast.success("Analysis ready. You can now view your analysis");
+
       // navigate.push(`papers/${paper.id}`);
     } catch (e) {
       toast.error((e as Error).message);
