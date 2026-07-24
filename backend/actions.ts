@@ -85,6 +85,10 @@ export async function Login(_previousState: any, formdata: FormData) {
 }
 
 export async function generateAnalysis(markdown: string) {
+  const apiKey = process.env.OPEN_ROUTER_API_KEY?.trim();
+  if (!apiKey) {
+    throw new Error("Missing OPEN_ROUTER_API_KEY");
+  }
   const response = await fetch(
     "https://openrouter.ai/api/v1/chat/completions",
     {
@@ -95,6 +99,10 @@ export async function generateAnalysis(markdown: string) {
       },
       body: JSON.stringify({
         model: "google/gemma-4-26b-a4b-it:free",
+        provider: {
+          order: ["google"],
+          allow_fallbacks: false,
+        },
         messages: [
           {
             role: "system",
@@ -184,9 +192,9 @@ export async function generateAnalysis(markdown: string) {
                   "each_concepts": {
                     "problem": "",
                     "methodology": "",
-                    "Solution": "",
-                    "Literature": "",
-                    "Result": ""
+                    "solution": "",
+                    "literature": "",
+                    "result": ""
                   },
                   "concept_connections": {
                     "connection1": {
@@ -198,7 +206,7 @@ export async function generateAnalysis(markdown: string) {
                     },
                     "connection2": {
                         "from": 1,
-                        "to": 5
+                        "to": 5,
                         "type": "",
                         "strength": 0.3,
                         "reason": ""
@@ -206,12 +214,12 @@ export async function generateAnalysis(markdown: string) {
                   }, 
                   "cohesion_analysis": {
                     "cohesion_analysis1": {
-                        "problem": "",
+                        "concept": "",
                         "cohesion_score": "",
                         "reason": "",
                     },
                     "cohesion_analysis2": {
-                        "problem": "",
+                        "concept": "",
                         "cohesion_score": "",
                         "reason": "",
                     },
@@ -244,7 +252,9 @@ export async function generateAnalysis(markdown: string) {
     },
   );
 
+
   if (!response.ok) {
+    console.error(response);
     throw new Error("OpenRouter request failed");
   }
 

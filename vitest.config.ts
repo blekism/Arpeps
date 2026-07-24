@@ -1,13 +1,23 @@
 import { defineConfig } from "vitest/config";
 import path from "node:path";
+import { loadEnv } from "vite";
 
-export default defineConfig({
-  test: {
-    globals: true,
-  },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./"),
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+
+  console.log("Mode:", mode);
+  console.log("OPENROUTER_API_KEY:", env.OPEN_ROUTER_API_KEY);
+
+  Object.assign(process.env, env);
+
+  return {
+    test: {
+      globals: true,
     },
-  },
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./"),
+      },
+    },
+  };
 });
