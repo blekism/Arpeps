@@ -27,8 +27,8 @@ describe("generateAnalysis()", () => {
 
     expect(Object.keys(result.concept_connections)).toHaveLength(6);
 
-    for (let i = 1; i <= Object.keys(result.concept_connections).length; i++) {
-      expect(result.concept_connections).toHaveProperty(`connection${i}`);
+        for (let i = 1; i <= Object.keys(result.concept_connections).length; i++) {
+        expect(result.concept_connections).toHaveProperty(`connection${i}`);
 
       expect(result.concept_connections[`connection${i}`]).toMatchObject({
         from: expect.any(Number),
@@ -41,12 +41,8 @@ describe("generateAnalysis()", () => {
 
     expect(result.cohesion_analysis).toHaveProperty("overall_cohesion_score");
 
-    for (
-      let i = 1;
-      i <= Object.keys(result.cohesion_analysis).length - 1;
-      i++
-    ) {
-      expect(result.cohesion_analysis).toHaveProperty(`cohesion_analysis${i}`);
+        for (let i = 1; i <= Object.keys(result.cohesion_analysis).length -1; i++) {
+        expect(result.cohesion_analysis).toHaveProperty(`cohesion_analysis${i}`);
 
       expect(result.cohesion_analysis[`cohesion_analysis${i}`]).toMatchObject({
         concept: expect.any(String),
@@ -55,10 +51,10 @@ describe("generateAnalysis()", () => {
       });
     }
 
-    expect(result.cohesion_analysis.overall_cohesion_score).toEqual(
-      expect.any(String),
-    );
-  });
+        expect(result.cohesion_analysis.overall_cohesion_score).toEqual(
+            expect.any(String),
+        );
+    });
 
   it("return valid value types", async () => {
     const result = await generateAnalysis(markdown);
