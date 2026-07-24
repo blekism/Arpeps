@@ -98,8 +98,7 @@ export async function generateAnalysis(markdown: string) {
         messages: [
           {
             role: "system",
-            content:
-              `Analyze this paper and extract the contents from the paper best aligned with these following concepts:
+            content: `Analyze this paper and extract the contents from the paper best aligned with these following concepts:
 
               1. Problem 
               2. Methodology
@@ -295,3 +294,44 @@ export async function uploadHandler(paper: string, uploader: string) {
 // 5. update status to finished
 
 // note: wrap 4 and 5 in single db operation
+
+export function ValidateContent(markdown: string) {
+  const words = [
+    "Introduction",
+    "background",
+    "study",
+    "result",
+    "discussion",
+    "methodology",
+    "conclusion",
+    "recommendations",
+    "recommendation",
+    "references",
+    "related",
+    "literature",
+    "design",
+    "research",
+  ];
+
+  if (markdown.length < 1000) {
+    return {
+      code: 0,
+      message: "content too short to be a research paper",
+    };
+  }
+
+  const matchedWords = words.filter((word) => markdown.includes(word));
+
+  if (matchedWords.length < 5) {
+    return {
+      code: 0,
+      message:
+        "Paper is either incomplete or does not match the accepted type of paper",
+    };
+  }
+
+  return {
+    code: 1,
+    message: "Content passed checks, passing to model now",
+  };
+}
