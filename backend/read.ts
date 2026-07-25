@@ -70,31 +70,5 @@ export async function getAnalysis(id: string): Promise<GetPaperResult> {
   }
 }
 
-export async function getMarkdown(url: string) {
-  const supabase = await createClient();
-
-  if (!url) {
-    return {
-      message: "Paper not found...",
-    };
-  }
-
-  try {
-    const { data, error } = await supabase.storage.from("papers").download(url);
-
-    if (error) {
-      return {
-        message: "An error has occured, please try again later...",
-      };
-    }
-
-    return {
-      data: data,
-      message: "Paper retreived successfully",
-    };
-  } catch (error) {
-    return {
-      message: "An error has occured, please try again later...",
-    };
-  }
-}
+// read for visializer
+// read for paper
