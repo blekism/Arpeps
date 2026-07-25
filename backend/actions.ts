@@ -257,54 +257,58 @@ export async function generateAnalysis(markdown: string) {
   }
 }
 
-export async function saveAnalysis_DB() {
+export async function saveAnalysis_DB(analysis_data: string) {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from("analysis_tbl")
-    .insert({
-      //data from ai insert here
-    })
-    .select()
-    .single();
-
-  if (error) {
-    throw error;
+  if (!analysis_data) {
+    throw new Error("No analysis data found");
   }
 
-  return data;
+  try {
+    const { data, error } = await supabase
+      .from("analysis_tbl")
+      .insert({
+        //data from ai insert here
+      })
+      .select()
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function createPaperRecord(userId: string, content: string) {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from("research_papers_tbl")
-    .insert({
-      user_id: userId,
-      content: content,
-      cohesion_score: 0,
-    })
-    .select()
-    .single();
-
-  if (error) {
-    throw error;
+  if (!userId || !content) {
+    throw new Error("An error has occurred. Please try again later");
   }
 
-  return data as Paper;
-}
-
-export async function createPaper(userId: string, content: string) {
-  // save to storage
-
   try {
-    return await createPaperRecord(userId, content);
+    const { data, error } = await supabase
+      .from("research_papers_tbl")
+      .insert({
+        user_id: userId,
+        content: content,
+        cohesion_score: 0,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return data as Paper;
   } catch (error) {
     throw error;
   }
-
-  // await then save to db
 }
 
 export async function deletePaperInDB(id: string) {
@@ -316,7 +320,7 @@ export async function PaperProcessWrapper(content: string, uploader: string) {
   let paper: Paper | null = null;
 
   try {
-    paper = await createPaper(uploader, content);
+    paper = await createPaperRecord(uploader, content);
     const analysis = await generateAnalysis(content);
     const saveAnalysis = await saveAnalysis_DB();
 
@@ -338,15 +342,6 @@ export async function uploadHandler(paper: string, uploader: string) {
 
   return process;
 }
-
-// flow of the main process is:
-// 1. save .md to storage
-// 2. save record to db and status processing
-// 3. call gemini api and process the data
-// 4. save analysis to db
-// 5. update status to finished
-
-// note: wrap 4 and 5 in single db operation
 
 export function ValidateContent(markdown: string) {
   const words = [

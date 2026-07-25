@@ -3,10 +3,15 @@ import { Session_Response } from "@/lib/types";
 
 export async function logout() {
   const supabase = createUserClient();
-  const { error } = await supabase.auth.signOut();
 
-  if (error) throw error;
-  return;
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) throw error;
+    return;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function userSession(): Promise<Session_Response> {
