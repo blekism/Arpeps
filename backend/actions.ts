@@ -211,12 +211,12 @@ export async function generateAnalysis(markdown: string) {
           }, 
           "cohesion_analysis": {
             "cohesion_analysis1": {
-                "concept": "",
+                "concept": 1,
                 "cohesion_score": "",
                 "reason": "",
             },
             "cohesion_analysis2": {
-                "concept": "",
+                "concept": 2,
                 "cohesion_score": "",
                 "reason": "",
             },
@@ -264,23 +264,15 @@ export async function saveAnalysis_DB(analysis_data: string) {
     throw new Error("No analysis data found");
   }
 
-  try {
-    const { data, error } = await supabase
-      .from("analysis_tbl")
-      .insert({
-        //data from ai insert here
-      })
-      .select()
-      .single();
+    const { data, error } = await supabase.rpc("save_analysis", {
+      analysisData: analysis_data,
+    });
 
     if (error) {
       throw error;
     }
 
     return data;
-  } catch (error) {
-    throw error;
-  }
 }
 
 export async function createPaperRecord(userId: string, content: string) {
