@@ -77,12 +77,13 @@ export async function Login(_previousState: any, formdata: FormData) {
   }
 
   if (data.code !== 1) {
+    console.log(data, "in if else");
     return {
       success: false,
       message: data.error?.message,
     };
   }
-
+  console.log(data, "in redirect");
   redirect("/dashboard");
 }
 
@@ -238,7 +239,7 @@ export async function generateAnalysis(markdown: string) {
           "Message": "The paper contains insufficient data." 
         }
         `,
-    });
+  });
 
   const raw = (response.text ?? "").trim();
 
@@ -258,11 +259,11 @@ export async function generateAnalysis(markdown: string) {
 }
 
 export async function saveAnalysis_DB(analysis_data: string) {
-  const supabase = await createClient();
-
   if (!analysis_data) {
     throw new Error("No analysis data found");
   }
+
+  const supabase = await createClient();
 
   try {
     const { data, error } = await supabase
@@ -284,31 +285,32 @@ export async function saveAnalysis_DB(analysis_data: string) {
 }
 
 export async function createPaperRecord(userId: string, content: string) {
-  const supabase = await createClient();
-
   if (!userId || !content) {
     throw new Error("An error has occurred. Please try again later");
   }
 
-  try {
-    const { data, error } = await supabase
-      .from("research_papers_tbl")
-      .insert({
-        user_id: userId,
-        content: content,
-        cohesion_score: 0,
-      })
-      .select()
-      .single();
+  const supabase = await createClient();
 
-    if (error) {
-      throw error;
-    }
+  const { data, error } = await supabase
+    .from("research_papers_tbl")
+    .insert({
+      user_id: userId,
+      content: content,
+      cohesion_score: "0%",
+    })
+    .select()
+    .single();
 
-    return data as Paper;
-  } catch (error) {
+  if (error) {
+    console.log(error);
     throw error;
   }
+  console.log("data is: ", data);
+  return {
+    code: 200,
+    message: "success",
+    data: data,
+  };
 }
 
 export async function deletePaperInDB(id: string) {
@@ -317,17 +319,19 @@ export async function deletePaperInDB(id: string) {
 }
 
 export async function PaperProcessWrapper(content: string, uploader: string) {
-  let paper: Paper | null = null;
+  let paper;
 
   try {
     paper = await createPaperRecord(uploader, content);
     const analysis = await generateAnalysis(content);
-    const saveAnalysis = await saveAnalysis_DB();
+    // const saveAnalysis = await saveAnalysis_DB(analysis);
 
-    if (saveAnalysis) return saveAnalysis;
+    // if (saveAnalysis) return saveAnalysis;
+    if (analysis) return analysis;
   } catch (error) {
     if (paper) {
-      await deletePaperInDB(paper.id);
+      console.error(error);
+      // await deletePaperInDB(paper);
     }
 
     throw error;
@@ -335,15 +339,26 @@ export async function PaperProcessWrapper(content: string, uploader: string) {
 }
 
 export async function uploadHandler(paper: string, uploader: string) {
-  // const file = formatData.get("paper") as File;
-  // const markdown = await file.text();
+  try {
+    const isPassed = await ValidateContent(paper);
 
-  const process = await PaperProcessWrapper(paper, uploader);
+    if (isPassed.code === 0) {
+      return {
+        code: 0,
+        message: "Your submission does not look like a research paper",
+      };
+    }
 
-  return process;
+    const process = await PaperProcessWrapper(paper, uploader);
+
+    return process;
+  } catch (error) {
+    console.log(error, "eror");
+    throw error;
+  }
 }
 
-export function ValidateContent(markdown: string) {
+export async function ValidateContent(markdown: string) {
   const words = [
     "Introduction",
     "background",
@@ -384,7 +399,7 @@ export function ValidateContent(markdown: string) {
   };
 }
 
-//  const apiKey = process.env.OPEN_ROUTER_API_KEY?.trim();
+//  const apiKey = process.env.OPEN_ROUTER_API_KEY?.trim();w
 //   if (!apiKey) {
 //     throw new Error("Missing OPEN_ROUTER_API_KEY");
 //   }
