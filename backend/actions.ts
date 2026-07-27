@@ -119,6 +119,14 @@ export async function generateAnalysis(markdown: string) {
         4. Literature
         5. Result
 
+        The corresponding numbering of each concepts are the key in the output for each_concepts:
+
+          1: Problem
+          2: Methodology
+          3: Solution
+          4: Literature
+          5: Result
+
         ## CONNECTIONS OF THE CONCEPTS 
 
           After extracting the contents, analyze the paper to assess the connections of the following concepts. 
@@ -188,11 +196,11 @@ export async function generateAnalysis(markdown: string) {
         Example Format: 
         {
           "each_concepts": {
-            "problem": "",
-            "methodology": "",
-            "solution": "",
-            "literature": "",
-            "result": ""
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
           },
           "concept_connections": {
             "connection1": {
@@ -266,8 +274,8 @@ export async function saveAnalysis_DB(paperId: string, analysis_data: string) {
   const supabase = await createClient();
 
     const { data, error } = await supabase.rpc("save_analysis", {
-      paperId,
-      analysisData: analysis_data,
+      p_paper_id: paperId,
+      p_analysis: analysis_data,
     });
 
     if (error) {
