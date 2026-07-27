@@ -85,3 +85,17 @@ export type GetPaperResult = {
   data?: Paper;
   message: string;
 };
+
+export interface CreatePaperRes {
+  code: number;
+  message: string;
+  data: ResearchPaperData;
+}
+
+export interface ResearchPaperData {
+  paper_id: string;
+  user_id: string;
+  created_at: string;
+  content: string;
+  overall_cohesion_score: string;
+}

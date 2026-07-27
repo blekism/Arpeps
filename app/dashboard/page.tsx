@@ -32,7 +32,7 @@ export default async function Dashboard() {
 
         {papers.data.length === 0 && <ErrorState />}
 
-        <PaperList papers={papers.data} error={papers.message ?? null} />
+        {/* <PaperList papers={papers.data} error={papers.message ?? null} /> */}
       </main>
     </>
   );

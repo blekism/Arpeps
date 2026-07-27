@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FileText, FileCode, ChevronRight } from "lucide-react";
-import type { Paper } from "@/backend/read";
+// import type { Paper } from "@/backend/read";
+import type { Paper } from "@/lib/types";
 
 function verdictOverall(p: Paper): { label: string; tone: string } {
   const gaps = p.analysis.filter((a) => a.verdict === "gap").length;
@@ -24,11 +25,7 @@ export default function PaperCard({ paper }: { paper: Paper }) {
       className="group flex items-center gap-4 rounded-lg border border-border bg-panel p-4 transition hover:border-brand hover:bg-panel-2"
     >
       <div className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-panel-2">
-        {paper.fileType === "pdf" ? (
-          <FileText className="size-4 text-muted-foreground" />
-        ) : (
-          <FileCode className="size-4 text-muted-foreground" />
-        )}
+        <FileCode className="size-4 text-muted-foreground" />
       </div>
       <div className="min-w-0 flex-1">
         <div className="truncate text-sm font-medium">{paper.title}</div>

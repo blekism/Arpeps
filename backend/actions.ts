@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { Paper } from "@/lib/types";
 import { createClient } from "../lib/server";
 import { ai } from "@/lib/gemini";
+import { CreatePaperRes, ResearchPaperData } from "@/lib/types";
 
 export async function Register(_previousState: any, formdata: FormData) {
   const email = formdata.get("email") as string;
@@ -263,18 +264,23 @@ export async function saveAnalysis_DB(analysis_data: string) {
     throw new Error("No analysis data found");
   }
 
-    const { data, error } = await supabase.rpc("save_analysis", {
-      analysisData: analysis_data,
-    });
+  const supabase = await createClient();
 
-    if (error) {
-      throw error;
-    }
+  const { data, error } = await supabase.rpc("save_analysis", {
+    analysisData: analysis_data,
+  });
 
-    return data;
+  if (error) {
+    throw error;
+  }
+
+  return data;
 }
 
-export async function createPaperRecord(userId: string, content: string) {
+export async function createPaperRecord(
+  userId: string,
+  content: string,
+): Promise<CreatePaperRes> {
   if (!userId || !content) {
     throw new Error("An error has occurred. Please try again later");
   }
@@ -286,7 +292,7 @@ export async function createPaperRecord(userId: string, content: string) {
     .insert({
       user_id: userId,
       content: content,
-      cohesion_score: "0%",
+      overall_cohesion_score: "0%",
     })
     .select()
     .single();
@@ -299,7 +305,7 @@ export async function createPaperRecord(userId: string, content: string) {
   return {
     code: 200,
     message: "success",
-    data: data,
+    data: data as ResearchPaperData,
   };
 }
 
