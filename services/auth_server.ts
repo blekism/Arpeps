@@ -11,38 +11,33 @@ export async function register(
 ): Promise<Server_Res> {
   const supabase = await createClient();
 
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          display_name: name,
-        },
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        display_name: name,
       },
-    });
-    if (error)
-      return {
-        code: 0,
-        error,
-      };
-
-    if (!data.user) {
-      return {
-        code: 0,
-        error,
-      };
-    }
-
-    await writeUser(data.user);
+    },
+  });
+  if (error)
     return {
-      code: 1,
-      data,
+      code: 0,
+      error,
     };
-  } catch (error) {
-    //any other unexpected errors will be thrown
-    throw error;
+
+  if (!data.user) {
+    return {
+      code: 0,
+      error,
+    };
   }
+
+  await writeUser(data.user);
+  return {
+    code: 1,
+    data,
+  };
 }
 
 export async function writeUser(user: User) {
@@ -85,24 +80,20 @@ export async function login(
 ): Promise<Server_Res> {
   const supabase = await createClient();
 
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-    if (error) {
-      return {
-        code: 0,
-        error: error,
-      };
-    }
-
+  if (error) {
     return {
-      code: 1,
-      data: data,
+      code: 0,
+      error: error,
     };
-  } catch (error) {
-    throw error;
   }
+
+  return {
+    code: 1,
+    data: data,
+  };
 }

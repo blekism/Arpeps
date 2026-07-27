@@ -1,14 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Upload, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { uploadAndAnalyze } from "@/backend/api";
 import { userSession } from "@/services/auth_client";
 import { rateLimit } from "@/services/rate_limit";
 import { toast } from "sonner";
-import { uploadHandler } from "@/backend/actions";
-import { ValidateContent } from "@/backend/actions";
+import { uploadHandler, ValidateContent } from "@/backend/actions";
 
 export default function UploadCard() {
   const [dragging, setDragging] = useState(false);
@@ -34,19 +32,17 @@ export default function UploadCard() {
     try {
       const markdown = await file.text();
 
-      const validate = ValidateContent(markdown);
+      const paper = await uploadHandler(markdown, userId);
 
-      if (validate.code === 0) {
-        toast.error(validate.message);
+      if (!paper) {
+        toast.error(paper?.message);
         return;
       }
 
-      const paper = await uploadHandler(markdown, userId);
+      console.log(paper, "gemini outoput");
       toast.success("Analysis ready. You can now view your analysis");
-
-      // navigate.push(`papers/${paper.id}`);
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error("An error has occurred Please try again later");
     } finally {
       setLoading(false);
     }
