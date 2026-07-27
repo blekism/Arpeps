@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { Paper } from "@/lib/types";
 import { createClient } from "../lib/server";
 import { ai } from "@/lib/gemini";
+import { CreatePaperRes, ResearchPaperData } from "@/lib/types";
 
 export async function Register(_previousState: any, formdata: FormData) {
   const email = formdata.get("email") as string;
@@ -278,14 +279,17 @@ export async function saveAnalysis_DB(paperId: string, analysis_data: string) {
       p_analysis: analysis_data,
     });
 
-    if (error) {
-      throw error;
-    }
+  if (error) {
+    throw error;
+  }
 
-    return data;
+  return data;
 }
 
-export async function createPaperRecord(userId: string, content: string) {
+export async function createPaperRecord(
+  userId: string,
+  content: string,
+): Promise<CreatePaperRes> {
   if (!userId || !content) {
     throw new Error("An error has occurred. Please try again later");
   }
@@ -310,7 +314,7 @@ export async function createPaperRecord(userId: string, content: string) {
   return {
     code: 200,
     message: "success",
-    data: data,
+    data: data as ResearchPaperData,
   };
 }
 
@@ -328,7 +332,6 @@ export async function PaperProcessWrapper(content: string, uploader: string) {
     const saveAnalysis = await saveAnalysis_DB(paper.data.paper_id, analysis);
 
     if (saveAnalysis) return saveAnalysis;
-    
   } catch (error) {
     if (paper) {
       console.error(error);
