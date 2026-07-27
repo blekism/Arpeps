@@ -15,6 +15,7 @@ export default async function Dashboard() {
 
   const user_id = sessionData.data.user.id;
   const papers = await getAllPapers(user_id);
+  console.log("the paper is: ", papers.data);
 
   return (
     <>
@@ -28,11 +29,14 @@ export default async function Dashboard() {
           </p>
         </div>
         <UploadCard />
-        {papers.code === 0 && <ErrorState />}
-        <PaperList
-          papers={papers.data}
-          error={papers.code === 0 ? papers.message : null}
-        />
+        {papers.code === 0 ? (
+          <ErrorState />
+        ) : (
+          <PaperList
+            papers={papers.data}
+            error={papers.code === 0 ? papers.message : null}
+          />
+        )}
       </main>
     </>
   );

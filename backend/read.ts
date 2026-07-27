@@ -15,7 +15,9 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
   try {
     const { data, error } = await supabase
       .from("research_papers_tbl")
-      .select("*, extracted_concepts_tbl(*), concept_relationships_tbl(*), cohesion_analysis_tbl(*), concepts_tbl(concept_name)")
+      .select(
+        "*, extracted_concepts_tbl(*, concepts_tbl(concept_name)), concept_relationships_tbl(*), cohesion_analysis_tbl(*, concepts_tbl(concept_name))",
+      )
       .order("created_at", { ascending: false })
       .eq("user_id", id);
 
@@ -26,6 +28,7 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
         message: error.message,
       };
     }
+    console.log("the paper is: ", data);
 
     return {
       code: 1,
