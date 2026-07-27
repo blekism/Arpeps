@@ -14,7 +14,7 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
   try {
     const { data, error } = await supabase
       .from("research_papers_tbl")
-      .select("*")
+      .select("*, extracted_concepts_tbl(*), concept_relationships_tbl(*), cohesion_analysis_tbl(*), concepts_tbl(concept_name)")
       .order("created_at", { ascending: false })
       .eq("user_id", id);
 
