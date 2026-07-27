@@ -27,12 +27,12 @@ export default async function Dashboard() {
             A first-layer cohesion check before you print or submit your paper.
           </p>
         </div>
-
         <UploadCard />
-
-        {papers.data.length === 0 && <ErrorState />}
-
-        {/* <PaperList papers={papers.data} error={papers.message ?? null} /> */}
+        {papers.code === 0 && <ErrorState />}
+        <PaperList
+          papers={papers.data}
+          error={papers.code === 0 ? papers.message : null}
+        />
       </main>
     </>
   );

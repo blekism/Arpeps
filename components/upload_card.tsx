@@ -34,7 +34,7 @@ export default function UploadCard() {
 
       const paper = await uploadHandler(markdown, userId);
 
-      if (!paper) {
+      if (paper?.code === 0) {
         toast.error(paper?.message);
         return;
       }

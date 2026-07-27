@@ -6,6 +6,7 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
 
   if (!id) {
     return {
+      code: 0,
       data: [],
       message: "No papers found for this account...",
     };
@@ -20,17 +21,20 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
 
     if (error) {
       return {
+        code: 0,
         data: [],
         message: error.message,
       };
     }
 
     return {
+      code: 1,
       data: data,
       message: "data fetched sucessfully",
     };
   } catch {
     return {
+      code: 0,
       data: [],
       message: "An error has occurred, please try again later",
     };
