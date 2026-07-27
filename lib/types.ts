@@ -77,6 +77,7 @@ export type Paper = {
 };
 
 export type GetAllPaperResult = {
+  code: number;
   data: Paper[];
   message: string;
 };
@@ -89,7 +90,7 @@ export type GetPaperResult = {
 export interface CreatePaperRes {
   code: number;
   message: string;
-  data: ResearchPaperData;
+  data?: ResearchPaperData;
 }
 
 export interface ResearchPaperData {

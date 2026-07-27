@@ -33,7 +33,13 @@ export default function RootLayout({
         {/* auth data */}
 
         {children}
-        <Toaster richColors />
+        <Toaster
+          richColors
+          duration={5000}
+          closeButton
+          swipeDirections={["right"]}
+          theme="system"
+        />
       </body>
     </html>
   );
