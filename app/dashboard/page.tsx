@@ -3,6 +3,8 @@ import PaperCard from "@/components/paper_card";
 import { getAllPapers } from "@/backend/read";
 import type { Paper } from "@/lib/types";
 import { createClient } from "@/lib/server";
+import ErrorState from "@/components/error_state";
+import PaperList from "@/components/paper_list";
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -28,27 +30,9 @@ export default async function Dashboard() {
 
         <UploadCard />
 
-        <section className="mt-12">
-          <div className="mb-3 flex items-baseline justify-between">
-            <h2 className="text-sm font-semibold tracking-tight">
-              Submitted Previously
-            </h2>
-            <span className="text-xs text-muted-foreground">
-              {papers.data.length} total
-            </span>
-          </div>
-          {papers.data.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-              Nothing here yet. Upload a paper to get started.
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {papers.data.map((p) => (
-                <PaperCard key={p.id} paper={p} />
-              ))}
-            </div>
-          )}
-        </section>
+        {papers.data.length === 0 && <ErrorState />}
+
+        <PaperList papers={papers.data} error={papers.message ?? null} />
       </main>
     </>
   );
