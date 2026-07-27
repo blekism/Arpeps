@@ -258,12 +258,15 @@ export async function generateAnalysis(markdown: string) {
   }
 }
 
-export async function saveAnalysis_DB(analysis_data: string) {
+export async function saveAnalysis_DB(paperId: string, analysis_data: string) {
   if (!analysis_data) {
     throw new Error("No analysis data found");
   }
 
+  const supabase = await createClient();
+
     const { data, error } = await supabase.rpc("save_analysis", {
+      paperId,
       analysisData: analysis_data,
     });
 
@@ -286,7 +289,7 @@ export async function createPaperRecord(userId: string, content: string) {
     .insert({
       user_id: userId,
       content: content,
-      cohesion_score: "0%",
+      overall_cohesion_score: "0%",
     })
     .select()
     .single();
@@ -314,10 +317,10 @@ export async function PaperProcessWrapper(content: string, uploader: string) {
   try {
     paper = await createPaperRecord(uploader, content);
     const analysis = await generateAnalysis(content);
-    // const saveAnalysis = await saveAnalysis_DB(analysis);
+    const saveAnalysis = await saveAnalysis_DB(paper.data.paper_id, analysis);
 
-    // if (saveAnalysis) return saveAnalysis;
-    if (analysis) return analysis;
+    if (saveAnalysis) return saveAnalysis;
+    
   } catch (error) {
     if (paper) {
       console.error(error);
