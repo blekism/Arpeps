@@ -4,8 +4,8 @@ import { FileText, FileCode, ChevronRight } from "lucide-react";
 import type { Paper } from "@/lib/types";
 
 function verdictOverall(p: Paper): { label: string; tone: string } {
-  const gaps = p.analysis.filter((a) => a.verdict === "gap").length;
-  const partial = p.analysis.filter((a) => a.verdict === "partial").length;
+  const gaps = p.cohesion_analysis_tbl.filter((a) => a.cohesion_score === "Gap").length;
+  const partial = p.cohesion_analysis_tbl.filter((a) => a.cohesion_score === "Partial").length;
   if (gaps > 0)
     return {
       label: `${gaps} gap${gaps > 1 ? "s" : ""}`,
@@ -20,21 +20,21 @@ export default function PaperCard({ paper }: { paper: Paper }) {
   const v = verdictOverall(paper);
   return (
     <Link
-      href="/papers/$id"
-      //   params={{ id: paper.id }}
+      href={`/checker/${paper.paper_id}`}
+      // params={{ id: paper.paper_id }}
       className="group flex items-center gap-4 rounded-lg border border-border bg-panel p-4 transition hover:border-brand hover:bg-panel-2"
     >
       <div className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-panel-2">
         <FileCode className="size-4 text-muted-foreground" />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-medium">{paper.title}</div>
+        <div className="truncate text-sm font-medium">{paper.paper_id}</div>
         <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="uppercase">{paper.fileType}</span>
+          {/* <span className="uppercase">{paper.paper_id}</span>
           <span>·</span>
-          <span>{paper.pages} pages</span>
-          <span>·</span>
-          <span>{new Date(paper.uploadedAt).toLocaleDateString()}</span>
+          <span>{paper.user_id} pages</span>
+          <span>·</span> */}
+          <span>{new Date(paper.created_at).toLocaleDateString()}</span>
         </div>
       </div>
       <div className={`text-xs font-medium ${v.tone}`}>{v.label}</div>

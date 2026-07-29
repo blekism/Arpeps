@@ -1,16 +1,16 @@
 import { CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
-import { CONCEPT_LABELS, type Paper } from "@/backend/read";
+import { Paper } from "@/lib/types";
 
 const ICON = {
-  cohesive: <CheckCircle2 className="size-4 text-emerald-400" />,
-  partial: <AlertTriangle className="size-4 text-amber-400" />,
-  gap: <XCircle className="size-4 text-destructive" />,
+  Cohesive: <CheckCircle2 className="size-4 text-emerald-400" />,
+  Partial: <AlertTriangle className="size-4 text-amber-400" />,
+  Gap: <XCircle className="size-4 text-destructive" />,
 };
 
 export default function AnalysisView({ paper }: { paper: Paper }) {
   const score = Math.round(
-    (paper.analysis.filter((a) => a.verdict === "cohesive").length /
-      paper.analysis.length) *
+    (paper.cohesion_analysis_tbl.filter((a) => a.cohesion_score === "cohesive").length /
+      paper.cohesion_analysis_tbl.length) *
       100,
   );
   return (
@@ -21,7 +21,7 @@ export default function AnalysisView({ paper }: { paper: Paper }) {
             Cohesion score
           </div>
           <div className="mt-1 text-3xl font-semibold tracking-tight">
-            {score}%
+            {paper.overall_cohesion_score}
           </div>
         </div>
         <p className="max-w-md text-right text-xs text-muted-foreground">
@@ -31,32 +31,28 @@ export default function AnalysisView({ paper }: { paper: Paper }) {
       </div>
 
       <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-panel">
-        {paper.analysis.map((a) => (
-          <div key={a.concept} className="flex items-start gap-3 p-4">
-            <div className="mt-0.5">{ICON[a.verdict]}</div>
+        
+        {paper.cohesion_analysis_tbl.map((a, key) => (
+          <div key={key} className="flex items-start gap-3 p-4">
+            <div className="mt-0.5">{ICON[a.cohesion_score as keyof typeof ICON]}</div>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-baseline gap-x-2">
                 <div className="text-sm font-medium">
-                  {CONCEPT_LABELS[a.concept]}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {a.answers.length === 0
-                    ? "answers nothing"
-                    : `answers ${a.answers.map((k) => CONCEPT_LABELS[k]).join(", ")}`}
+                  {a.concepts_tbl.concept_name}
                 </div>
               </div>
-              <p className="mt-1 text-sm text-muted-foreground">{a.note}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{a.reason}</p>
             </div>
             <span
               className={`shrink-0 rounded border px-1.5 py-0.5 text-[10px] uppercase ${
-                a.verdict === "cohesive"
+                a.cohesion_score === "Cohesive"
                   ? "border-emerald-500/40 text-emerald-400"
-                  : a.verdict === "partial"
+                  : a.cohesion_score === "Partial"
                     ? "border-amber-500/40 text-amber-400"
                     : "border-destructive/50 text-destructive"
               }`}
             >
-              {a.verdict}
+              {a.cohesion_score}
             </span>
           </div>
         ))}
