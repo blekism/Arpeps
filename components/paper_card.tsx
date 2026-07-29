@@ -23,8 +23,7 @@ export default function PaperCard({ paper }: { paper: Paper }) {
   const v = verdictOverall(paper);
   return (
     <Link
-      href="/papers/$id"
-      //   params={{ id: paper.id }}
+      href={`/checker/${paper.paper_id}`}
       className="group flex items-center gap-4 rounded-lg border border-border bg-panel p-4 transition hover:border-brand hover:bg-panel-2"
     >
       <div className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-panel-2">
@@ -34,9 +33,9 @@ export default function PaperCard({ paper }: { paper: Paper }) {
         <div className="truncate text-sm font-medium">{paper.paper_id}</div>
         <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
           {/* <span className="uppercase">{paper.fileType}</span> */}
-          <span>·</span>
+          {/* <span>·</span> */}
           {/* <span>{paper.pages} pages</span> */}
-          <span>·</span>
+          {/* <span>·</span> */}
           <span>{new Date(paper.created_at).toLocaleDateString()}</span>
         </div>
       </div>

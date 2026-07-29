@@ -21,7 +21,7 @@ export default function VisualizerPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
       <Link
-        href={`/papers/${paper.id}`}
+        href={`/checker/${paper.id}`}
         className="mb-4 inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3.5" />

@@ -15,7 +15,8 @@ export default async function Dashboard() {
 
   const user_id = sessionData.data.user.id;
   const papers = await getAllPapers(user_id);
-  console.log("the paper is: ", papers.data);
+  // console.log("the paper is: ", papers.);
+  console.log("the paper is sheesh: ", papers);
 
   return (
     <>

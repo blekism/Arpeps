@@ -29,20 +29,44 @@ export interface PaperMetadata {
   id: string;
 }
 
+export type ConceptKey =
+  | "Problem"
+  | "Methodology"
+  | "Solution"
+  | "Literature"
+  | "Result";
+
+export const CONCEPT_LABELS: Record<ConceptKey, string> = {
+  Problem: "Stated Problem",
+  Methodology: "Methodology",
+  Solution: "Proposed Solution",
+  Literature: "Related Literature",
+  Result: "Result",
+};
+
 export type Analysis = {
-  concept_id: number;
+  concepts_tbl: {
+    concept_name: string;
+  };
   reason: string;
   cohesion_score: "Cohesive" | "Partial" | "Gap";
 };
 
 export type Concepts = {
-  concept_id: number;
+  concept_id: string;
+  concepts_tbl: {
+    concept_name: string;
+  };
   extracted_content: string;
 };
 
 export type Connections = {
-  from_concept: number;
-  to_concept: number;
+  from: {
+    concept_name: string;
+  };
+  to: {
+    concept_name: string;
+  };
   reason: string;
   strength: number;
   kind: number;
@@ -56,6 +80,7 @@ export type Paper = {
   extracted_concepts_tbl: Concepts[];
   concept_relationships_tbl: Connections[];
   cohesion_analysis_tbl: Analysis[];
+  overall_cohesion_score: string;
 };
 
 export type GetAllPaperResult = {
@@ -65,6 +90,7 @@ export type GetAllPaperResult = {
 };
 
 export type GetPaperResult = {
+  code: number;
   data?: Paper;
   message: string;
 };
