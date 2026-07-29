@@ -41,7 +41,7 @@ export default async function Checker({ params }: PageProps) {
           </div>
           <div className="flex items-center gap-2">
             <Link
-              href={`/paper/${paper.data?.paper_id}`}
+              href={`/checker/paper/${paper.data?.paper_id}`}
               className="inline-flex items-center gap-1.5 rounded-md border border-border bg-panel px-3 py-1.5 text-xs transition hover:bg-panel-2"
             >
               <Eye className="size-3.5" /> View paper

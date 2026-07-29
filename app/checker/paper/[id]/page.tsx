@@ -23,16 +23,16 @@ export default async function ViewerPage({ params }: PageProps) {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
-      {/* <Link
-        href={`/papers/${paper.data?.paper_id}`}
+      <Link
+        href={`/checker/${paper.data?.paper_id}`}
         className="mb-4 inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3.5" />
         Back to analysis
-      </Link> */}
+      </Link>
 
       <header className="mb-4">
-        {/* <h1 className="text-xl font-semibold tracking-tight">{paper.data?.paper_id}</h1> */}
+        <h1 className="text-xl font-semibold tracking-tight">{paper.data?.paper_id}</h1>
         {/* <p className="text-xs text-muted-foreground">{paper.filename}</p> */}
       </header>
 
@@ -44,9 +44,9 @@ export default async function ViewerPage({ params }: PageProps) {
         </div>
         <article className="prose prose-sm mx-auto max-w-none px-10 py-12 leading-relaxed">
           <pre className="whitespace-pre-wrap break-words font-serif text-[14px] leading-6 text-neutral-900">
-            {/* <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {paper.data?.content}
-            </ReactMarkdown> */}
+            </ReactMarkdown>
           </pre>
         </article>
       </div>
