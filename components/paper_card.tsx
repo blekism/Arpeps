@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { FileText, FileCode, ChevronRight } from "lucide-react";
-import type { Paper, GetAllPaperResult } from "@/lib/types";
+import { FileCode, ChevronRight } from "lucide-react";
+import type { Paper } from "@/lib/types";
 
 function verdictOverall(p: Paper): { label: string; tone: string } {
   const gaps = p.cohesion_analysis_tbl.filter(

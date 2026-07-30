@@ -56,14 +56,6 @@ export type Connection = {
   updated_at: string;
 };
 
-
-// export type Analysis = {
-//   concept: ConceptKey;
-//   answers: ConceptKey;
-//   verdict: "Cohesive" | "Partial" | "Gap";
-//   note: string;
-// };
-
 export type Analysis = {
   cohesion_id: string;
   cohesion_score: string;
@@ -75,20 +67,6 @@ export type Analysis = {
   paper_id: string;
   reason: string;
 };
-
-// export type Paper = {
-//   id: string;
-//   userId: string;
-//   fileType: "md";
-//   uploadedAt: string;
-//   path: string;
-//   pages: number;
-//   concepts: Record<ConceptKey, string>;
-//   connections: Connection[];
-//   analysis: Analysis[];
-//   mock rendered pages for the viewer 
-//   preview: string;
-// };
 
 export type Paper = {
   cohesion_analysis_tbl: Analysis[];

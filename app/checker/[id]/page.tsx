@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { getAnalysis } from "@/backend/read";
-import { Paper } from "@/lib/types";
 import { ArrowLeft, Eye, Network } from "lucide-react";
 import BreakdownView from "@/components/breakdown_view";
 import ConceptTable from "@/components/concept_table";
 import AnalysisView from "@/components/analysis_view";
 import { PageProps } from "@/lib/types";
-import { redirect, notFound } from "next/navigation";
 import ErrorState from "@/components/error_state";
 
 export default async function Checker({ params }: PageProps) {

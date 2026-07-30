@@ -1,7 +1,5 @@
 import UploadCard from "@/components/upload_card";
-import PaperCard from "@/components/paper_card";
 import { getAllPapers } from "@/backend/read";
-import type { Paper } from "@/lib/types";
 import { createClient } from "@/lib/server";
 import ErrorState from "@/components/error_state";
 import PaperList from "@/components/paper_list";

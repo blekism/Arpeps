@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { Paper } from "@/lib/types";
 import { ArrowLeft } from "lucide-react";
 import { PageProps } from "@/lib/types";
 import { getAnalysis } from "@/backend/read";
-
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 

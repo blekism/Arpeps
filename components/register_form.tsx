@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useActionState } from "react";
-import { FileText, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Register } from "@/backend/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";

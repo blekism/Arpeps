@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Upload, Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { userSession } from "@/services/auth_client";
 import { rateLimit } from "@/services/rate_limit";
 import { toast } from "sonner";
-import { uploadHandler, ValidateContent } from "@/backend/actions";
+import { uploadHandler } from "@/backend/actions";
 
 export default function UploadCard() {
   const [dragging, setDragging] = useState(false);
