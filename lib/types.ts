@@ -29,6 +29,21 @@ export interface PaperMetadata {
   id: string;
 }
 
+export type ConceptKey = 
+  | "Problem"
+  | "Methodology"
+  | "Solution"
+  | "Literature"
+  | "Result";
+
+export const CONCEPT_LABELS: Record<ConceptKey, string> = {
+  Problem: "Stated Problem",
+  Methodology: "Methodology",
+  Solution: "Proposed Solution",
+  Literature: "Related Literature",
+  Result: "Result",
+};
+
 export type Concepts = {
   concept_id: string;
   concepts_tbl: {

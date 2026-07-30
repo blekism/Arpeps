@@ -47,7 +47,7 @@ export default async function Checker({ params }: PageProps) {
               <Eye className="size-3.5" /> View paper
             </Link>
             <Link
-              href={`/visualizer/${paper.data?.paper_id}`}
+              href={`/checker/visualizer/${paper.data?.paper_id}`}
               className="inline-flex items-center gap-1.5 rounded-md bg-brand px-3 py-1.5 text-xs font-medium text-brand-foreground transition hover:opacity-90"
             >
               <Network className="size-3.5" /> Open visualizer
