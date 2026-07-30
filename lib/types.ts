@@ -29,52 +29,92 @@ export interface PaperMetadata {
   id: string;
 }
 
-export type ConceptKey =
-  | "problem"
-  | "methodology"
-  | "solution"
-  | "literature"
-  | "result";
+export type ConceptKey = 
+  | "Problem"
+  | "Methodology"
+  | "Solution"
+  | "Literature"
+  | "Result";
 
 export const CONCEPT_LABELS: Record<ConceptKey, string> = {
-  problem: "Stated Problem",
-  methodology: "Methodology",
-  solution: "Proposed Solution",
-  literature: "Related Literature",
-  result: "Result",
+  Problem: "Stated Problem",
+  Methodology: "Methodology",
+  Solution: "Proposed Solution",
+  Literature: "Related Literature",
+  Result: "Result",
+};
+
+export type Concepts = {
+  concept_id: string;
+  concepts_tbl: {
+    concept_name: string;
+  };
+  created_at: string;
+  extracted_concept_id: string;
+  extracted_content: string;
+  paper_id: string; 
 };
 
 export type Connection = {
-  from: ConceptKey;
-  to: ConceptKey;
+  created_at: string;
+  crs_id: string;
+  from: {
+    concept_name: string;
+  };
+  kind: number;
+  paper_id: string;
   reason: string;
-  /** actual = present in paper; theoretical = should exist but missing */
-  kind: "actual" | "theoretical";
-  strength: number; // 0..1
+  strength: number;
+  to: {
+    concept_name: string;
+  };
+  updated_at: string;
 };
+
+
+// export type Analysis = {
+//   concept: ConceptKey;
+//   answers: ConceptKey;
+//   verdict: "Cohesive" | "Partial" | "Gap";
+//   note: string;
+// };
 
 export type Analysis = {
-  concept: ConceptKey;
-  answers: ConceptKey[];
-  verdict: "cohesive" | "partial" | "gap";
-  note: string;
+  cohesion_id: string;
+  cohesion_score: string;
+  concept_id: number;
+  concepts_tbl: {
+    concept_name: string;
+  };
+  created_at: string;
+  paper_id: string;
+  reason: string;
 };
 
+// export type Paper = {
+//   id: string;
+//   userId: string;
+//   fileType: "md";
+//   uploadedAt: string;
+//   path: string;
+//   pages: number;
+//   concepts: Record<ConceptKey, string>;
+//   connections: Connection[];
+//   analysis: Analysis[];
+//   mock rendered pages for the viewer 
+//   preview: string;
+// };
+
 export type Paper = {
-  id: string;
-  userId: string;
-  title: string;
-  filename: string;
-  fileType: "md";
-  uploadedAt: string;
-  path: string;
-  pages: number;
-  concepts: Record<ConceptKey, string>;
-  connections: Connection[];
-  analysis: Analysis[];
-  /** mock rendered pages for the viewer */
-  preview: string;
-};
+  cohesion_analysis_tbl: Analysis[];
+  concept_relationships_tbl: Connection[];
+  content: string;
+  created_at: string;
+  extracted_concepts_tbl: Concepts[];
+  overall_cohesion_score: string;
+  paper_id: string;
+  user_id: string;
+}
 
 export type GetAllPaperResult = {
   code: number;
@@ -83,6 +123,7 @@ export type GetAllPaperResult = {
 };
 
 export type GetPaperResult = {
+  code: number;
   data?: Paper;
   message: string;
 };

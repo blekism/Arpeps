@@ -33,8 +33,8 @@ export default function PaperList({ papers, error }: PaperListProps) {
         </div>
       ) : (
         <div className="space-y-2">
-          {papers.map((p) => (
-            <PaperCard key={p.id} paper={p} />
+          {papers.map((p, key) => (
+            <PaperCard key={key} paper={p} />
           ))}
         </div>
       )}

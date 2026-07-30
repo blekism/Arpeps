@@ -15,7 +15,12 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
   try {
     const { data, error } = await supabase
       .from("research_papers_tbl")
-      .select("*, extracted_concepts_tbl(*), concept_relationships_tbl(*), cohesion_analysis_tbl(*), concepts_tbl(concept_name)")
+      .select(`*, 
+        extracted_concepts_tbl(*, concepts_tbl(concept_name)), 
+        concept_relationships_tbl(*, 
+          from:concepts_tbl!from_concept(concept_name),
+          to:concepts_tbl!to_concept(concept_name)), 
+        cohesion_analysis_tbl(*, concepts_tbl(concept_name))`)
       .order("created_at", { ascending: false })
       .eq("user_id", id);
 
@@ -27,11 +32,14 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
       };
     }
 
+    console.log("hdhdhdh", data);
+
     return {
       code: 1,
       data: data,
       message: "data fetched sucessfully",
     };
+    
   } catch {
     return {
       code: 0,
@@ -46,29 +54,38 @@ export async function getAnalysis(id: string): Promise<GetPaperResult> {
 
   if (!id) {
     return {
+      code: 0,
       message: "Paper not found...",
     };
   }
 
   try {
     const { data, error } = await supabase
-      .from("papers_tbl")
-      .select("*")
+      .from("research_papers_tbl")
+      .select(`*, 
+        extracted_concepts_tbl(*, concepts_tbl(concept_name)), 
+        concept_relationships_tbl(*, 
+          from:concepts_tbl!from_concept(concept_name),
+          to:concepts_tbl!to_concept(concept_name)), 
+        cohesion_analysis_tbl(*, concepts_tbl(concept_name))`)
       .eq("paper_id", id)
       .maybeSingle();
 
     if (error) {
       return {
-        message: "An error has occured, please try again later...",
+        code: 0,
+        message: error.message,
       };
     }
 
     return {
+      code: 1,
       data: data,
       message: "Paper retreived successfully",
     };
   } catch (error) {
     return {
+      code: 0,
       message: "An error has occured, please try again later...",
     };
   }
