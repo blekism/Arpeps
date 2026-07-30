@@ -1,9 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CONCEPT_LABELS, type ConceptKey, type Paper } from "@/lib/types";
-
-type NodePos = { key: ConceptKey; x: number; y: number };
+import { type Paper } from "@/lib/types";
 
 const coordinates = [
   { x: 50, y: 12 },
