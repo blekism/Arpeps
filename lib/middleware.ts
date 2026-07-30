@@ -51,7 +51,7 @@ const isProtected = protectedRoutes.some(route =>
 );
 
 if (!user && isProtected) {
-  return NextResponse.redirect(new URL("/login", request.url));
+  return NextResponse.redirect(new URL("/", request.url));
 }
 
   return response;
