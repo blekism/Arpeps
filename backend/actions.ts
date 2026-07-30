@@ -36,7 +36,7 @@ export async function Register(_previousState: any, formdata: FormData) {
   let data;
 
   try {
-    data = await register(email.trim(), password.trim(), name.trim());
+    data = await register(email, password, name.trim());
   } catch (error) {
     return {
       success: false,
@@ -51,7 +51,7 @@ export async function Register(_previousState: any, formdata: FormData) {
     };
   }
 
-  redirect("/dashboard");
+  redirect("/");
 }
 
 export async function Login(_previousState: any, formdata: FormData) {
