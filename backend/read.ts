@@ -37,11 +37,14 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
     }
     // console.log("the paper is sheesh: ", data);
 
+    console.log("hdhdhdh", data);
+
     return {
       code: 1,
       data: data,
       message: "data fetched sucessfully",
     };
+    
   } catch {
     return {
       code: 0,
@@ -80,7 +83,7 @@ export async function getAnalysis(id: string): Promise<GetPaperResult> {
 
       return {
         code: 0,
-        message: "An error has occured, please try again later...",
+        message: error.message,
       };
     }
     console.log("the paper  is: ", data);

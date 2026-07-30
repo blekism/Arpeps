@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react";
+
 import Link from "next/link";
-import { useRouter, useParams } from "next/navigation";
-import { getPaper, type Paper } from "@/backend/read";
+import { getAnalysis } from "@/backend/read";
 import ConceptGraph from "@/components/concept_graph";
 import { ArrowLeft } from "lucide-react";
 
-export default function VisualizerPage() {
-  const { id } = useParams<{ id: string }>();
-  const router = useRouter();
-  const [paper, setPaper] = useState<Paper | null>(null);
+import { PageProps } from "@/lib/types";
 
-  useEffect(() => {
-    const p = getPaper(id);
-    if (!p) router.push("/");
-    else setPaper(p);
-  }, [id]);
 
-  if (!paper) return null;
+export default async function VisualizerPage({params} : PageProps) {
+  const { id } = await params;
+  const paper = await getAnalysis(id);
+
+  console.log("paper", paper);
+
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
       <Link
-        href={`/checker/${paper.id}`}
+        href={`/checker/${paper.data?.paper_id}`}
         className="mb-4 inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3.5" />
@@ -37,7 +33,7 @@ export default function VisualizerPage() {
         </p>
       </header>
 
-      <ConceptGraph paper={paper} />
+      <ConceptGraph paper={paper.data!} />
     </main>
   );
 }

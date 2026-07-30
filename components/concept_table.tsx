@@ -24,9 +24,9 @@ export default function ConceptTable({ paper }: { paper: Paper }) {
             </tr>
           </thead>
           <tbody>
-            {paper.concept_relationships_tbl.map((c, i) => (
+            {paper.concept_relationships_tbl.map((c, key) => (
               <tr
-                key={i}
+                key={key}
                 className="border-b border-border last:border-0 hover:bg-panel-2/60"
               >
                 <td className="px-3 py-2 font-mono text-xs text-brand">

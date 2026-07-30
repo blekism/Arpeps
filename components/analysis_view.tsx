@@ -1,5 +1,5 @@
 import { CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
-import { CONCEPT_LABELS, type Paper } from "@/lib/types";
+import { Paper } from "@/lib/types";
 
 const ICON = {
   Cohesive: <CheckCircle2 className="size-4 text-emerald-400" />,
@@ -32,12 +32,10 @@ export default function AnalysisView({ paper }: { paper: Paper }) {
       </div>
 
       <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-panel">
-        {paper.cohesion_analysis_tbl.map((a) => (
-          <div
-            key={a.concepts_tbl.concept_name}
-            className="flex items-start gap-3 p-4"
-          >
-            <div className="mt-0.5">{ICON[a.cohesion_score]}</div>
+        
+        {paper.cohesion_analysis_tbl.map((a, key) => (
+          <div key={key} className="flex items-start gap-3 p-4">
+            <div className="mt-0.5">{ICON[a.cohesion_score as keyof typeof ICON]}</div>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-baseline gap-x-2">
                 <div className="text-sm font-medium">
