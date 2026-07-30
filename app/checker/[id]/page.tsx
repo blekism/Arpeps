@@ -12,12 +12,19 @@ import ErrorState from "@/components/error_state";
 export default async function Checker({ params }: PageProps) {
   const { id } = await params;
   const paper = await getAnalysis(id);
+  console.log("paper", paper);
 
-  // if (paper.code === 0) {
-  //   return <ErrorState />
+  // if (!paper) {
+  //   console.log("paper i found is: ", paper);
+  //   return <ErrorState />;
   // }
 
-  console.log("hhhh", paper);
+  // const md = await getMarkdown(paper.mdId);
+
+  if (paper.code === 0) {
+    return <ErrorState />;
+  }
+
   return (
     <>
       <main className="mx-auto max-w-5xl px-4 py-8">

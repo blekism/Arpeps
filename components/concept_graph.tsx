@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CONCEPT_LABELS, type ConceptKey,  type Paper } from "@/lib/types";
-// import {  type ConceptKey, type Paper } from "@/backend/read";
+import { CONCEPT_LABELS, type ConceptKey, type Paper } from "@/lib/types";
 
 type NodePos = { key: ConceptKey; x: number; y: number };
 

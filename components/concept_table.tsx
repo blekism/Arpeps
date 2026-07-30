@@ -1,4 +1,4 @@
-import { Paper } from "@/lib/types";
+import { type Paper } from "@/lib/types";
 
 // Supabase-like table view of concept connections.
 export default function ConceptTable({ paper }: { paper: Paper }) {
@@ -43,7 +43,7 @@ export default function ConceptTable({ paper }: { paper: Paper }) {
                         : "border-amber-500/40 text-amber-400"
                     }`}
                   >
-                    {c.kind === 1 ? "Actual" : "Theoratical"  }
+                    {c.kind === 1 ? "Actual" : "Theoratical"}
                   </span>
                 </td>
                 <td className="px-3 py-2">

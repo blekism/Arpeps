@@ -9,7 +9,8 @@ const ICON = {
 
 export default function AnalysisView({ paper }: { paper: Paper }) {
   const score = Math.round(
-    (paper.cohesion_analysis_tbl.filter((a) => a.cohesion_score === "cohesive").length /
+    (paper.cohesion_analysis_tbl.filter((a) => a.cohesion_score === "Cohesive")
+      .length /
       paper.cohesion_analysis_tbl.length) *
       100,
   );
@@ -40,6 +41,11 @@ export default function AnalysisView({ paper }: { paper: Paper }) {
                 <div className="text-sm font-medium">
                   {a.concepts_tbl.concept_name}
                 </div>
+                {/* <div className="text-xs text-muted-foreground">
+                  {a.answers.length === 0
+                    ? "answers nothing"
+                    : `answers ${a.answers.map((k) => CONCEPT_LABELS[k]).join(", ")}`}
+                </div> */}
               </div>
               <p className="mt-1 text-sm text-muted-foreground">{a.reason}</p>
             </div>

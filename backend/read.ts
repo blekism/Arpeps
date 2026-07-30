@@ -15,22 +15,27 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
   try {
     const { data, error } = await supabase
       .from("research_papers_tbl")
-      .select(`*, 
+      .select(
+        `*, 
         extracted_concepts_tbl(*, concepts_tbl(concept_name)), 
         concept_relationships_tbl(*, 
           from:concepts_tbl!from_concept(concept_name),
-          to:concepts_tbl!to_concept(concept_name)), 
-        cohesion_analysis_tbl(*, concepts_tbl(concept_name))`)
+          to:concepts_tbl!to_concept(concept_name)),
+        cohesion_analysis_tbl(*, concepts_tbl(concept_name))`,
+      )
       .order("created_at", { ascending: false })
       .eq("user_id", id);
 
     if (error) {
+      console.log("the paper is: ", error);
+
       return {
         code: 0,
         data: [],
         message: error.message,
       };
     }
+    // console.log("the paper is sheesh: ", data);
 
     console.log("hdhdhdh", data);
 
@@ -62,21 +67,26 @@ export async function getAnalysis(id: string): Promise<GetPaperResult> {
   try {
     const { data, error } = await supabase
       .from("research_papers_tbl")
-      .select(`*, 
+      .select(
+        `*, 
         extracted_concepts_tbl(*, concepts_tbl(concept_name)), 
         concept_relationships_tbl(*, 
           from:concepts_tbl!from_concept(concept_name),
-          to:concepts_tbl!to_concept(concept_name)), 
-        cohesion_analysis_tbl(*, concepts_tbl(concept_name))`)
+          to:concepts_tbl!to_concept(concept_name)),
+        cohesion_analysis_tbl(*, concepts_tbl(concept_name))`,
+      )
       .eq("paper_id", id)
       .maybeSingle();
 
     if (error) {
+      console.log("the paper error is: ", error);
+
       return {
         code: 0,
         message: error.message,
       };
     }
+    console.log("the paper  is: ", data);
 
     return {
       code: 1,
@@ -84,12 +94,16 @@ export async function getAnalysis(id: string): Promise<GetPaperResult> {
       message: "Paper retreived successfully",
     };
   } catch (error) {
+    console.log("the paper error is: ", error);
+
     return {
       code: 0,
       message: "An error has occured, please try again later...",
     };
   }
 }
+
+export async function getVisualizer(id: string) {}
 
 // read for visializer
 // read for paper
