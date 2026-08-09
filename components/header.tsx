@@ -8,6 +8,7 @@ import HeaderNav from "./header_nav";
 
 export default async function Header() {
   const supabase = await createClient();
+
   const userData = await supabase.auth.getUser();
 
   if (!userData.data.user) return;
@@ -15,7 +16,7 @@ export default async function Header() {
   return (
     <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/dashboard" className="flex items-center gap-2">
           <div className="grid size-6 place-items-center rounded bg-brand text-brand-foreground">
             <FileText className="size-3.5" />
           </div>
@@ -24,6 +25,7 @@ export default async function Header() {
 
         <nav className="flex items-center gap-1 text-sm">
           <HeaderNav />
+
           {userData && (
             <>
               <span className="mx-2 hidden text-xs text-muted-foreground sm:inline">
