@@ -34,7 +34,25 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT:
   // This refreshes the session if necessary.
-  await supabase.auth.getUser();
+  // await supabase.auth.getUser();
+
+  const {
+  data: { user },
+} = await supabase.auth.getUser();
+
+const pathname = request.nextUrl.pathname;
+
+const protectedRoutes = [
+  "/dashboard",
+];
+
+const isProtected = protectedRoutes.some(route =>
+  pathname.startsWith(route)
+);
+
+if (!user && isProtected) {
+  return NextResponse.redirect(new URL("/", request.url));
+}
 
   return response;
 }
