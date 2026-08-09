@@ -9,9 +9,9 @@ import HeaderNav from "./header_nav";
 export default async function Header() {
   const supabase = await createClient();
 
-  const userData = await supabase.auth.getUser();
+  const userData = await supabase.auth.getClaims();
 
-  if (!userData.data.user) return;
+  if (!userData.data?.claims.email) return;
 
   return (
     <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
@@ -29,7 +29,7 @@ export default async function Header() {
           {userData && (
             <>
               <span className="mx-2 hidden text-xs text-muted-foreground sm:inline">
-                {userData.data.user.email}
+                {userData.data.claims.email}
               </span>
               <Logout_Button />
             </>

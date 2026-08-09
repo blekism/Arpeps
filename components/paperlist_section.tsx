@@ -5,11 +5,11 @@ import { getAllPapers } from "@/backend/read";
 
 export default async function PaperListSection() {
   const supabase = await createClient();
-  const sessionData = await supabase.auth.getUser();
+  const sessionData = await supabase.auth.getClaims();
 
-  if (!sessionData.data.user) return null;
+  if (!sessionData.data?.claims.sub) return null;
 
-  const papers = await getAllPapers(sessionData.data.user.id);
+  const papers = await getAllPapers(sessionData.data?.claims.sub);
 
   if (papers.code === 0) {
     return <ErrorState />;
