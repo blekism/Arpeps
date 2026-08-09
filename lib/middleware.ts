@@ -36,23 +36,19 @@ export async function updateSession(request: NextRequest) {
   // This refreshes the session if necessary.
   // await supabase.auth.getUser();
 
-  const {
-  data: { user },
-} = await supabase.auth.getUser();
+  const { data, error } = await supabase.auth.getClaims();
 
-const pathname = request.nextUrl.pathname;
+  const pathname = request.nextUrl.pathname;
 
-const protectedRoutes = [
-  "/dashboard",
-];
+  const protectedRoutes = ["/dashboard", "/checker"];
 
-const isProtected = protectedRoutes.some(route =>
-  pathname.startsWith(route)
-);
+  const isProtected = protectedRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
 
-if (!user && isProtected) {
-  return NextResponse.redirect(new URL("/", request.url));
-}
+  if (!data && isProtected) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
   return response;
 }
