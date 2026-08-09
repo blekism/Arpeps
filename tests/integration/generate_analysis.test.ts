@@ -17,7 +17,7 @@ describe("generateAnalysis()", () => {
     expect(result).toHaveProperty("concept_connections");
     expect(result).toHaveProperty("cohesion_analysis");
 
-    expect(result.each_concepts).toMatchObject({
+    expect(result.data.each_concepts).toMatchObject({
       problem: expect.any(String),
       methodology: expect.any(String),
       solution: expect.any(String),
@@ -25,12 +25,16 @@ describe("generateAnalysis()", () => {
       result: expect.any(String),
     });
 
-    expect(Object.keys(result.concept_connections)).toHaveLength(6);
+    expect(Object.keys(result.data.concept_connections)).toHaveLength(6);
 
-    for (let i = 1; i <= Object.keys(result.concept_connections).length; i++) {
-      expect(result.concept_connections).toHaveProperty(`connection${i}`);
+    for (
+      let i = 1;
+      i <= Object.keys(result.data.concept_connections).length;
+      i++
+    ) {
+      expect(result.data.concept_connections).toHaveProperty(`connection${i}`);
 
-      expect(result.concept_connections[`connection${i}`]).toMatchObject({
+      expect(result.data.concept_connections[`connection${i}`]).toMatchObject({
         from: expect.any(Number),
         to: expect.any(Number),
         type: expect.any(Number),
@@ -39,50 +43,66 @@ describe("generateAnalysis()", () => {
       });
     }
 
-    expect(result.cohesion_analysis).toHaveProperty("overall_cohesion_score");
+    expect(result.data.cohesion_analysis).toHaveProperty(
+      "overall_cohesion_score",
+    );
 
-    for (let i = 1; i <= Object.keys(result.cohesion_analysis).length -1; i++) {
-      expect(result.cohesion_analysis).toHaveProperty(`cohesion_analysis${i}`);
+    for (
+      let i = 1;
+      i <= Object.keys(result.data.cohesion_analysis).length - 1;
+      i++
+    ) {
+      expect(result.data.cohesion_analysis).toHaveProperty(
+        `cohesion_analysis${i}`,
+      );
 
-      expect(result.cohesion_analysis[`cohesion_analysis${i}`]).toMatchObject({
+      expect(
+        result.data.cohesion_analysis[`cohesion_analysis${i}`],
+      ).toMatchObject({
         concept: expect.any(Number),
         cohesion_score: expect.any(String),
         reason: expect.any(String),
       });
     }
 
-        expect(result.cohesion_analysis.overall_cohesion_score).toEqual(
-            expect.any(String),
-        );
-    });
+    expect(result.data.cohesion_analysis.overall_cohesion_score).toEqual(
+      expect.any(String),
+    );
+  });
 
   it("return valid value types", async () => {
     const result = await generateAnalysis(markdown);
 
-    expect(typeof result.each_concepts.problem).toBe("string");
-    expect(typeof result.each_concepts.methodology).toBe("string");
-    expect(typeof result.each_concepts.solution).toBe("string");
-    expect(typeof result.each_concepts.literature).toBe("string");
-    expect(typeof result.each_concepts.result).toBe("string");
+    expect(typeof result.data.each_concepts.problem).toBe("string");
+    expect(typeof result.data.each_concepts.methodology).toBe("string");
+    expect(typeof result.data.each_concepts.solution).toBe("string");
+    expect(typeof result.data.each_concepts.literature).toBe("string");
+    expect(typeof result.data.each_concepts.result).toBe("string");
 
     for (
       let i = 1;
-      i <= Object.keys(result.cohesion_analysis).length - 1;
+      i <= Object.keys(result.data.cohesion_analysis).length - 1;
       i++
     ) {
-      expect(result.cohesion_analysis).toHaveProperty(`cohesion_analysis${i}`);
+      expect(result.data.cohesion_analysis).toHaveProperty(
+        `cohesion_analysis${i}`,
+      );
 
-      const analysis = result.cohesion_analysis[`cohesion_analysis${i}`];
+      const analysis = result.data.cohesion_analysis[`cohesion_analysis${i}`];
 
       expect(typeof analysis.concept).toBe("number");
       expect(typeof analysis.cohesion_score).toBe("string");
       expect(typeof analysis.reason).toBe("string");
     }
 
-    for (let i = 1; i <= Object.keys(result.concept_connections).length; i++) {
-      expect(result.concept_connections).toHaveProperty(`connection${i}`);
+    for (
+      let i = 1;
+      i <= Object.keys(result.data.concept_connections).length;
+      i++
+    ) {
+      expect(result.data.concept_connections).toHaveProperty(`connection${i}`);
 
-      const connection = result.concept_connections[`connection${i}`];
+      const connection = result.data.concept_connections[`connection${i}`];
 
       expect(typeof connection.from).toBe("number");
       expect(typeof connection.to).toBe("number");
@@ -94,7 +114,7 @@ describe("generateAnalysis()", () => {
       expect(connection.strength).toBeLessThanOrEqual(10);
     }
 
-    expect(typeof result.cohesion_analysis.overall_cohesion_score).toBe(
+    expect(typeof result.data.cohesion_analysis.overall_cohesion_score).toBe(
       "string",
     );
   });

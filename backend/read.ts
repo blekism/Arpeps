@@ -27,7 +27,7 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
       .eq("user_id", id);
 
     if (error) {
-      console.log("the paper is: ", error);
+      // console.log("the paper is: ", error);
 
       return {
         code: 0,
@@ -37,14 +37,13 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
     }
     // console.log("the paper is sheesh: ", data);
 
-    console.log("hdhdhdh", data);
+    // console.log("hdhdhdh", data);
 
     return {
       code: 1,
       data: data,
       message: "data fetched sucessfully",
     };
-    
   } catch {
     return {
       code: 0,
@@ -79,14 +78,14 @@ export async function getAnalysis(id: string): Promise<GetPaperResult> {
       .maybeSingle();
 
     if (error) {
-      console.log("the paper error is: ", error);
+      // console.log("the paper error is: ", error);
 
       return {
         code: 0,
         message: error.message,
       };
     }
-    console.log("the paper  is: ", data);
+    // console.log("the paper  is: ", data);
 
     return {
       code: 1,
@@ -94,7 +93,7 @@ export async function getAnalysis(id: string): Promise<GetPaperResult> {
       message: "Paper retreived successfully",
     };
   } catch (error) {
-    console.log("the paper error is: ", error);
+    // console.log("the paper error is: ", error);
 
     return {
       code: 0,
