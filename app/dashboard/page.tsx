@@ -1,21 +1,9 @@
 import UploadCard from "@/components/upload_card";
-import { getAllPapers } from "@/backend/read";
-import { createClient } from "@/lib/server";
-import ErrorState from "@/components/error_state";
-import PaperList from "@/components/paper_list";
+import { Suspense } from "react";
+import { PaperListSkeleton } from "@/components/dash_loading";
+import PaperListSection from "@/components/paperlist_section";
 
 export default async function Dashboard() {
-  const supabase = await createClient();
-
-  const sessionData = await supabase.auth.getUser();
-
-  if (!sessionData.data.user) return;
-
-  const user_id = sessionData.data.user.id;
-  const papers = await getAllPapers(user_id);
-  // console.log("the paper is: ", papers.);
-  console.log("the paper is sheesh: ", papers);
-
   return (
     <>
       <main className="mx-auto max-w-4xl px-4 py-10">
@@ -28,31 +16,10 @@ export default async function Dashboard() {
           </p>
         </div>
         <UploadCard />
-        {papers.code === 0 ? (
-          <ErrorState />
-        ) : (
-          <PaperList
-            papers={papers.data}
-            error={papers.code === 0 ? papers.message : null}
-          />
-        )}
+        <Suspense fallback={<PaperListSkeleton />}>
+          <PaperListSection />
+        </Suspense>
       </main>
     </>
   );
 }
-
-// useEffect(() => {
-//   async function getPapers() {
-//     try {
-//       const sessionData = await userSession();
-//       if (sessionData.code !== 1 || !sessionData.session) return;
-//       const userId = sessionData.session.user.id;
-//       if (!userId) return;
-//       const data = await getAllPapers(userId);
-//       setPapers(data.data ?? []);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-//   getPapers();
-// },[]);

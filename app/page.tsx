@@ -56,9 +56,7 @@ export default async function LoginPage() {
           <div className="grid size-7 place-items-center rounded bg-brand text-brand-foreground">
             <FileText className="size-4" />
           </div>
-          <span className="text-sm font-semibold tracking-tight">
-            PaperCheck
-          </span>
+          <span className="text-sm font-semibold tracking-tight">Arpeps</span>
         </div>
 
         <LoginHandlerForm />

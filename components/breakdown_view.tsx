@@ -12,9 +12,6 @@ export default function BreakdownView({ paper }: { paper: Paper }) {
             <div className="text-xs uppercase tracking-wide text-muted-foreground">
               {k.concepts_tbl.concept_name}
             </div>
-            <span className="rounded border border-border px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
-              {k.concepts_tbl.concept_name}
-            </span>
           </div>
           <p className="text-sm leading-relaxed text-foreground">
             {k.extracted_content}

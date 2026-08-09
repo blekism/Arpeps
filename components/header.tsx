@@ -19,12 +19,7 @@ export default async function Header() {
           <div className="grid size-6 place-items-center rounded bg-brand text-brand-foreground">
             <FileText className="size-3.5" />
           </div>
-          <span className="text-sm font-semibold tracking-tight">
-            PaperCheck
-          </span>
-          <span className="ml-2 rounded border border-border px-1.5 py-0.5 text-[10px] uppercase text-muted-foreground">
-            beta
-          </span>
+          <span className="text-sm font-semibold tracking-tight">Arpeps</span>
         </Link>
 
         <nav className="flex items-center gap-1 text-sm">

@@ -1,27 +1,12 @@
 import Link from "next/link";
-import { getAnalysis } from "@/backend/read";
-import { ArrowLeft, Eye, Network } from "lucide-react";
-import BreakdownView from "@/components/breakdown_view";
-import ConceptTable from "@/components/concept_table";
-import AnalysisView from "@/components/analysis_view";
+import { ArrowLeft } from "lucide-react";
+import CheckerSection from "@/components/checker_section";
 import { PageProps } from "@/lib/types";
-import ErrorState from "@/components/error_state";
+import { Suspense } from "react";
+import { CheckerSkeleton } from "@/components/checker_loading";
 
 export default async function Checker({ params }: PageProps) {
   const { id } = await params;
-  const paper = await getAnalysis(id);
-  console.log("paper", paper);
-
-  // if (!paper) {
-  //   console.log("paper i found is: ", paper);
-  //   return <ErrorState />;
-  // }
-
-  // const md = await getMarkdown(paper.mdId);
-
-  if (paper.code === 0) {
-    return <ErrorState />;
-  }
 
   return (
     <>
@@ -33,76 +18,10 @@ export default async function Checker({ params }: PageProps) {
           <ArrowLeft className="size-3.5" />
           Back to dashboard
         </Link>
-
-        <header className="mb-6 flex flex-wrap items-start justify-between gap-3">
-          <div className="min-w-0">
-            <h1 className="truncate text-2xl font-semibold tracking-tight">
-              {paper.data?.paper_id}
-            </h1>
-            <p className="mt-1 text-xs text-muted-foreground">
-              {/* {paper.data?.paper_id} · {paper.data?.paper_id} pages · uploaded{" "} */}
-              {new Date(paper.data!.created_at).toLocaleString()}
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Link
-              href={`/checker/paper/${paper.data?.paper_id}`}
-              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-panel px-3 py-1.5 text-xs transition hover:bg-panel-2"
-            >
-              <Eye className="size-3.5" /> View paper
-            </Link>
-            <Link
-              href={`/checker/visualizer/${paper.data?.paper_id}`}
-              className="inline-flex items-center gap-1.5 rounded-md bg-brand px-3 py-1.5 text-xs font-medium text-brand-foreground transition hover:opacity-90"
-            >
-              <Network className="size-3.5" /> Open visualizer
-            </Link>
-          </div>
-        </header>
-
-        <div className="space-y-8">
-          <Section
-            title="Extracted concepts"
-            caption="Problem, method, solution, related work, results."
-          >
-            <BreakdownView paper={paper.data!} />
-          </Section>
-
-          <Section
-            title="Concept connections"
-            caption="How concepts reference each other. Theoretical rows mark missing links."
-          >
-            <ConceptTable paper={paper.data!} />
-          </Section>
-
-          <Section
-            title="Cohesion analysis"
-            caption="Does each concept actually answer the others?"
-          >
-            <AnalysisView paper={paper.data!} />
-          </Section>
-        </div>
+        <Suspense fallback={<CheckerSkeleton />}>
+          <CheckerSection id={id} />
+        </Suspense>
       </main>
     </>
-  );
-}
-
-function Section({
-  title,
-  caption,
-  children,
-}: {
-  title: string;
-  caption: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section>
-      <div className="mb-3">
-        <h2 className="text-sm font-semibold tracking-tight">{title}</h2>
-        <p className="text-xs text-muted-foreground">{caption}</p>
-      </div>
-      {children}
-    </section>
   );
 }
