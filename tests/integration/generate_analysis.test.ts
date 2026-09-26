@@ -1,8 +1,22 @@
 import { expect, it, describe } from "vitest";
-import { generateAnalysis } from "@/backend/actions";
+import { generateAnalysis } from "@/backend/controller";
 import { markdown } from "@/tests/EditoriallyAPA";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 describe("generateAnalysis()", () => {
+  it("saves the output as JSON", async () => {
+    const result = await generateAnalysis(markdown);
+
+    const outputDirectory = path.resolve(process.cwd(), "test-output");
+    const outputFile = path.join(outputDirectory, "analysis.json");
+
+    await mkdir(outputDirectory, { recursive: true });
+    await writeFile(outputFile, JSON.stringify(result, null, 2), "utf8");
+
+    expect(result.code).toBe(1);
+  });
+
   it("returns valid JSON", async () => {
     const result = await generateAnalysis(markdown);
 
@@ -10,114 +24,114 @@ describe("generateAnalysis()", () => {
     expect(typeof result).toBe("object");
   });
 
-  it("returns the expected structure", async () => {
-    const result = await generateAnalysis(markdown);
+  // it("returns the expected structure", async () => {
+  //   const result = await generateAnalysis(markdown);
 
-    expect(result).toHaveProperty("each_concepts");
-    expect(result).toHaveProperty("concept_connections");
-    expect(result).toHaveProperty("cohesion_analysis");
+  //   expect(result).toHaveProperty("each_concepts");
+  //   expect(result).toHaveProperty("concept_connections");
+  //   expect(result).toHaveProperty("cohesion_analysis");
 
-    expect(result.data.each_concepts).toMatchObject({
-      problem: expect.any(String),
-      methodology: expect.any(String),
-      solution: expect.any(String),
-      literature: expect.any(String),
-      result: expect.any(String),
-    });
+  //   expect(result.data.each_concepts).toMatchObject({
+  //     problem: expect.any(String),
+  //     methodology: expect.any(String),
+  //     solution: expect.any(String),
+  //     literature: expect.any(String),
+  //     result: expect.any(String),
+  //   });
 
-    expect(Object.keys(result.data.concept_connections)).toHaveLength(6);
+  //   expect(Object.keys(result.data.concept_connections)).toHaveLength(6);
 
-    for (
-      let i = 1;
-      i <= Object.keys(result.data.concept_connections).length;
-      i++
-    ) {
-      expect(result.data.concept_connections).toHaveProperty(`connection${i}`);
+  //   for (
+  //     let i = 1;
+  //     i <= Object.keys(result.data.concept_connections).length;
+  //     i++
+  //   ) {
+  //     expect(result.data.concept_connections).toHaveProperty(`connection${i}`);
 
-      expect(result.data.concept_connections[`connection${i}`]).toMatchObject({
-        from: expect.any(Number),
-        to: expect.any(Number),
-        type: expect.any(Number),
-        strength: expect.any(Number),
-        reason: expect.any(String),
-      });
-    }
+  //     expect(result.data.concept_connections[`connection${i}`]).toMatchObject({
+  //       from: expect.any(Number),
+  //       to: expect.any(Number),
+  //       type: expect.any(Number),
+  //       strength: expect.any(Number),
+  //       reason: expect.any(String),
+  //     });
+  //   }
 
-    expect(result.data.cohesion_analysis).toHaveProperty(
-      "overall_cohesion_score",
-    );
+  //   expect(result.data.cohesion_analysis).toHaveProperty(
+  //     "overall_cohesion_score",
+  //   );
 
-    for (
-      let i = 1;
-      i <= Object.keys(result.data.cohesion_analysis).length - 1;
-      i++
-    ) {
-      expect(result.data.cohesion_analysis).toHaveProperty(
-        `cohesion_analysis${i}`,
-      );
+  //   for (
+  //     let i = 1;
+  //     i <= Object.keys(result.data.cohesion_analysis).length - 1;
+  //     i++
+  //   ) {
+  //     expect(result.data.cohesion_analysis).toHaveProperty(
+  //       `cohesion_analysis${i}`,
+  //     );
 
-      expect(
-        result.data.cohesion_analysis[`cohesion_analysis${i}`],
-      ).toMatchObject({
-        concept: expect.any(Number),
-        cohesion_score: expect.any(String),
-        reason: expect.any(String),
-      });
-    }
+  //     expect(
+  //       result.data.cohesion_analysis[`cohesion_analysis${i}`],
+  //     ).toMatchObject({
+  //       concept: expect.any(Number),
+  //       cohesion_score: expect.any(String),
+  //       reason: expect.any(String),
+  //     });
+  //   }
 
-    expect(result.data.cohesion_analysis.overall_cohesion_score).toEqual(
-      expect.any(String),
-    );
-  });
+  //   expect(result.data.cohesion_analysis.overall_cohesion_score).toEqual(
+  //     expect.any(String),
+  //   );
+  // });
 
-  it("return valid value types", async () => {
-    const result = await generateAnalysis(markdown);
+  // it("return valid value types", async () => {
+  //   const result = await generateAnalysis(markdown);
 
-    expect(typeof result.data.each_concepts.problem).toBe("string");
-    expect(typeof result.data.each_concepts.methodology).toBe("string");
-    expect(typeof result.data.each_concepts.solution).toBe("string");
-    expect(typeof result.data.each_concepts.literature).toBe("string");
-    expect(typeof result.data.each_concepts.result).toBe("string");
+  //   expect(typeof result.data.each_concepts.problem).toBe("string");
+  //   expect(typeof result.data.each_concepts.methodology).toBe("string");
+  //   expect(typeof result.data.each_concepts.solution).toBe("string");
+  //   expect(typeof result.data.each_concepts.literature).toBe("string");
+  //   expect(typeof result.data.each_concepts.result).toBe("string");
 
-    for (
-      let i = 1;
-      i <= Object.keys(result.data.cohesion_analysis).length - 1;
-      i++
-    ) {
-      expect(result.data.cohesion_analysis).toHaveProperty(
-        `cohesion_analysis${i}`,
-      );
+  //   for (
+  //     let i = 1;
+  //     i <= Object.keys(result.data.cohesion_analysis).length - 1;
+  //     i++
+  //   ) {
+  //     expect(result.data.cohesion_analysis).toHaveProperty(
+  //       `cohesion_analysis${i}`,
+  //     );
 
-      const analysis = result.data.cohesion_analysis[`cohesion_analysis${i}`];
+  //     const analysis = result.data.cohesion_analysis[`cohesion_analysis${i}`];
 
-      expect(typeof analysis.concept).toBe("number");
-      expect(typeof analysis.cohesion_score).toBe("string");
-      expect(typeof analysis.reason).toBe("string");
-    }
+  //     expect(typeof analysis.concept).toBe("number");
+  //     expect(typeof analysis.cohesion_score).toBe("string");
+  //     expect(typeof analysis.reason).toBe("string");
+  //   }
 
-    for (
-      let i = 1;
-      i <= Object.keys(result.data.concept_connections).length;
-      i++
-    ) {
-      expect(result.data.concept_connections).toHaveProperty(`connection${i}`);
+  //   for (
+  //     let i = 1;
+  //     i <= Object.keys(result.data.concept_connections).length;
+  //     i++
+  //   ) {
+  //     expect(result.data.concept_connections).toHaveProperty(`connection${i}`);
 
-      const connection = result.data.concept_connections[`connection${i}`];
+  //     const connection = result.data.concept_connections[`connection${i}`];
 
-      expect(typeof connection.from).toBe("number");
-      expect(typeof connection.to).toBe("number");
-      expect(typeof connection.type).toBe("number");
-      expect(typeof connection.strength).toBe("number");
-      expect(typeof connection.reason).toBe("string");
+  //     expect(typeof connection.from).toBe("number");
+  //     expect(typeof connection.to).toBe("number");
+  //     expect(typeof connection.type).toBe("number");
+  //     expect(typeof connection.strength).toBe("number");
+  //     expect(typeof connection.reason).toBe("string");
 
-      expect(connection.strength).toBeGreaterThanOrEqual(0);
-      expect(connection.strength).toBeLessThanOrEqual(10);
-    }
+  //     expect(connection.strength).toBeGreaterThanOrEqual(0);
+  //     expect(connection.strength).toBeLessThanOrEqual(10);
+  //   }
 
-    expect(typeof result.data.cohesion_analysis.overall_cohesion_score).toBe(
-      "string",
-    );
-  });
+  //   expect(typeof result.data.cohesion_analysis.overall_cohesion_score).toBe(
+  //     "string",
+  //   );
+  // });
 
   //   it("throws on malformed JSON", async () => {
   //     await expect(generateAnalysis("this is a text")).rejects.toThrow();

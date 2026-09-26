@@ -1,4 +1,3 @@
-import { createClient } from "../lib/server";
 import { Paper, GetAllPaperResult, GetPaperResult } from "@/lib/types";
 
 export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
@@ -35,7 +34,7 @@ export async function getAllPapers(id: string): Promise<GetAllPaperResult> {
         message: error.message,
       };
     }
-    // console.log("the paper is sheesh: ", data);
+    console.log("the paper is sheesh: ", data);
 
     // console.log("hdhdhdh", data);
 

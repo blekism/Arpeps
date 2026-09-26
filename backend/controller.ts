@@ -1,11 +1,11 @@
 "use server";
 
-import { register, login } from "@/services/auth_server";
+import { register, login } from "@/services/auth.service";
 import { redirect } from "next/navigation";
-import { Paper } from "@/lib/types";
-import { createClient } from "../lib/server";
+import { GeneratedAnalysis, Paper } from "@/lib/types";
 import { ai } from "@/lib/gemini";
 import { CreatePaperRes, ResearchPaperData } from "@/lib/types";
+import { insertPaper, uploadAnalysis } from "@/services/paper.service";
 
 export async function Register(_previousState: any, formdata: FormData) {
   const email = formdata.get("email") as string;
@@ -44,10 +44,10 @@ export async function Register(_previousState: any, formdata: FormData) {
     };
   }
 
-  if (data.code !== 1) {
+  if (data.status === 500) {
     return {
       success: false,
-      message: data.error?.message,
+      message: data.data.error,
     };
   }
 
@@ -77,11 +77,11 @@ export async function Login(_previousState: any, formdata: FormData) {
     };
   }
 
-  if (data.code !== 1) {
+  if (data.status !== 200) {
     console.log(data, "in if else");
     return {
       success: false,
-      message: data.error?.message,
+      message: data.data.error,
     };
   }
   console.log(data, "in redirect");
@@ -90,7 +90,7 @@ export async function Login(_previousState: any, formdata: FormData) {
 
 export async function generateAnalysis(markdown: string) {
   const response = await ai.models.generateContent({
-    model: "gemini-3.6-flash",
+    model: "gemini-3.5-flash-lite",
     contents: `
         ## SECURITY GUIDELINES
 
@@ -196,43 +196,58 @@ export async function generateAnalysis(markdown: string) {
 
         Example Format: 
         {
-          "each_concepts": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "",
-            "5": ""
-          },
-          "concept_connections": {
-            "connection1": {
-                "from": 1,
-                "to": 3,
-                "type": 0,
+          "overall_cohesion_score": "40%" 
+          "extracted_concepts": [
+             {
+                "extracted_content: "string of content here" ",
+                "concept_id: 1"
+             },
+             {
+                "extracted_content: "string of content here" ",
+                "concept_id: 2"
+             },
+             {
+                "extracted_content: "string of content here" ",
+                "concept_id: 3"
+             },
+             {
+                "extracted_content: "string of content here" ",
+                "concept_id: 4"
+             },
+             {
+                "extracted_content: "string of content here" ",
+                "concept_id: 5"
+             },
+          ],
+          "concept_relationships": [
+             {
+                "from_concept": 1,
+                "to_concept": 3,
+                "kind": 0,
                 "strength": 9.8,
                 "reason": ""
             },
-            "connection2": {
-                "from": 1,
-                "to": 5,
-                "type": 1,
+             {
+                "from_concept": 1,
+                "to_concept": 5,
+                "kind": 1,
                 "strength": 0.3,
                 "reason": ""
-            },
-          }, 
-          "cohesion_analysis": {
-            "cohesion_analysis1": {
-                "concept": 1,
+              },
+            ], 
+          "cohesion_analysis": [
+             {
+                "concept_id": 1,
                 "cohesion_score": "",
                 "reason": "",
             },
-            "cohesion_analysis2": {
-                "concept": 2,
+             {
+                "concept_id": 2,
                 "cohesion_score": "",
                 "reason": "",
-            },
-        
-            "overall_cohesion_score": "40%" 
-            }
+              },
+            ],
+
         }
                 
         If any of these concepts
@@ -274,64 +289,60 @@ export async function generateAnalysis(markdown: string) {
   }
 }
 
-export async function saveAnalysis_DB(paperId: string, analysis_data: string) {
-  if (!analysis_data) {
+export async function saveAnalysis_DB(
+  paperId: string,
+  extractedConcepts: GeneratedAnalysis["extracted_concepts"],
+  conceptRelationships: GeneratedAnalysis["concept_relationships"],
+  cohesionAnalysis: GeneratedAnalysis["cohesion_analysis"],
+) {
+  if (!extractedConcepts || !conceptRelationships || !cohesionAnalysis) {
     throw new Error("No analysis data found");
   }
 
-  const supabase = await createClient();
+  try {
+    const data = await uploadAnalysis(
+      paperId,
+      extractedConcepts,
+      conceptRelationships,
+      cohesionAnalysis,
+    );
 
-  const { error } = await supabase.rpc("save_analysis", {
-    p_paper_id: paperId,
-    p_analysis: analysis_data,
-  });
-
-  if (error) {
     return {
-      code: 0,
-      message: "An error has occurred. Please try again later",
+      status: data.status,
+      message: data.message,
+    };
+  } catch (error) {
+    console.log(error);
+
+    return {
+      status: 500,
+      message: error instanceof Error ? error.message : "Something went wrong",
     };
   }
-
-  return {
-    code: 1,
-    message: "Analysis saved successfully",
-  };
 }
 
 export async function createPaperRecord(
-  userId: string,
   content: string,
 ): Promise<CreatePaperRes> {
-  if (!userId || !content) {
-    throw new Error("An error has occurred. Please try again later");
+  if (!content) {
+    throw new Error("Content is missing cuhhh");
   }
 
-  const supabase = await createClient();
+  try {
+    const data = await insertPaper(content);
 
-  const { data, error } = await supabase
-    .from("research_papers_tbl")
-    .insert({
-      user_id: userId,
-      content: content,
-      overall_cohesion_score: "0%",
-    })
-    .select()
-    .single();
-
-  if (error) {
-    console.log(error);
     return {
-      code: 0,
-      message: "An error has occurred. Please try again latir",
+      status: data.status,
+      message: data.message,
+    };
+  } catch (error) {
+    console.log(error);
+
+    return {
+      status: 500,
+      message: error instanceof Error ? error.message : "Something went wrong",
     };
   }
-  console.log("data is: ", data);
-  return {
-    code: 1,
-    message: "success",
-    data: data as ResearchPaperData,
-  };
 }
 
 export async function deletePaperInDB(id: string) {
@@ -343,9 +354,9 @@ export async function PaperProcessWrapper(content: string, uploader: string) {
   let paper;
 
   try {
-    paper = await createPaperRecord(uploader, content);
+    paper = await createPaperRecord(content);
 
-    if (paper.code === 0) {
+    if (paper.status !== 200) {
       return {
         code: 0,
         message: "Error creating a record",
@@ -365,12 +376,16 @@ export async function PaperProcessWrapper(content: string, uploader: string) {
       };
     }
 
+    const analysisData = analysis.data as GeneratedAnalysis;
+
     const saveAnalysis = await saveAnalysis_DB(
-      paper.data?.paper_id!,
-      analysis.data,
+      paper.message,
+      analysisData.extracted_concepts,
+      analysisData.concept_relationships,
+      analysisData.cohesion_analysis,
     );
 
-    if (saveAnalysis.code === 0) {
+    if (saveAnalysis.status !== 200) {
       if (paper) {
         console.error("hehe");
         // await deletePaperInDB(paper);

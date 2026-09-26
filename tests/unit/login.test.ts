@@ -1,5 +1,5 @@
 import { expect, it, describe, vi } from "vitest";
-import * as auth from "@/services/auth_server";
+import * as auth from "@/services/auth.service";
 
 const { mockRedirect, redirectError } = vi.hoisted(() => {
   const redirectError = new Error("NEXT_REDIRECT");

@@ -5,6 +5,8 @@ import { Loader2 } from "lucide-react";
 import { Register } from "@/backend/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { getCsrfToken } from "@/backend/api";
+import { ensureCsrfToken } from "@/services/auth.service";
 
 const initialState = {
   success: false,
@@ -17,6 +19,10 @@ export default function RegisterHandlerForm() {
   const [password, setPassword] = useState("");
   const [state, formAction, pending] = useActionState(Register, initialState);
   const router = useRouter();
+
+  useEffect(() => {
+    ensureCsrfToken();
+  }, []);
 
   useEffect(() => {
     if (!state.message) return;

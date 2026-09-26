@@ -1,12 +1,13 @@
-import { AuthError, Session, User } from "@supabase/auth-js";
-
 export type Server_Res = {
-  code: number;
-  data?: {
-    user: User | null;
-    session: Session | null;
+  status: number;
+  data: {
+    id?: string;
+    email?: string;
+    error?: string;
+    status?: string;
+    paper?: Paper;
+    papers?: Paper[];
   };
-  error?: AuthError | null;
 };
 
 export type Session_Response = {
@@ -37,7 +38,7 @@ export type Concepts = {
   created_at: string;
   extracted_concept_id: string;
   extracted_content: string;
-  paper_id: string; 
+  paper_id: string;
 };
 
 export type Connection = {
@@ -77,7 +78,7 @@ export type Paper = {
   overall_cohesion_score: string;
   paper_id: string;
   user_id: string;
-}
+};
 
 export type GetAllPaperResult = {
   code: number;
@@ -92,9 +93,8 @@ export type GetPaperResult = {
 };
 
 export interface CreatePaperRes {
-  code: number;
+  status: number;
   message: string;
-  data?: ResearchPaperData;
 }
 
 export interface ResearchPaperData {
@@ -104,3 +104,23 @@ export interface ResearchPaperData {
   content: string;
   overall_cohesion_score: string;
 }
+
+export type GeneratedAnalysis = {
+  overall_cohesion_score: string;
+  extracted_concepts: {
+    extracted_content: string;
+    concept_id: number;
+  }[];
+  concept_relationships: {
+    from_concept: number;
+    to_concept: number;
+    kind: number;
+    strength: number;
+    reason: string;
+  }[];
+  cohesion_analysis: {
+    concept_id: number;
+    cohesion_score: string;
+    reason: string;
+  }[];
+};
