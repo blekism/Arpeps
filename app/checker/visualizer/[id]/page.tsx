@@ -1,18 +1,15 @@
-
 import Link from "next/link";
-import { getAnalysis } from "@/backend/read";
+import { getAnalysis } from "@/backend/read.controller";
 import ConceptGraph from "@/components/concept_graph";
 import { ArrowLeft } from "lucide-react";
 
 import { PageProps } from "@/lib/types";
 
-
-export default async function VisualizerPage({params} : PageProps) {
+export default async function VisualizerPage({ params }: PageProps) {
   const { id } = await params;
   const paper = await getAnalysis(id);
 
   console.log("paper", paper);
-
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">

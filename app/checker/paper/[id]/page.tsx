@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { PageProps } from "@/lib/types";
-import { getAnalysis } from "@/backend/read";
+import { getAnalysis } from "@/backend/read.controller";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export default async function ViewerPage({ params }: PageProps) {
-    const { id } = await params;
-    const paper = await getAnalysis(id);
+  const { id } = await params;
+  const paper = await getAnalysis(id);
 
-    console.log("paperr", paper);
+  console.log("paperr", paper);
 
   // useEffect(() => {
   //   const p = getPaper(id);
@@ -30,7 +30,9 @@ export default async function ViewerPage({ params }: PageProps) {
       </Link>
 
       <header className="mb-4">
-        <h1 className="text-xl font-semibold tracking-tight">{paper.data?.paper_id}</h1>
+        <h1 className="text-xl font-semibold tracking-tight">
+          {paper.data?.paper_id}
+        </h1>
         {/* <p className="text-xs text-muted-foreground">{paper.filename}</p> */}
       </header>
 

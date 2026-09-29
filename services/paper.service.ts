@@ -73,3 +73,67 @@ export async function deletePaper(paper_id: string) {
     message: message,
   };
 }
+
+export async function getPapers() {
+  const res = await apiFetch(`${API_URL}/papers/mypapers`);
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? "Request failed");
+  }
+
+  const message = await res.json();
+
+  return {
+    status: res.status,
+    data: message,
+  };
+}
+
+export async function getSinglePaper(id: string) {
+  const res = await apiFetch(`${API_URL}/papers/apaper/${id}`);
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? "Request failed");
+  }
+
+  const message = await res.json();
+
+  return {
+    status: res.status,
+    data: message,
+  };
+}
+
+export async function getMap(id: string) {
+  const res = await apiFetch(`${API_URL}/papers/amap/${id}`);
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? "Request failed");
+  }
+
+  const message = await res.json();
+
+  return {
+    status: res.status,
+    data: message,
+  };
+}
+
+export async function printPaper(id: string) {
+  const res = await apiFetch(`${API_URL}/papers/acontent/${id}`);
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? "Request failed");
+  }
+
+  const message = await res.json();
+
+  return {
+    status: res.status,
+    data: message,
+  };
+}

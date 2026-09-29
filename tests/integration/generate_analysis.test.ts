@@ -1,5 +1,5 @@
 import { expect, it, describe } from "vitest";
-import { generateAnalysis } from "@/backend/controller";
+import { generateAnalysis } from "@/backend/insert.controller";
 import { markdown } from "@/tests/EditoriallyAPA";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";

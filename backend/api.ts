@@ -85,6 +85,3 @@ export async function apiFetch(
 
   return res;
 }
-
-// fetch() - use kapag walang requireAuth sa endpoint sa backend
-// apiFetch()

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Eye, Network } from "lucide-react";
-import { getAnalysis } from "@/backend/read";
+import { getAnalysis } from "@/backend/read.controller";
 import ErrorState from "./error_state";
 import BreakdownView from "./breakdown_view";
 import ConceptTable from "./concept_table";

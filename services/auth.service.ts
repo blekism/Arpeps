@@ -1,5 +1,5 @@
 import { apiFetch, getCsrfToken } from "@/backend/api";
-import { Paper, Server_Res, Session_Response } from "@/lib/types";
+import { Server_Res } from "@/lib/types";
 
 // export type User = { id: string; email: string; name: string };
 
@@ -64,8 +64,4 @@ export async function ensureCsrfToken() {
   if (!getCsrfToken()) {
     await fetch(`${API_URL}/csrf-token`, { credentials: "include" });
   }
-}
-
-export async function logout() {
-  return apiFetch("/auth/logout", { method: "POST" }); // requireAuth applies here — use apiFetch
 }

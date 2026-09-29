@@ -10,12 +10,6 @@ export type Server_Res = {
   };
 };
 
-export type Session_Response = {
-  code: number;
-  message: string;
-  session?: Session | null;
-};
-
 export interface PageProps {
   params: Promise<{
     id: string;
