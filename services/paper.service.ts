@@ -75,7 +75,7 @@ export async function deletePaper(paper_id: string) {
 }
 
 export async function getPapers() {
-  const res = await apiFetch(`${API_URL}/papers/mypapers`);
+  const res = await apiFetch(`papers/mypapers`);
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));

@@ -3,15 +3,14 @@ import { FileText } from "lucide-react";
 // import { usePathname} from "next/navigation";
 // import { userSession } from "@/services/auth_server";
 import Logout_Button from "@/components/logout_button";
-import { createClient } from "@/lib/server";
 import HeaderNav from "./header_nav";
 
 export default async function Header() {
-  const supabase = await createClient();
+  // const supabase = await createClient();
 
-  const userData = await supabase.auth.getClaims();
+  // const userData = await supabase.auth.getClaims();
 
-  if (!userData.data?.claims.email) return;
+  // if (!userData.data?.claims.email) return;
 
   return (
     <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
@@ -26,14 +25,15 @@ export default async function Header() {
         <nav className="flex items-center gap-1 text-sm">
           <HeaderNav />
 
-          {userData && (
-            <>
-              <span className="mx-2 hidden text-xs text-muted-foreground sm:inline">
-                {userData.data.claims.email}
-              </span>
-              <Logout_Button />
-            </>
-          )}
+          {/* {userData && ( */}
+          <>
+            <span className="mx-2 hidden text-xs text-muted-foreground sm:inline">
+              {/* {userData.data.claims.email || "email@gmail.com"} */}
+              email@gmail.com
+            </span>
+            <Logout_Button />
+          </>
+          {/* )} */}
         </nav>
       </div>
     </header>

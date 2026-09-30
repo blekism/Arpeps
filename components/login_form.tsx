@@ -23,10 +23,11 @@ export default function LoginHandlerForm() {
 
     if (state.success) {
       toast.success(state.message);
+      router.replace("/dashboard");
     } else {
       toast.error(state.message);
     }
-  }, [state]);
+  }, [state, router]);
 
   if (pending) {
     return (

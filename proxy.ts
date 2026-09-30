@@ -1,16 +1,38 @@
-import { type NextRequest } from "next/server";
-import { updateSession } from "@/lib/middleware";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export async function proxy(request: NextRequest) {
-  const start = Date.now();
-  const response = await updateSession(request);
-  console.log(`middleware: ${Date.now() - start}ms`, request.nextUrl.pathname);
-  return response;
+const PROTECTED_PATHS = [
+  "/checker",
+  "/dashboard",
+  "/checker/:id",
+  "/checker/paper/:id",
+  "/checker/visualizer/:id",
+];
+
+const AUTH_PATHS = ["/login", "/register"];
+
+export function proxy(request: NextRequest) {
+  const accessToken = request.cookies.get("accessToken");
+  const { pathname } = request.nextUrl;
+
+  const isProtected = PROTECTED_PATHS.some((p) =>
+    request.nextUrl.pathname.startsWith(p),
+  );
+  const isAuthPage = pathname === "/" || pathname.startsWith("/register");
+
+  if (isProtected && !accessToken) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (isAuthPage && accessToken) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
+    "/dashboard",
     "/checker/:path*",
     // add other protected route prefixes here
   ],

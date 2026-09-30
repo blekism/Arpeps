@@ -2,7 +2,7 @@
 
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { logout } from "@/services/auth_client";
+import { logout } from "@/services/auth.service";
 
 export default function Logout_Button() {
   const router = useRouter();

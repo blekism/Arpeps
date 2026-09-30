@@ -15,10 +15,10 @@ export default async function Dashboard() {
             A first-layer cohesion check before you print or submit your paper.
           </p>
         </div>
-        <UploadCard />
-        <Suspense fallback={<PaperListSkeleton />}>
-          <PaperListSection />
-        </Suspense>
+        {/* <UploadCard /> */}
+        {/* <Suspense fallback={<PaperListSkeleton />}> */}
+        <PaperListSection />
+        {/* </Suspense> */}
       </main>
     </>
   );

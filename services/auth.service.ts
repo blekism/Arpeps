@@ -35,6 +35,26 @@ export async function register(
   };
 }
 
+export async function logout() {
+  const res = await fetch(`${API_URL}/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? "Request failed");
+  }
+
+  return {
+    status: res.status,
+    data: res.json() as any,
+  };
+}
+
 export async function login(
   email: string,
   password: string,
@@ -54,9 +74,11 @@ export async function login(
 
   if (!res.ok) throw new Error((await res.json()).error ?? "Login failed");
 
+  const message = await res.json();
+
   return {
     status: res.status,
-    data: res.json() as any,
+    data: message,
   };
 }
 
@@ -65,3 +87,5 @@ export async function ensureCsrfToken() {
     await fetch(`${API_URL}/csrf-token`, { credentials: "include" });
   }
 }
+
+("http://localhost:3000/api/csrf-token");

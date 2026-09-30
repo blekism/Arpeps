@@ -1,4 +1,3 @@
-export const markdown = `
 
 # **CHAPTER I**
 
@@ -1113,4 +1112,4 @@ Spillane, B., Lawless, S., & Wade, V. (2020). The Impact of Increasing and ㅤ�
 Spillane, B., Lawless, S., & Wade, V. (2018). Increasing and Decreasing Perceived ㅤㅤㅤBias by Distorting the Quality of News Website Design. _Electronic Workshops_ ㅤㅤㅤ*in Computing*. [https://doi.org/10.14236/ewic/hci2018.61](https://doi.org/10.14236/ewic/hci2018.61)  
 Tran, M., Zhang, Y., & Soleymani, M. (2020). _Towards A Friendly Online Community:_ ㅤㅤㅤ*An Unsupervised Style Transfer Framework for Profanity Redaction*. ㅤㅤㅤArXiv.org.[https://arxiv.org/abs/2011.00403](https://arxiv.org/abs/2011.00403)  
 Webiny Inc.. (2025). _Streamlined multi-tenancy management with Webiny_ \[Webpage\]. ㅤㅤㅤRetrieved October 21, 2025, from ㅤㅤㅤ[https://www.webiny.com/features/multi-tenancy-site-management](https://www.webiny.com/features/multi-tenancy-site-management?utm_source=chatgpt.com)  
-Wobbrock, J. O., Hsu, A. K., Burger, M. A., & Magee, M. J. (2019). Isolating the ㅤㅤㅤEffects of Web Page Visual Appearance on the Perceived Credibility of Online ㅤㅤㅤNews among College Students. _Proceedings of the 30th ACM Conference on_ ㅤㅤㅤ*Hypertext and Social Media*. [https://doi.org/10.1145/3342220.3343663](https://doi.org/10.1145/3342220.3343663)`;
+Wobbrock, J. O., Hsu, A. K., Burger, M. A., & Magee, M. J. (2019). Isolating the ㅤㅤㅤEffects of Web Page Visual Appearance on the Perceived Credibility of Online ㅤㅤㅤNews among College Students. _Proceedings of the 30th ACM Conference on_ ㅤㅤㅤ*Hypertext and Social Media*. [https://doi.org/10.1145/3342220.3343663](https://doi.org/10.1145/3342220.3343663)

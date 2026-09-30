@@ -5,7 +5,6 @@ import { Loader2 } from "lucide-react";
 import { Register } from "@/backend/insert.controller";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { getCsrfToken } from "@/backend/api";
 
 const initialState = {
   success: false,
