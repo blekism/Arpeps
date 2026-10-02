@@ -23,6 +23,7 @@ export default function RegisterHandlerForm() {
 
     if (state.success) {
       toast.success(state.message);
+      router.replace("/");
     } else {
       toast.error(state.message);
     }
@@ -77,8 +78,6 @@ export default function RegisterHandlerForm() {
           required
           name="password"
         />
-
-        {/* <input type="hidden" name="mode" value={mode} /> REFERENCE FOR ADDTION OF MORE DATA */}
 
         <button
           type="submit"

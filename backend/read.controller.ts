@@ -102,7 +102,7 @@ export async function getMarkdown(id: string) {
   } catch (error) {
     return {
       code: 0,
-      data: [],
+      data: {},
       message:
         error instanceof Error
           ? error.message

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Eye, Network } from "lucide-react";
 import { getAnalysis } from "@/backend/read.controller";
@@ -5,15 +8,38 @@ import ErrorState from "./error_state";
 import BreakdownView from "./breakdown_view";
 import ConceptTable from "./concept_table";
 import AnalysisView from "./analysis_view";
+import { Paper } from "@/lib/types";
+import { toast } from "sonner";
 
 interface CheckerProps {
   id: string;
 }
 
-export default async function CheckerSection({ id }: CheckerProps) {
-  const paper = await getAnalysis(id);
+export default function CheckerSection({ id }: CheckerProps) {
+  const [analysis, setAnalaysis] = useState<Paper | null>(null);
+  const [code, setCode] = useState<number | null>(null);
 
-  if (paper.code === 0) {
+  useEffect(() => {
+    const getData = async () => {
+      console.log("passed id is: ", id);
+      const paper = await getAnalysis(id);
+
+      if (paper.code !== 1) {
+        toast.error(paper.message);
+      }
+      console.log(paper.data, "paper data checker");
+      setAnalaysis(paper.data);
+      setCode(paper.code);
+    };
+
+    getData();
+  }, [id]);
+
+  if (code === null) {
+    return <div> loading </div>;
+  }
+
+  if (code !== 1 || !analysis) {
     return <ErrorState />;
   }
 
@@ -22,22 +48,22 @@ export default async function CheckerSection({ id }: CheckerProps) {
       <header className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h1 className="truncate text-2xl font-semibold tracking-tight">
-            {paper.data?.paper_id}
+            {analysis?.paper_id}
           </h1>
           <p className="mt-1 text-xs text-muted-foreground">
             {/* {paper.data?.paper_id} · {paper.data?.paper_id} pages · uploaded{" "} */}
-            {new Date(paper.data!.created_at).toLocaleString()}
+            {new Date(analysis!.created_at).toLocaleString()}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Link
-            href={`/checker/paper/${paper.data?.paper_id}`}
+            href={`/checker/paper/${analysis?.paper_id}`}
             className="inline-flex items-center gap-1.5 rounded-md border border-border bg-panel px-3 py-1.5 text-xs transition hover:bg-panel-2"
           >
             <Eye className="size-3.5" /> View paper
           </Link>
           <Link
-            href={`/checker/visualizer/${paper.data?.paper_id}`}
+            href={`/checker/visualizer/${analysis?.paper_id}`}
             className="inline-flex items-center gap-1.5 rounded-md bg-brand px-3 py-1.5 text-xs font-medium text-brand-foreground transition hover:opacity-90"
           >
             <Network className="size-3.5" /> Open visualizer
@@ -50,21 +76,21 @@ export default async function CheckerSection({ id }: CheckerProps) {
           title="Extracted concepts"
           caption="Problem, method, solution, related work, results."
         >
-          <BreakdownView paper={paper.data!} />
+          <BreakdownView paper={analysis!} />
         </Section>
 
         <Section
           title="Concept connections"
           caption="How concepts reference each other. Theoretical rows mark missing links."
         >
-          <ConceptTable paper={paper.data!} />
+          <ConceptTable paper={analysis!} />
         </Section>
 
         <Section
           title="Cohesion analysis"
           caption="Does each concept actually answer the others?"
         >
-          <AnalysisView paper={paper.data!} />
+          <AnalysisView paper={analysis!} />
         </Section>
       </div>
     </>

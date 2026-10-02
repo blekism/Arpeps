@@ -1,20 +1,49 @@
+"use client";
+
 import Link from "next/link";
-import { getAnalysis } from "@/backend/read.controller";
+import { getAnalysis, getVisualizer } from "@/backend/read.controller";
 import ConceptGraph from "@/components/concept_graph";
 import { ArrowLeft } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { formap, PageProps } from "@/lib/types";
+import { toast } from "sonner";
+import ErrorState from "@/components/error_state";
 
-import { PageProps } from "@/lib/types";
+export default function VisualizerPage() {
+  const { id } = useParams<{ id: string }>();
 
-export default async function VisualizerPage({ params }: PageProps) {
-  const { id } = await params;
-  const paper = await getAnalysis(id);
+  const [md, setMd] = useState<formap | null>(null);
+  const [code, setCode] = useState<number | null>(null);
 
-  console.log("paper", paper);
+  useEffect(() => {
+    const getData = async () => {
+      console.log("passed id is: ", id);
+      const paper = await getVisualizer(id);
+
+      if (paper.code !== 1) {
+        toast.error(paper.message);
+      }
+      console.log(paper.data, "paper data checker");
+      setMd(paper.data);
+      setCode(paper.code);
+    };
+
+    getData();
+  }, [id]);
+
+  if (code === null) {
+    return <div> loading </div>;
+  }
+
+  if (code !== 1 || !md) {
+    return <ErrorState />;
+  }
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
       <Link
-        href={`/checker/${paper.data?.paper_id}`}
+        href={`/checker/${md.paper_id}`}
         className="mb-4 inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3.5" />
@@ -30,7 +59,7 @@ export default async function VisualizerPage({ params }: PageProps) {
         </p>
       </header>
 
-      <ConceptGraph paper={paper.data!} />
+      <ConceptGraph paper={md} />
     </main>
   );
 }

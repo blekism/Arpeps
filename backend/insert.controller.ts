@@ -31,25 +31,25 @@ export async function Register(_previousState: any, formdata: FormData) {
     };
   }
 
-  let data;
-
   try {
-    data = await register(email, password, name.trim());
+    const data = await register(email, password, name.trim());
+
+    return {
+      success: data.status === 201,
+      message:
+        data.status === 201
+          ? "Registered Successfully. You can now login to continue"
+          : "Register failed",
+    };
   } catch (error) {
     return {
       success: false,
-      message: "An error has occurred, please try again later.",
+      message:
+        error instanceof Error
+          ? error.message
+          : "An error has occurred. Please try again later",
     };
   }
-
-  if (data.status === 500) {
-    return {
-      success: false,
-      message: data.data.error,
-    };
-  }
-
-  redirect("/");
 }
 
 export async function Login(_previousState: any, formdata: FormData) {
@@ -68,7 +68,7 @@ export async function Login(_previousState: any, formdata: FormData) {
 
     return {
       success: data.status === 200,
-      message: data.status === 200 ? "ok" : "Login failed",
+      message: data.status === 200 ? "Logged in Successfully" : "Login failed",
     };
   } catch (error) {
     console.error(error);
@@ -106,7 +106,7 @@ export async function saveAnalysis_DB(
     };
   } catch (error) {
     console.log(error);
-
+    //todo: change this to throw
     return {
       status: 500,
       message: error instanceof Error ? error.message : "Something went wrong",
@@ -143,7 +143,7 @@ export async function deletePaperInDB(id: string) {
   // wala delete lang talaga
 }
 
-export async function PaperProcessWrapper(content: string, uploader: string) {
+export async function PaperProcessWrapper(content: string) {
   let paper;
 
   try {
@@ -201,7 +201,7 @@ export async function PaperProcessWrapper(content: string, uploader: string) {
   }
 }
 
-export async function uploadHandler(paper: string, uploader: string) {
+export async function uploadHandler(paper: string) {
   try {
     const isPassed = await ValidateContent(paper);
 
@@ -212,7 +212,7 @@ export async function uploadHandler(paper: string, uploader: string) {
       };
     }
 
-    const process = await PaperProcessWrapper(paper, uploader);
+    const process = await PaperProcessWrapper(paper);
 
     return process;
   } catch (error) {

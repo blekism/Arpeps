@@ -1,9 +1,34 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import UploadCard from "@/components/upload_card";
 import { Suspense } from "react";
 import { PaperListSkeleton } from "@/components/dash_loading";
-import PaperListSection from "@/components/paperlist_section";
+import ErrorState from "@/components/error_state";
+import PaperList from "@/components/paper_list";
+import { getAllPapers } from "@/backend/read.controller";
+import { toast } from "sonner";
+import { GetAllPaperResult, Paper } from "@/lib/types";
 
-export default async function Dashboard() {
+export default function Dashboard() {
+  const [papers, setPapers] = useState<Paper[]>([]);
+  const [code, setCode] = useState<number>();
+
+  useEffect(() => {
+    const getData = async () => {
+      const paperData = await getAllPapers();
+
+      if (paperData.code !== 1) {
+        toast.error(paperData.message);
+      }
+
+      setPapers(paperData.data);
+      setCode(paperData.code);
+    };
+
+    getData();
+  }, []);
+
   return (
     <>
       <main className="mx-auto max-w-4xl px-4 py-10">
@@ -15,10 +40,14 @@ export default async function Dashboard() {
             A first-layer cohesion check before you print or submit your paper.
           </p>
         </div>
-        {/* <UploadCard /> */}
-        {/* <Suspense fallback={<PaperListSkeleton />}> */}
-        <PaperListSection />
-        {/* </Suspense> */}
+        <UploadCard />
+        <Suspense fallback={<PaperListSkeleton />}>
+          {code === 1 ? (
+            <PaperList papers={papers} error={null} />
+          ) : (
+            <ErrorState />
+          )}
+        </Suspense>
       </main>
     </>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { type Paper } from "@/lib/types";
+import { formap, type Paper } from "@/lib/types";
 
 const coordinates = [
   { x: 50, y: 12 },
@@ -11,21 +11,25 @@ const coordinates = [
   { x: 70, y: 82 },
 ];
 
-export default function ConceptGraph({ paper }: { paper: Paper }) {
-
-    const enhancedPaperData = paper.extracted_concepts_tbl.map((papers, index) => ({
-        ...papers,
-        x: coordinates[index]?.x ?? 0,
-        y: coordinates[index]?.y ?? 0,
-    }));
+export default function ConceptGraph({ paper }: { paper: formap }) {
+  const enhancedPaperData = paper.extracted_concepts_tbl.map(
+    (papers, index) => ({
+      ...papers,
+      x: coordinates[index]?.x ?? 0,
+      y: coordinates[index]?.y ?? 0,
+    }),
+  );
 
   const [hoverNode, setHoverNode] = useState<string | null>(null);
   const [hoverEdge, setHoverEdge] = useState<number | null>(null);
 
-  const nodeMap = useMemo(() => 
-        Object.fromEntries(enhancedPaperData.map(n => [n.concepts_tbl.concept_name, n])),  
-    [enhancedPaperData]) as Record<string, typeof enhancedPaperData[number]>;
-  
+  const nodeMap = useMemo(
+    () =>
+      Object.fromEntries(
+        enhancedPaperData.map((n) => [n.concepts_tbl.concept_name, n]),
+      ),
+    [enhancedPaperData],
+  ) as Record<string, (typeof enhancedPaperData)[number]>;
 
   return (
     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-border bg-panel">
@@ -71,9 +75,7 @@ export default function ConceptGraph({ paper }: { paper: Paper }) {
                 y2={b.y}
                 stroke={stroke}
                 strokeWidth={active ? 0.9 : 0.5}
-                strokeDasharray={
-                  c.kind === 2 ? "1.4 1.4" : undefined
-                }
+                strokeDasharray={c.kind === 2 ? "1.4 1.4" : undefined}
                 opacity={active ? 1 : 0.75}
                 vectorEffect="non-scaling-stroke"
               />
@@ -123,9 +125,7 @@ export default function ConceptGraph({ paper }: { paper: Paper }) {
                   }
                 />
                 <span className="font-medium">
-                  {c.kind === 1
-                    ? "Actual connection"
-                    : "Theoretical (missing)"}
+                  {c.kind === 1 ? "Actual connection" : "Theoretical (missing)"}
                 </span>
               </div>
               <div className="mb-1 font-mono text-[10px] text-muted-foreground">

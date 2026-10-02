@@ -13,7 +13,7 @@ let isRefreshing = false;
 let refreshPromise: Promise<boolean> | null = null;
 
 async function refreshAccessToken(): Promise<boolean> {
-  const res = await fetch(`${API_URL}/refresh`, {
+  const res = await fetch(`${API_URL}/auth/refresh`, {
     method: "POST",
     credentials: "include",
     headers: { "X-CSRF-Token": getCsrfToken() ?? "" }, // refresh mutates state too — needs it
@@ -27,6 +27,7 @@ export async function apiFetch(
   url: string,
   options: RequestInit = {},
 ): Promise<Response> {
+  console.log("apifetch called");
   const method = (options.method ?? "GET").toUpperCase();
 
   const headers: Record<string, string> = {
@@ -39,34 +40,27 @@ export async function apiFetch(
   const res = await fetch(url, { ...options, headers, credentials: "include" });
 
   if (res.status === 401) {
-    const body = await res
-      .clone()
-      .json()
-      .catch(() => ({}));
+    if (!isRefreshing) {
+      isRefreshing = true;
+      refreshPromise = refreshAccessToken().finally(() => {
+        isRefreshing = false;
+      });
+    }
+    const refreshed = await refreshPromise;
 
-    if (body.code === "TOKEN_EXPIRED") {
-      if (!isRefreshing) {
-        isRefreshing = true;
-        refreshPromise = refreshAccessToken().finally(() => {
-          isRefreshing = false;
-        });
+    if (refreshed) {
+      // retry original request, with a fresh CSRF header too (cookie may have rotated)
+      const retryHeaders: Record<string, string> = {
+        ...(options.headers as Record<string, string> | undefined),
+      };
+      if (MUTATING_METHODS.includes(method)) {
+        retryHeaders["X-CSRF-Token"] = getCsrfToken() ?? "";
       }
-      const refreshed = await refreshPromise;
-
-      if (refreshed) {
-        // retry original request, with a fresh CSRF header too (cookie may have rotated)
-        const retryHeaders: Record<string, string> = {
-          ...(options.headers as Record<string, string> | undefined),
-        };
-        if (MUTATING_METHODS.includes(method)) {
-          retryHeaders["X-CSRF-Token"] = getCsrfToken() ?? "";
-        }
-        return fetch(url, {
-          ...options,
-          headers: retryHeaders,
-          credentials: "include",
-        });
-      }
+      return fetch(url, {
+        ...options,
+        headers: retryHeaders,
+        credentials: "include",
+      });
     }
 
     if (typeof window !== "undefined") window.location.href = "/";

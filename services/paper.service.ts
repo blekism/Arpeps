@@ -75,7 +75,8 @@ export async function deletePaper(paper_id: string) {
 }
 
 export async function getPapers() {
-  const res = await apiFetch(`papers/mypapers`);
+  //dashboard page
+  const res = await apiFetch(`${API_URL}/papers/mypapers`);
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -91,6 +92,7 @@ export async function getPapers() {
 }
 
 export async function getSinglePaper(id: string) {
+  // checker page
   const res = await apiFetch(`${API_URL}/papers/apaper/${id}`);
 
   if (!res.ok) {
@@ -107,6 +109,7 @@ export async function getSinglePaper(id: string) {
 }
 
 export async function getMap(id: string) {
+  // visualizer page
   const res = await apiFetch(`${API_URL}/papers/amap/${id}`);
 
   if (!res.ok) {
@@ -123,6 +126,7 @@ export async function getMap(id: string) {
 }
 
 export async function printPaper(id: string) {
+  // paper page
   const res = await apiFetch(`${API_URL}/papers/acontent/${id}`);
 
   if (!res.ok) {

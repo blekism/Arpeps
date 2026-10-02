@@ -1,28 +1,50 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { PageProps } from "@/lib/types";
-import { getAnalysis } from "@/backend/read.controller";
+import { mdFile, PageProps } from "@/lib/types";
+import { getMarkdown } from "@/backend/read.controller";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { toast } from "sonner";
+import ErrorState from "@/components/error_state";
 
-export default async function ViewerPage({ params }: PageProps) {
-  const { id } = await params;
-  const paper = await getAnalysis(id);
+export default function ViewerPage() {
+  const { id } = useParams<{ id: string }>();
 
-  console.log("paperr", paper);
+  const [md, setMd] = useState<mdFile | null>(null);
+  const [code, setCode] = useState<number | null>(null);
 
-  // useEffect(() => {
-  //   const p = getPaper(id);
-  //   if (!p) router.push("/");
-  //   else setPaper(p);
-  // }, [id]);
+  useEffect(() => {
+    const getData = async () => {
+      console.log("passed id is: ", id);
+      const paper = await getMarkdown(id);
 
-  // if (!paper) return null;
+      if (paper.code !== 1) {
+        toast.error(paper.message);
+      }
+      console.log(paper.data, "paper data checker");
+      setMd(paper.data);
+      setCode(paper.code);
+    };
+
+    getData();
+  }, [id]);
+
+  if (code === null) {
+    return <div> loading </div>;
+  }
+
+  if (code !== 1 || !md) {
+    return <ErrorState />;
+  }
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
       <Link
-        href={`/checker/${paper.data?.paper_id}`}
+        href={`/checker/${md.paper_id}`}
         className="mb-4 inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3.5" />
@@ -30,9 +52,7 @@ export default async function ViewerPage({ params }: PageProps) {
       </Link>
 
       <header className="mb-4">
-        <h1 className="text-xl font-semibold tracking-tight">
-          {paper.data?.paper_id}
-        </h1>
+        <h1 className="text-xl font-semibold tracking-tight">{md.paper_id}</h1>
         {/* <p className="text-xs text-muted-foreground">{paper.filename}</p> */}
       </header>
 
@@ -45,7 +65,7 @@ export default async function ViewerPage({ params }: PageProps) {
         <article className="prose prose-sm mx-auto max-w-none px-10 py-12 leading-relaxed">
           <pre className="whitespace-pre-wrap break-words font-serif text-[14px] leading-6 text-neutral-900">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {paper.data?.content}
+              {md.content}
             </ReactMarkdown>
           </pre>
         </article>

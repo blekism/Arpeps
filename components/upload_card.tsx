@@ -2,10 +2,8 @@
 
 import { useRef, useState } from "react";
 import { Upload, Loader2 } from "lucide-react";
-import { userSession } from "@/services/auth_client";
-import { rateLimit } from "@/services/rate_limit";
 import { toast } from "sonner";
-import { uploadHandler } from "@/backend/actions";
+import { uploadHandler } from "@/backend/insert.controller";
 
 export default function UploadCard() {
   const [dragging, setDragging] = useState(false);
@@ -14,26 +12,18 @@ export default function UploadCard() {
   // const navigate = useRouter();
 
   async function handleFile(file: File) {
-    const user = await userSession();
-    const userId = user.session?.user.id;
-
-    if (!userId) return;
     const ok = /\.(md|markdown)$/i.test(file.name);
     if (!ok) {
       toast.error("Only .md files are supported");
-      return;
-    }
-    if (!rateLimit(`upload:${userId}`, 5, 0.2)) {
-      toast.error("Too many uploads. Try again in a moment.");
       return;
     }
     setLoading(true);
     try {
       const markdown = await file.text();
 
-      const paper = await uploadHandler(markdown, userId);
+      const paper = await uploadHandler(markdown);
 
-      if (paper?.code === 0) {
+      if (paper.status) {
         toast.error(paper?.message);
         return;
       }

@@ -20,9 +20,9 @@ export function proxy(request: NextRequest) {
   );
   const isAuthPage = pathname === "/" || pathname.startsWith("/register");
 
-  if (isProtected && !accessToken) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+  // if (isProtected && !accessToken) {
+  //   return NextResponse.redirect(new URL("/", request.url));
+  // }
 
   if (isAuthPage && accessToken) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
@@ -32,6 +32,8 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/",
+    "/register",
     "/dashboard",
     "/checker/:path*",
     // add other protected route prefixes here

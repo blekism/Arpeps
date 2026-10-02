@@ -10,6 +10,7 @@ export async function register(
   password: string,
   name: string,
 ): Promise<Server_Res> {
+  //------------------------execute function-----------------
   const res = await fetch(`${API_URL}/auth/register`, {
     method: "POST",
     credentials: "include",
@@ -23,16 +24,25 @@ export async function register(
       name,
     }),
   });
+  //------------------------execute function-----------------
 
+  // --------------------------throw the error----------------
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error(body.error ?? "Request failed");
   }
+  // --------------------------throw the error----------------
 
+  //---------------------------parse json result--------------
+  const message = await res.json();
+  //---------------------------parse json result--------------
+
+  //---------------------------return parsed result----------
   return {
     status: res.status,
-    data: res.json() as any,
+    data: message,
   };
+  //---------------------------return parsed result----------
 }
 
 export async function logout() {
@@ -87,5 +97,3 @@ export async function ensureCsrfToken() {
     await fetch(`${API_URL}/csrf-token`, { credentials: "include" });
   }
 }
-
-("http://localhost:3000/api/csrf-token");

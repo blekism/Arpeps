@@ -74,6 +74,18 @@ export type Paper = {
   user_id: string;
 };
 
+export interface mdFile {
+  content: string;
+  paper_id: string;
+}
+
+export interface formap {
+  paper_id: string;
+  user_id: string;
+  extracted_concepts_tbl: Concepts[];
+  concept_relationships_tbl: Connection[];
+}
+
 export type GetAllPaperResult = {
   code: number;
   data: Paper[];
