@@ -52,7 +52,7 @@ export default function ViewerPage() {
       </Link>
 
       <header className="mb-4">
-        <h1 className="text-xl font-semibold tracking-tight">{md.paper_id}</h1>
+        <h1 className="text-xl font-semibold tracking-tight">{md.title}</h1>
         {/* <p className="text-xs text-muted-foreground">{paper.filename}</p> */}
       </header>
 

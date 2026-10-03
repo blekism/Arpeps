@@ -30,7 +30,7 @@ export default function PaperCard({ paper }: { paper: Paper }) {
         <FileCode className="size-4 text-muted-foreground" />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-medium">{paper.paper_id}</div>
+        <div className="truncate text-sm font-medium">{paper.title}</div>
         <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
           {/* <span className="uppercase">{paper.fileType}</span> */}
           {/* <span>·</span> */}

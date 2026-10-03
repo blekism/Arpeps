@@ -1,4 +1,4 @@
-export const markdown = `# The Impact of AI-Assisted Learning Tools on the Academic Performance of Undergraduate Students
+export const fake = `# The Impact of AI-Assisted Learning Tools on the Academic Performance of Undergraduate Students
 
 ## Chapter 1: Introduction
 

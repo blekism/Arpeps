@@ -67,6 +67,7 @@ export type Paper = {
   cohesion_analysis_tbl: Analysis[];
   concept_relationships_tbl: Connection[];
   content: string;
+  title: string;
   created_at: string;
   extracted_concepts_tbl: Concepts[];
   overall_cohesion_score: string;
@@ -76,6 +77,7 @@ export type Paper = {
 
 export interface mdFile {
   content: string;
+  title: string;
   paper_id: string;
 }
 
@@ -113,6 +115,7 @@ export interface ResearchPaperData {
 
 export type GeneratedAnalysis = {
   overall_cohesion_score: string;
+  title: string;
   extracted_concepts: {
     extracted_content: string;
     concept_id: number;

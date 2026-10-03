@@ -36,7 +36,7 @@ export async function apiFetch(
   if (MUTATING_METHODS.includes(method)) {
     headers["X-CSRF-Token"] = getCsrfToken() ?? "";
   }
-
+  // console.log("request is: ", options);
   const res = await fetch(url, { ...options, headers, credentials: "include" });
 
   if (res.status === 401) {

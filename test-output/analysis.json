@@ -1,26 +1,27 @@
 {
   "code": 1,
   "data": {
-    "overall_cohesion_score": "95%",
+    "title": "EDITORILY: A CENTRALIZED EDITORIAL PROCESS AND PUBLICATION PLATFORM FOR THE NUNTIUM",
+    "overall_cohesion_score": "90%",
     "extracted_concepts": [
       {
-        "extracted_content": "As journalism continues to evolve in the digital era, student publications face increasing pressure to balance accuracy, timeliness, and credibility in their reporting. Many still rely on manual or loosely organized processes-paired with shared documents or social media drafts-which can result in workflow confusion, inconsistent revisions, and weak editorial oversight. Along with relying on Social Media for publishing content, though there’s the benefit of a wider reach for content discoverability, it also comes with the issue of having little to no options with preserving content since posted articles in social media have no way to be managed due to the simple fact that Social Media was never built to support what a student publication is made to do-which is to deliver content to its readers in an organized manner.",
+        "extracted_content": "Many still rely on manual or loosely organized processes-paired with shared documents or social media drafts-which can result in workflow confusion, inconsistent revisions, and weak editorial oversight. Along with relying on Social Media for publishing content, though there’s the benefit of a wider reach for content discoverability, it also comes with the issue of having little to no options with preserving content since posted articles in social media have no way to be managed due to the simple fact that Social Media was never built to support what a student publication is made to do-which is to deliver content to its readers in an organized manner.",
         "concept_id": 1
       },
       {
-        "extracted_content": "The study employed a Modified Waterfall Methodology tailored to the academic requirements of the researchers. The development process followed a structured sequence consisting of Requirements and Analysis, System Design, Development, Testing and Evaluation, and Implementation and Maintenance. Each phase produced specific deliverables that served as inputs for the succeeding phase, ensuring a systematic and organized development process.",
+        "extracted_content": "The study employed a Modified Waterfall Methodology tailored to the academic requirements of the researchers. The development process followed a structured sequence consisting of Requirements and Analysis, System Design, Development, Testing and Evaluation, and Implementation and Maintenance. Purposive Sampling approach was carefully selected to choose participants who possess the appropriate knowledge, expertise, and experience relevant to the study (10 IT Experts, 10 Subject Matter Experts, 10 End Users).",
         "concept_id": 2
       },
       {
-        "extracted_content": "Editorially is a web-based application that centralizes the editorial process of The Nuntium, and provides a platform for them to publish their articles. The system is composed of 3 main modules: the Publication Site, Content Pipeline Module, and Article Management Module. The Publication Site serves as the front-facing platform where readers can access editorial board approved articles through the Editorial Board’s approval verification for factual accuracy. Meanwhile, the Content Pipeline Module enables writers, and editorial board to collaborate through a structured workflow proposing articles, drafting of the article content, review, and approval.",
+        "extracted_content": "Editorially is a web application made so that Student Publications do not have to rely on Social Media sites alone to deliver their content and practice their journalistic proficiency. Its main purpose is to centralize and streamline the editorial process of student publications. The system is composed of 3 main modules: the Publication Site, Content Pipeline Module, and Article Management Module.",
         "concept_id": 3
       },
       {
-        "extracted_content": "Across the reviewed studies, a consistent theme emerges: centralized yet flexible systems significantly enhance efficiency, collaboration, and user experience in digital publishing environments. Research on Project Management Systems (PMS) emphasizes their role in improving organizational performance by providing structure, oversight, and real-time visibility across workflows. Integrated collaboration tools and automation further strengthen these systems by enabling synchronized teamwork, immediate feedback, and streamlined task execution.",
+        "extracted_content": "Credibility has long been recognized as the cornerstone of responsible journalism. In an era of digital transformation, however, maintaining that credibility has become increasingly complex (Nabirye H., 2025). Project management systems (PMS) are designed to centralize organizational processes, allowing teams to plan, monitor, and execute tasks efficiently within a unified digital environment (Aliazas et al., 2024).",
         "concept_id": 4
       },
       {
-        "extracted_content": "The system achieved an Overall Mean Score of 4.49 with a Standard Deviation of 0.61, interpreted as 'Excellent,' indicating a high level of acceptance and consistent positive evaluation across all respondent groups. Among the criteria, Portability ranked first with a weighted mean of 4.82. Compatibility and Functionality also received high ratings, indicating that the system integrates well with various platforms and successfully performs its intended tasks.",
+        "extracted_content": "The system achieved an Overall Mean Score of 4.49 with a Standard Deviation of 0.61, interpreted as “Excellent” using ISO 25010 criteria across IT Experts, Subject Matter Experts, and End Users. The mobile application evaluated using MARS achieved an Overall Mean Score of 3.61, interpreted as “Highly Acceptable.”",
         "concept_id": 5
       }
     ],
@@ -29,70 +30,70 @@
         "from_concept": 1,
         "to_concept": 2,
         "kind": 1,
-        "strength": 9.5,
-        "reason": "The identified problem of fragmented student publication workflows and lack of editorial oversight directly motivated the application of a structured Waterfall methodology and software design process to systematically build the solution."
+        "strength": 9,
+        "reason": "The problems of fragmented workflows and manual processes identified in the student publication directly dictated the application of the Waterfall methodology and purposive sampling of users for development and testing."
       },
       {
         "from_concept": 2,
         "to_concept": 3,
         "kind": 1,
-        "strength": 9.8,
-        "reason": "The system development methodology and architectural phases directly led to the construction of the Editorially web application featuring the Content Pipeline, Article Management, and Publication modules."
+        "strength": 9,
+        "reason": "The structured requirements analysis, system design phases (Waterfall), and user feedback directly materialized into the development of Editorially and its core modules."
       },
       {
         "from_concept": 4,
         "to_concept": 2,
         "kind": 1,
-        "strength": 9,
-        "reason": "The reviewed literature regarding centralized management platforms and structured workflows provided the foundational framework that guided the system design and implementation methodology."
+        "strength": 8,
+        "reason": "The literature regarding centralized content management systems and project management tools strongly guided the design and functional requirements established in the methodology."
       },
       {
         "from_concept": 3,
         "to_concept": 5,
         "kind": 1,
-        "strength": 9.6,
-        "reason": "The implementation of the Editorially solution (modules, interface, and workflows) was directly tested and evaluated by IT experts, SMEs, and end-users, producing the positive ISO 25010 and MARS results."
+        "strength": 10,
+        "reason": "The implemented solution (Editorially web and mobile application) was directly evaluated by users, resulting in the ISO 25010 and MARS evaluation results and performance metrics."
       },
       {
         "from_concept": 1,
         "to_concept": 5,
         "kind": 1,
-        "strength": 9.2,
-        "reason": "The evaluation results and high scores directly demonstrate that the core problems of unorganized workflows and social media dependency were successfully resolved by the implemented platform."
+        "strength": 9,
+        "reason": "The initial publication problems regarding unorganized publishing and weak oversight were evaluated through testing and user surveys to prove that the system successfully solved these challenges."
       },
       {
         "from_concept": 4,
         "to_concept": 3,
         "kind": 1,
-        "strength": 9.3,
-        "reason": "The literature on content management systems and project management tools strongly supports and justifies the specific features and modules built into the Editorially application."
+        "strength": 9,
+        "reason": "The reviewed literature on digital journalism credibility and CMS benefits strongly justified the inclusion of specific features in Editorially, such as approval workflows and a dedicated publication site."
       }
     ],
     "cohesion_analysis": [
       {
         "concept_id": 1,
         "cohesion_score": "Cohesive",
-        "reason": "The problem is clearly defined, identifying specific operational challenges faced by student publications such as workflow confusion, lack of oversight, and reliance on social media."
+        "reason": "The problem is clearly stated, detailing specific issues faced by student publications such as fragmented workflows, social media reliance, and lack of oversight."
       },
       {
         "concept_id": 2,
         "cohesion_score": "Cohesive",
-        "reason": "The methodology provides a clear, step-by-step account using the Waterfall model, requirements gathering, system design, and structured testing protocols."
+        "reason": "The methodology appropriately links the requirements gathering, Waterfall development phases, and validation methods using defined sampling techniques."
       },
       {
         "concept_id": 3,
         "cohesion_score": "Cohesive",
-        "reason": "The solution (Editorially) directly addresses the stated problems through specific modules (Publication Site, Content Pipeline, and Article Management Module)."
+        "reason": "The solution (Editorially web/mobile app) directly corresponds to the stated problems and implements specific modules to solve them."
       },
       {
         "concept_id": 4,
         "cohesion_score": "Cohesive",
-        "reason": "The literature thoroughly covers digital journalism credibility, challenges of student publications, and the utility of centralized content management systems, fully aligning with the project's goals."
+        "reason": "The literature thoroughly covers digital journalism credibility, challenges of student publications, and the role of content management systems, aligning well with the project's goals."
       },
       {
         "concept_id": 5,
         "cohesion_score": "Cohesive",
-        "reason": "The results comprehensively present quantitative evaluation data using ISO 25010 and MARS frameworks across multiple user groups, validating the system's effectiveness."
+        "reason": "The results comprehensively present quantitative data from ISO 25010 and MARS evaluations involving IT experts, SMEs, and end-users, directly validating the solution."
       }
     ]
   }

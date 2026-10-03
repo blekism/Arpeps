@@ -1,5 +1,4 @@
-
-# **CHAPTER I**
+export const markdown = `# **CHAPTER I**
 
 # **INTRODUCTION**
 
@@ -67,8 +66,7 @@ The general objective of the study is to develop a web application that can also
 - Engagement
 - Functionality
 - Information
-- Aesthetics
-  4. ## **Scope and Delimitations**
+- Aesthetics 4. ## **Scope and Delimitations**
 
 Editorially focused on the design and implementation of a website application that can be used in mobile platforms. The system aims to equip The Nuntium with a centralized digital platform for content creation, editorial review, and content publishing. It is composed of multiple modules that work together to streamline publication workflows and ensure the delivery of credible, editorial board approved articles.
 
@@ -106,8 +104,7 @@ The successful implementation of Editorially is expected to provide practical an
 
 4. **School Administration** \- The institution will benefit from a streamlined digital publication process that promotes accountability, transparency, and responsible media practice among students, as well as an independent platform for the institution’s student publication.
 
-5. **Future Researchers \-** This study can be a reference for future research and system development related to improving student publication websites, publication content management.
-   5. ## **Technical Terms** {#technical-terms}
+5. **Future Researchers \-** This study can be a reference for future research and system development related to improving student publication websites, publication content management. 5. ## **Technical Terms** {#technical-terms}
 
 6. **Editorially \-** A mobile and web application for The Nuntium with content pipeline and article management modules for streamlining editorial workflow and article publication.
 
@@ -1022,7 +1019,7 @@ In conclusion, Editorially is not only technically robust but also socially and 
 
 - Compatibility: Generally positive results suggest the system integrates well with other platforms, though minor adjustments may be needed to improve interoperability with certain devices.
 
-- Maintainability: High scores indicate the system is structured for smooth updates and fixes, supporting long-term sustainability.  
+- Maintainability: High scores indicate the system is structured for smooth updates and fixes, supporting long-term sustainability.
 
 - Portability: Rated strongly, showing the system can be deployed across different environments with minimal adaptation. Monitoring platform-specific behavior may improve cross-platform consistency.
 
@@ -1112,4 +1109,4 @@ Spillane, B., Lawless, S., & Wade, V. (2020). The Impact of Increasing and ㅤ�
 Spillane, B., Lawless, S., & Wade, V. (2018). Increasing and Decreasing Perceived ㅤㅤㅤBias by Distorting the Quality of News Website Design. _Electronic Workshops_ ㅤㅤㅤ*in Computing*. [https://doi.org/10.14236/ewic/hci2018.61](https://doi.org/10.14236/ewic/hci2018.61)  
 Tran, M., Zhang, Y., & Soleymani, M. (2020). _Towards A Friendly Online Community:_ ㅤㅤㅤ*An Unsupervised Style Transfer Framework for Profanity Redaction*. ㅤㅤㅤArXiv.org.[https://arxiv.org/abs/2011.00403](https://arxiv.org/abs/2011.00403)  
 Webiny Inc.. (2025). _Streamlined multi-tenancy management with Webiny_ \[Webpage\]. ㅤㅤㅤRetrieved October 21, 2025, from ㅤㅤㅤ[https://www.webiny.com/features/multi-tenancy-site-management](https://www.webiny.com/features/multi-tenancy-site-management?utm_source=chatgpt.com)  
-Wobbrock, J. O., Hsu, A. K., Burger, M. A., & Magee, M. J. (2019). Isolating the ㅤㅤㅤEffects of Web Page Visual Appearance on the Perceived Credibility of Online ㅤㅤㅤNews among College Students. _Proceedings of the 30th ACM Conference on_ ㅤㅤㅤ*Hypertext and Social Media*. [https://doi.org/10.1145/3342220.3343663](https://doi.org/10.1145/3342220.3343663)
+Wobbrock, J. O., Hsu, A. K., Burger, M. A., & Magee, M. J. (2019). Isolating the ㅤㅤㅤEffects of Web Page Visual Appearance on the Perceived Credibility of Online ㅤㅤㅤNews among College Students. _Proceedings of the 30th ACM Conference on_ ㅤㅤㅤ*Hypertext and Social Media*. [https://doi.org/10.1145/3342220.3343663](https://doi.org/10.1145/3342220.3343663)`;

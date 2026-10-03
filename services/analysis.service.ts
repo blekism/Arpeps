@@ -26,7 +26,7 @@ export async function generateAnalysis(markdown: string) {
       
       ## YOUR TASK
 
-        Analyze this paper and extract the contents from the paper best aligned with these following concepts:
+        Analyze this paper and extract the contents from the paper best aligned with these following concepts including the title of the research paper:
 
         1. Problem 
         2. Methodology 
@@ -110,7 +110,8 @@ export async function generateAnalysis(markdown: string) {
 
         Example Format: 
         {
-          "overall_cohesion_score": "40%" 
+          "title": "Research Paper title",
+          "overall_cohesion_score": "40%",
           "extracted_concepts": [
              {
                 "extracted_content: "string of content here" ",
@@ -138,14 +139,14 @@ export async function generateAnalysis(markdown: string) {
                 "from_concept": 1,
                 "to_concept": 3,
                 "kind": 0,
-                "strength": 9.8,
+                "strength": 1-10 only,
                 "reason": ""
             },
              {
                 "from_concept": 1,
                 "to_concept": 5,
                 "kind": 1,
-                "strength": 0.3,
+                "strength": 1-10 only,
                 "reason": ""
               },
             ], 
@@ -189,7 +190,7 @@ export async function generateAnalysis(markdown: string) {
     .trim();
 
   try {
-    console.log("raw data is: ", raw);
+    console.log("raw data is generated ");
     return {
       code: 1,
       data: JSON.parse(cleaned),

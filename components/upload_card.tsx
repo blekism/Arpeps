@@ -23,7 +23,7 @@ export default function UploadCard() {
 
       const paper = await uploadHandler(markdown);
 
-      if (paper.status) {
+      if (paper.code === 0) {
         toast.error(paper?.message);
         return;
       }

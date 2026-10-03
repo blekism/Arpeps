@@ -84,6 +84,8 @@ export async function Login(_previousState: any, formdata: FormData) {
 
 export async function saveAnalysis_DB(
   paperId: string,
+  title: string,
+  score: string,
   extractedConcepts: GeneratedAnalysis["extracted_concepts"],
   conceptRelationships: GeneratedAnalysis["concept_relationships"],
   cohesionAnalysis: GeneratedAnalysis["cohesion_analysis"],
@@ -95,6 +97,8 @@ export async function saveAnalysis_DB(
   try {
     const data = await uploadAnalysis(
       paperId,
+      title,
+      score,
       extractedConcepts,
       conceptRelationships,
       cohesionAnalysis,
@@ -129,7 +133,7 @@ export async function createPaperRecord(
       message: data.message,
     };
   } catch (error) {
-    console.log(error);
+    console.log("insertion error", error);
 
     return {
       status: 500,
@@ -157,10 +161,11 @@ export async function PaperProcessWrapper(content: string) {
     }
 
     const analysis = await generateAnalysis(content);
+    console.log("analysis generated");
 
     if (analysis.code === 0) {
       if (paper) {
-        console.error("hehe");
+        console.error("hehe delete na qoh sa jinirit");
         // await deletePaperInDB(paper);
       }
       return {
@@ -173,6 +178,8 @@ export async function PaperProcessWrapper(content: string) {
 
     const saveAnalysis = await saveAnalysis_DB(
       paper.message,
+      analysisData.title,
+      analysisData.overall_cohesion_score,
       analysisData.extracted_concepts,
       analysisData.concept_relationships,
       analysisData.cohesion_analysis,
@@ -180,7 +187,7 @@ export async function PaperProcessWrapper(content: string) {
 
     if (saveAnalysis.status !== 200) {
       if (paper) {
-        console.error("hehe");
+        console.error("hehe delete na qoh sa seb analeses");
         // await deletePaperInDB(paper);
       }
 
@@ -212,9 +219,12 @@ export async function uploadHandler(paper: string) {
       };
     }
 
-    const process = await PaperProcessWrapper(paper);
+    await PaperProcessWrapper(paper);
 
-    return process;
+    return {
+      code: 1,
+      message: "Upload completed successfully",
+    };
   } catch (error) {
     console.log(error, "eror");
     return {

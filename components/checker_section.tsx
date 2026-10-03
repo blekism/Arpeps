@@ -48,7 +48,7 @@ export default function CheckerSection({ id }: CheckerProps) {
       <header className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h1 className="truncate text-2xl font-semibold tracking-tight">
-            {analysis?.paper_id}
+            {analysis?.title}
           </h1>
           <p className="mt-1 text-xs text-muted-foreground">
             {/* {paper.data?.paper_id} · {paper.data?.paper_id} pages · uploaded{" "} */}
