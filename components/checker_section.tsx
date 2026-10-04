@@ -40,64 +40,68 @@ export default function CheckerSection({ id }: CheckerProps) {
     getData();
   }, [id]);
 
+  if (isLoading) {
+    //show loading
+    return <CheckerSkeleton />;
+  }
+
+  if (error || !analysis) {
+    //show error
+    return <ErrorState />;
+  }
+
   return (
+    // main jsx
     <>
-      {isLoading ? (
-        <CheckerSkeleton />
-      ) : error ? (
-        <ErrorState />
-      ) : (
-        <>
-          <header className="mb-6 flex flex-wrap items-start justify-between gap-3">
-            <div className="min-w-0">
-              <h1 className="truncate text-2xl font-semibold tracking-tight">
-                {analysis?.title}
-              </h1>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {/* {paper.data?.paper_id} · {paper.data?.paper_id} pages · uploaded{" "} */}
-                {new Date(analysis!.created_at).toLocaleString()}
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Link
-                href={`/checker/paper/${analysis?.paper_id}`}
-                className="inline-flex items-center gap-1.5 rounded-md border border-border bg-panel px-3 py-1.5 text-xs transition hover:bg-panel-2"
-              >
-                <Eye className="size-3.5" /> View paper
-              </Link>
-              <Link
-                href={`/checker/visualizer/${analysis?.paper_id}`}
-                className="inline-flex items-center gap-1.5 rounded-md bg-brand px-3 py-1.5 text-xs font-medium text-brand-foreground transition hover:opacity-90"
-              >
-                <Network className="size-3.5" /> Open visualizer
-              </Link>
-            </div>
-          </header>
+      <header className="mb-6 flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h1 className="truncate text-2xl font-semibold tracking-tight">
+            {analysis?.title}
+          </h1>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {/* {paper.data?.paper_id} · {paper.data?.paper_id} pages · uploaded{" "} */}
+            {new Date(analysis!.created_at).toLocaleString()}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/checker/paper/${analysis?.paper_id}`}
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-panel px-3 py-1.5 text-xs transition hover:bg-panel-2"
+          >
+            <Eye className="size-3.5" /> View paper
+          </Link>
+          <Link
+            href={`/checker/visualizer/${analysis?.paper_id}`}
+            className="inline-flex items-center gap-1.5 rounded-md bg-brand px-3 py-1.5 text-xs font-medium text-brand-foreground transition hover:opacity-90"
+          >
+            <Network className="size-3.5" /> Open visualizer
+          </Link>
+        </div>
+      </header>
 
-          <div className="space-y-8">
-            <Section
-              title="Extracted concepts"
-              caption="Problem, method, solution, related work, results."
-            >
-              <BreakdownView paper={analysis!} />
-            </Section>
+      <div className="space-y-8">
+        <Section
+          title="Extracted concepts"
+          caption="Problem, method, solution, related work, results."
+        >
+          <BreakdownView paper={analysis} />
+        </Section>
 
-            <Section
-              title="Concept connections"
-              caption="How concepts reference each other. Theoretical rows mark missing links."
-            >
-              <ConceptTable paper={analysis!} />
-            </Section>
+        <Section
+          title="Concept connections"
+          caption="How concepts reference each other. Theoretical rows mark missing links."
+        >
+          {/* by this point typescript is sure that analysis is not null */}
+          <ConceptTable paper={analysis} />
+        </Section>
 
-            <Section
-              title="Cohesion analysis"
-              caption="Does each concept actually answer the others?"
-            >
-              <AnalysisView paper={analysis!} />
-            </Section>
-          </div>
-        </>
-      )}
+        <Section
+          title="Cohesion analysis"
+          caption="Does each concept actually answer the others?"
+        >
+          <AnalysisView paper={analysis} />
+        </Section>
+      </div>
     </>
   );
 }
