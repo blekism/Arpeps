@@ -11,7 +11,8 @@ export async function proxy(request: NextRequest) {
   const refresh = request.cookies.get("refreshToken");
 
   const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
-  const isAuthPage = pathname === "/" || pathname.startsWith("/register");
+  const isAuthPage =
+    pathname.startsWith("/login") || pathname.startsWith("/register");
 
   if (isAuthPage && (accessToken || refresh)) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
@@ -26,7 +27,7 @@ export async function proxy(request: NextRequest) {
 
   //check refresh token, if wala, rekta login, if meron, proceed sa baba
   if (!refresh) {
-    return NextResponse.redirect(new URL("/", request.url)); // genuinely logged out
+    return NextResponse.redirect(new URL("/login", request.url)); // genuinely logged out
   }
 
   const csrfToken = request.cookies.get("csrfToken")?.value ?? "";
@@ -40,7 +41,7 @@ export async function proxy(request: NextRequest) {
   });
 
   if (!refreshRes.ok) {
-    return NextResponse.redirect(new URL("/", request.url)); // refresh token rejected/revoked
+    return NextResponse.redirect(new URL("/login", request.url)); // refresh token rejected/revoked
   }
 
   const response = NextResponse.next();
@@ -50,5 +51,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/register", "/dashboard", "/checker/:path*"],
+  matcher: ["/", "/login", "/register", "/dashboard", "/checker/:path*"],
 };

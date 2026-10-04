@@ -1,0 +1,21 @@
+import Link from "next/link";
+import { FileText, Loader2 } from "lucide-react";
+import { redirect } from "next/navigation";
+import LoginHandlerForm from "@/components/login_form";
+
+export default async function LoginPage() {
+  return (
+    <div className="grid min-h-screen place-items-center bg-background px-4">
+      <div className="w-full max-w-sm">
+        <div className="mb-6 flex items-center justify-center gap-2">
+          <div className="grid size-7 place-items-center rounded bg-brand text-brand-foreground">
+            <FileText className="size-4" />
+          </div>
+          <span className="text-sm font-semibold tracking-tight">Arpeps</span>
+        </div>
+
+        <LoginHandlerForm />
+      </div>
+    </div>
+  );
+}
