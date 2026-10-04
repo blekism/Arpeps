@@ -32,7 +32,7 @@ export default function PaperList({ papers, error }: PaperListProps) {
           Nothing here yet. Upload a paper to get started.
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className=" space-y-2">
           {papers.map((p) => (
             <PaperCard key={p.paper_id} paper={p} />
           ))}

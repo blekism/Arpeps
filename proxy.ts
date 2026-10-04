@@ -7,19 +7,24 @@ const PROTECTED_PATHS = ["/dashboard", "/checker/:path*"];
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+  const accessToken = request.cookies.get("accessToken");
+  const refresh = request.cookies.get("refreshToken");
 
   const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
+  const isAuthPage = pathname === "/" || pathname.startsWith("/register");
+
+  if (isAuthPage && (accessToken || refresh)) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
 
   if (!isProtected) {
     return NextResponse.next();
   }
 
   //check access token, if meron proceed
-  const accessToken = request.cookies.get("accessToken");
   if (accessToken) return NextResponse.next();
 
   //check refresh token, if wala, rekta login, if meron, proceed sa baba
-  const refresh = request.cookies.get("refreshToken");
   if (!refresh) {
     return NextResponse.redirect(new URL("/", request.url)); // genuinely logged out
   }

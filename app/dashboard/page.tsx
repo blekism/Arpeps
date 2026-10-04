@@ -12,18 +12,22 @@ import { GetAllPaperResult, Paper } from "@/lib/types";
 
 export default function Dashboard() {
   const [papers, setPapers] = useState<Paper[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [code, setCode] = useState<number>();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const getData = async () => {
       const paperData = await getAllPapers();
 
       if (paperData.code !== 1) {
+        setError(paperData.message);
         toast.error(paperData.message);
       }
 
       setPapers(paperData.data);
       setCode(paperData.code);
+      setIsLoading(false);
     };
 
     getData();
@@ -41,13 +45,13 @@ export default function Dashboard() {
           </p>
         </div>
         <UploadCard />
-        <Suspense fallback={<PaperListSkeleton />}>
-          {code === 1 ? (
-            <PaperList papers={papers} error={null} />
-          ) : (
-            <ErrorState />
-          )}
-        </Suspense>
+        {isLoading ? (
+          <PaperListSkeleton />
+        ) : error ? (
+          <ErrorState />
+        ) : (
+          <PaperList papers={papers} error={null} />
+        )}
       </main>
     </>
   );
