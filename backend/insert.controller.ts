@@ -2,7 +2,11 @@ import { register, login } from "@/services/auth.service";
 import { redirect } from "next/navigation";
 import { GeneratedAnalysis, Paper } from "@/lib/types";
 import { CreatePaperRes, ResearchPaperData } from "@/lib/types";
-import { insertPaper, uploadAnalysis } from "@/services/paper.service";
+import {
+  deletePaper,
+  insertPaper,
+  uploadAnalysis,
+} from "@/services/paper.service";
 import { generateAnalysis } from "@/services/analysis.service";
 
 export async function Register(_previousState: any, formdata: FormData) {
@@ -143,12 +147,30 @@ export async function createPaperRecord(
 }
 
 export async function deletePaperInDB(id: string) {
-  //check ownership of paper first
-  // wala delete lang talaga
+  if (!id) {
+    throw new Error("id is missing cuhhh");
+  }
+
+  try {
+    const data = await deletePaper(id);
+
+    return {
+      status: data.status,
+      message: data.message,
+    };
+  } catch (error) {
+    console.log("deletion error", error);
+
+    return {
+      status: 500,
+      message: error instanceof Error ? error.message : "Something went wrong",
+    };
+  }
 }
 
 export async function PaperProcessWrapper(content: string) {
   let paper;
+  let id: string | undefined;
 
   try {
     paper = await createPaperRecord(content);
@@ -160,13 +182,15 @@ export async function PaperProcessWrapper(content: string) {
       };
     }
 
+    id = paper.message;
+
     const analysis = await generateAnalysis(content);
     console.log("analysis generated");
 
     if (analysis.code === 0) {
       if (paper) {
         console.error("hehe delete na qoh sa jinirit");
-        // await deletePaperInDB(paper);
+        await deletePaperInDB(id);
       }
       return {
         code: 0,
@@ -188,7 +212,7 @@ export async function PaperProcessWrapper(content: string) {
     if (saveAnalysis.status !== 200) {
       if (paper) {
         console.error("hehe delete na qoh sa seb analeses");
-        // await deletePaperInDB(paper);
+        await deletePaperInDB(id);
       }
 
       return {
@@ -199,9 +223,9 @@ export async function PaperProcessWrapper(content: string) {
 
     return saveAnalysis;
   } catch (error) {
-    if (paper) {
+    if (id) {
       console.error(error);
-      // await deletePaperInDB(paper);
+      await deletePaperInDB(id);
     }
 
     throw error;
