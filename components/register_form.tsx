@@ -94,7 +94,7 @@ export default function RegisterHandlerForm() {
           Already have an account?{" "}
           <button
             className="text-brand hover:underline"
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/login")}
           >
             Sign in
           </button>

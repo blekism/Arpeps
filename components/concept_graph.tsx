@@ -169,7 +169,7 @@ export default function ConceptGraph({ paper }: { paper: formap }) {
       })}
 
       {/* legend */}
-      <div className="absolute bottom-3 right-3 flex items-center gap-3 rounded-md border border-border bg-background/80 px-3 py-1.5 text-[10px] text-muted-foreground backdrop-blur">
+      <div className="absolute bottom-3 right-3 flex items-center gap-3 rounded-md border border-border bg-background/80 px-3 py-1.5 text-[13px] text-muted-foreground backdrop-blur">
         <div className="flex items-center gap-1.5">
           <span className="inline-block h-0.5 w-5 bg-brand" /> Actual
         </div>

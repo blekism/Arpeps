@@ -1,4 +1,4 @@
-import { register, login } from "@/services/auth.service";
+import { register, login, logout } from "@/services/auth.service";
 import { redirect } from "next/navigation";
 import { GeneratedAnalysis, Paper } from "@/lib/types";
 import { CreatePaperRes, ResearchPaperData } from "@/lib/types";

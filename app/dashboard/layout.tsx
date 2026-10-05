@@ -1,5 +1,7 @@
 import Header from "@/components/header";
 
+export const maxDuration = 300;
+
 export default function HomepageLayout({
   children,
 }: {

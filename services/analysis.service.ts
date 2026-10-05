@@ -26,7 +26,10 @@ export async function generateAnalysis(markdown: string) {
       
       ## YOUR TASK
 
-        Analyze this paper and extract the contents from the paper best aligned with these following concepts including the title of the research paper:
+        - Analyze this paper and extract the contents from the paper best aligned with these following concepts including the title of the research paper:
+        - You will run the paper analysis 5 times, this is to truly understand the research paper and its contents. After running the analysis for 5 times, 
+        and truly understanding the contents, will you generate the output with the given structure below:  
+        - provide a score of 1-100 on how confident are you about the your findings
 
         1. Problem 
         2. Methodology 
@@ -112,6 +115,9 @@ export async function generateAnalysis(markdown: string) {
         {
           "title": "Research Paper title",
           "overall_cohesion_score": "40%",
+          "confidence_score": 26,
+          "reason": provide a reason for why you gave the confidence score you gave
+
           "extracted_concepts": [
              {
                 "extracted_content: "string of content here" ",

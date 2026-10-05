@@ -25,7 +25,7 @@ export default function LandingPage() {
     <main className="min-h-screen overflow-hidden bg-background">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <header className="flex h-20 items-center justify-between border-b border-border/70">
-          <Link href="/landing" className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5">
             <span className="grid size-8 place-items-center rounded-md bg-brand text-brand-foreground shadow-[0_0_24px_color-mix(in_oklab,var(--brand)_30%,transparent)]">
               <FileText className="size-4" />
             </span>
@@ -67,17 +67,11 @@ export default function LandingPage() {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
-                href="/register"
+                href="/dashboard"
                 className="inline-flex items-center gap-2 rounded-md bg-brand px-4 py-2.5 text-sm font-medium text-brand-foreground transition hover:opacity-90"
               >
-                Start with your paper
-                <ArrowRight className="size-4" />
-              </Link>
-              <Link
-                href="/dashboard"
-                className="rounded-md border border-border px-4 py-2.5 text-sm font-medium text-foreground transition hover:bg-panel"
-              >
                 Open dashboard
+                <ArrowRight className="size-4" />
               </Link>
             </div>
           </div>
@@ -159,14 +153,14 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <footer className="flex flex-col gap-3 border-t border-border py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <span>Arpeps · A calmer way to read your draft.</span>
-          <Link
+        <footer className="flex flex-col gap-3 border-t border-border py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-center">
+          <span>Arpeps · A cleaner way to understand your paper.</span>
+          {/* <Link
             href="/dashboard"
             className="text-foreground transition hover:text-brand"
           >
             Go to dashboard <span aria-hidden="true">-&gt;</span>
-          </Link>
+          </Link> */}
         </footer>
       </div>
     </main>

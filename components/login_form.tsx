@@ -23,7 +23,8 @@ export default function LoginHandlerForm() {
 
     if (state.success) {
       toast.success(state.message);
-      router.replace("/dashboard");
+
+      window.location.replace("/dashboard");
     } else {
       toast.error(state.message);
     }
@@ -67,8 +68,6 @@ export default function LoginHandlerForm() {
           required
           name="password"
         />
-
-        {/* <input type="hidden" name="mode" value={mode} /> REFERENCE FOR ADDTION OF MORE DATA */}
 
         <button
           type="submit"

@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
   return {
     test: {
       globals: true,
-      testTimeout: 50000,
+      testTimeout: 240_000,
     },
     resolve: {
       alias: {

@@ -9,12 +9,14 @@ import { useParams } from "next/navigation";
 import { formap, PageProps } from "@/lib/types";
 import { toast } from "sonner";
 import ErrorState from "@/components/error_state";
+import VisualizerSkeleton from "@/components/visualizer_loading";
 
 export default function VisualizerPage() {
   const { id } = useParams<{ id: string }>();
 
   const [md, setMd] = useState<formap | null>(null);
   const [code, setCode] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
@@ -27,16 +29,17 @@ export default function VisualizerPage() {
       console.log(paper.data, "paper data checker");
       setMd(paper.data);
       setCode(paper.code);
+      setLoading(false);
     };
 
     getData();
   }, [id]);
 
-  if (code === null) {
-    return <div> loading </div>;
+  if (loading) {
+    return <VisualizerSkeleton />;
   }
 
-  if (code !== 1 || !md) {
+  if ((code !== 1 && !loading) || !md) {
     return <ErrorState />;
   }
 
