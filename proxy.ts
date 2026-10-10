@@ -3,14 +3,16 @@ import type { NextRequest } from "next/server";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
-const PROTECTED_PATHS = ["/dashboard", "/checker/:path*"];
+const PROTECTED_PATHS = ["/dashboard", "/checker"];
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const accessToken = request.cookies.get("accessToken");
   const refresh = request.cookies.get("refreshToken");
 
-  const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
+  const isProtected = PROTECTED_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
+  );
   const isAuthPage =
     pathname.startsWith("/login") || pathname.startsWith("/register");
 

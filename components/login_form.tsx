@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 // import { Login } from "@/backend/actions";
 import { Login } from "@/backend/insert.controller";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const initialState = {
   success: false,
@@ -18,13 +18,27 @@ export default function LoginHandlerForm() {
   const [state, formAction, pending] = useActionState(Login, initialState);
   const router = useRouter();
 
+  const pathname = usePathname();
+
+  useEffect(() => {
+    console.log({
+      pathname,
+      href: window.location.href,
+    });
+  }, [pathname]);
+
   useEffect(() => {
     if (!state.message) return;
 
     if (state.success) {
+      console.log("about to navigate");
       toast.success(state.message);
 
-      window.location.replace("/dashboard");
+      // window.location.replace("/dashboard");
+      setTimeout(() => {
+        console.log("calling router.replace");
+        router.replace("/dashboard");
+      }, 0);
     } else {
       toast.error(state.message);
     }

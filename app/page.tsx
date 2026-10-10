@@ -7,6 +7,7 @@ import {
   ScanSearch,
   Sparkles,
 } from "lucide-react";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Arpeps | See how your paper holds together",
@@ -20,7 +21,14 @@ const checks = [
   "Get a focused first pass, not a wall of feedback",
 ];
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const cookieStore = await cookies();
+
+  const hasAuthCookie =
+    cookieStore.has("accessToken") || cookieStore.has("refreshToken");
+
+  const dashboardHref = hasAuthCookie ? "/dashboard" : "/login";
+
   return (
     <main className="min-h-screen overflow-hidden bg-background">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
@@ -67,7 +75,8 @@ export default function LandingPage() {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
-                href="/dashboard"
+                href={dashboardHref}
+                prefetch={false}
                 className="inline-flex items-center gap-2 rounded-md bg-brand px-4 py-2.5 text-sm font-medium text-brand-foreground transition hover:opacity-90"
               >
                 Open dashboard

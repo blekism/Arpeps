@@ -82,7 +82,11 @@ export async function login(
     }),
   });
 
-  if (!res.ok) throw new Error((await res.json()).error ?? "Login failed");
+  if (!res.ok) {
+    const err = await res.json();
+    console.log("error is: ", err.error);
+    throw new Error(err.error ?? "Login failed");
+  }
 
   const message = await res.json();
 

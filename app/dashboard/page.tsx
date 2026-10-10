@@ -15,6 +15,7 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [code, setCode] = useState<number>();
   const [error, setError] = useState<string | null>(null);
+  console.log("dashboard me has loaded");
 
   useEffect(() => {
     const getData = async () => {
