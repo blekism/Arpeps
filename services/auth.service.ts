@@ -3,7 +3,8 @@ import { Server_Res } from "@/lib/types";
 
 // export type User = { id: string; email: string; name: string };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+// const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+const API_URL = "/api";
 
 export async function register(
   email: string,
