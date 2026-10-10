@@ -1,7 +1,8 @@
 import { apiFetch, getCsrfToken } from "@/backend/api";
 import { Analysis, Concepts, Connection, GeneratedAnalysis } from "@/lib/types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+const API_URL =
+  process.env.ISPROD === "dev" ? process.env.NEXT_PUBLIC_API_URL! : "/api";
 
 export async function insertPaper(content: string) {
   console.log("conent to pass is: ", content);
