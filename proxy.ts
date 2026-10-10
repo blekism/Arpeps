@@ -35,7 +35,7 @@ export async function proxy(request: NextRequest) {
 
   const csrfToken = request.cookies.get("csrfToken")?.value ?? "";
 
-  const refreshRes = await fetch(`${API_URL}/auth/refresh`, {
+  const refreshRes = await fetch(`${API_URL}/api/auth/refresh`, {
     method: "POST",
     headers: {
       Cookie: request.headers.get("cookie") ?? "",
