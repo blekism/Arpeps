@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // const API_URL = process.env.NEXT_PUBLIC_API_URL!;
-const API_URL = "/api";
+const API_URL = process.env.BACKEND_URL!;
 
 const PROTECTED_PATHS = ["/dashboard", "/checker"];
 
